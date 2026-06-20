@@ -34,16 +34,16 @@ export function WorkPageClient({
     <Section spacing="sm" className="pt-10 sm:pt-14 lg:pt-16">
       <Container>
         <div className="max-w-3xl">
-          <Eyebrow>Work</Eyebrow>
+          {/* <Eyebrow>Work</Eyebrow> */}
 
           <Heading as="h1" variant="section" className="mt-4">
-            Selected projects.
+            Projects.
           </Heading>
 
-          <Text variant="body" className="mt-4 max-w-2xl">
+          {/* <Text variant="body" className="mt-4 max-w-2xl">
             Websites, web apps, booking platforms, e-commerce products, and AI
             apps built for real users and real businesses.
-          </Text>
+          </Text> */}
         </div>
 
         <div className="mt-8 flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

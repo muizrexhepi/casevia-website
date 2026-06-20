@@ -17,11 +17,11 @@ export function WorkProjectCard({
   return (
     <Link
       href={`/work/${project.slug}`}
-      className="group/card block overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-sm transition-shadow duration-300 hover:shadow-[0_18px_55px_rgba(15,23,32,0.08)]"
+      className="group/card block h-full overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-sm transition-transform duration-300 ease-out hover:-translate-y-1"
     >
       <ProjectPreview project={project} priority={priority} />
 
-      <div className="p-5 sm:p-6">
+      <div className="flex min-h-[250px] flex-col p-5 sm:p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
             <Heading as="h2" variant="card">
@@ -38,18 +38,31 @@ export function WorkProjectCard({
           </span>
         </div>
 
-        <Text variant="body-sm" className="mt-4 line-clamp-2">
+        <Text variant="body-sm" className="mt-4 line-clamp-3">
           {project.summary}
         </Text>
 
-        <div className="mt-5 inline-flex items-center text-sm font-semibold text-primary">
-          View case study
-          <HugeiconsIcon
-            icon={ArrowRight02Icon}
-            size={17}
-            strokeWidth={1.8}
-            className="ml-2 transition-transform duration-300 group-hover/card:translate-x-1"
-          />
+        <div className="mt-5 flex flex-wrap gap-2">
+          {project.proof.slice(0, 3).map((item) => (
+            <span
+              key={item}
+              className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground"
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-auto pt-7">
+          <span className="inline-flex items-center text-sm font-semibold text-primary">
+            View case study
+            <HugeiconsIcon
+              icon={ArrowRight02Icon}
+              size={17}
+              strokeWidth={1.8}
+              className="ml-2 transition-transform duration-300 group-hover/card:translate-x-1"
+            />
+          </span>
         </div>
       </div>
     </Link>
@@ -64,27 +77,11 @@ function ProjectPreview({
   priority: boolean;
 }) {
   return (
-    <div
-      className={cn(
-        "relative h-[230px] overflow-hidden border-b border-border sm:h-[255px]",
-        project.visualTheme === "gobusly" &&
-          "bg-[radial-gradient(circle_at_76%_16%,rgba(47,91,211,0.34),transparent_42%),linear-gradient(135deg,#061b36,#0d2b55)]",
-        project.visualTheme === "hakbus" &&
-          "bg-[radial-gradient(circle_at_76%_16%,rgba(47,91,211,0.34),transparent_42%),linear-gradient(135deg,#061237,#1742a8)]",
-        project.visualTheme === "doros" &&
-          "bg-[radial-gradient(circle_at_74%_18%,rgba(215,181,109,0.18),transparent_42%),linear-gradient(135deg,#050507,#17120c)]",
-        project.visualTheme === "nextloop" &&
-          "bg-[radial-gradient(circle_at_72%_18%,rgba(47,91,211,0.32),transparent_42%),linear-gradient(135deg,#07111f,#0d1b38)]",
-        project.visualTheme === "logly" &&
-          "bg-[radial-gradient(circle_at_74%_18%,rgba(47,91,211,0.16),transparent_44%),linear-gradient(135deg,#f6f8ff,#ffffff)]",
-        project.visualTheme === "speaksure" &&
-          "bg-[radial-gradient(circle_at_75%_20%,rgba(47,91,211,0.30),transparent_44%),linear-gradient(135deg,#06111f,#111827)]",
-        project.visualTheme === "am" &&
-          "bg-[radial-gradient(circle_at_75%_20%,rgba(47,91,211,0.18),transparent_44%),linear-gradient(135deg,#f6f8ff,#ffffff)]",
-      )}
-    >
+    <div className="relative h-[230px] overflow-hidden border-b border-border bg-[radial-gradient(circle_at_76%_16%,rgba(37,99,235,0.16),transparent_44%),linear-gradient(135deg,#f6f8ff,#ffffff)] sm:h-[255px]">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.35),rgba(255,255,255,0))]" />
+
       {project.coverImage ? (
-        <div className="absolute inset-x-4 bottom-0 top-10 overflow-hidden rounded-t-[1.35rem] border border-white/15 bg-white shadow-[0_28px_90px_rgba(0,0,0,0.26)] transition-transform duration-700 group-hover/card:-translate-y-2">
+        <div className="absolute inset-x-4 -bottom-3 top-8 translate-y-3 overflow-hidden rounded-t-[1.35rem] border border-black/5 bg-white shadow-[0_18px_55px_rgba(15,23,42,0.12)] transition-transform duration-500 ease-out group-hover/card:translate-y-0">
           <Image
             src={project.coverImage}
             alt={project.coverAlt ?? `${project.name} project preview`}
@@ -98,70 +95,31 @@ function ProjectPreview({
           />
         </div>
       ) : (
-        <FallbackPreview project={project} />
+        <FallbackPreview />
       )}
     </div>
   );
 }
 
-function FallbackPreview({ project }: { project: Project }) {
-  const isLight =
-    project.visualTheme === "logly" || project.visualTheme === "am";
-
+function FallbackPreview() {
   return (
-    <div
-      className={cn(
-        "absolute inset-x-4 bottom-0 top-10 rounded-t-[1.35rem] border p-4 shadow-[0_28px_90px_rgba(0,0,0,0.24)] transition-transform duration-700 group-hover/card:-translate-y-2",
-        isLight
-          ? "border-primary/10 bg-white"
-          : "border-white/10 bg-white/10 backdrop-blur",
-      )}
-    >
+    <div className="absolute inset-x-4 -bottom-3 top-8 translate-y-3 overflow-hidden rounded-t-[1.35rem] border border-black/5 bg-white p-4 shadow-[0_18px_55px_rgba(15,23,42,0.12)] transition-transform duration-500 ease-out group-hover/card:translate-y-0">
       <div className="flex items-center gap-2">
         <span className="size-2 rounded-full bg-red-400" />
         <span className="size-2 rounded-full bg-yellow-400" />
         <span className="size-2 rounded-full bg-emerald-400" />
-        <div
-          className={cn(
-            "ml-3 h-2 flex-1 rounded-full",
-            isLight ? "bg-slate-200" : "bg-white/10",
-          )}
-        />
+        <div className="ml-3 h-2 flex-1 rounded-full bg-slate-200" />
       </div>
 
-      <div className="mt-6">
-        <div
-          className={cn(
-            "h-6 w-48 max-w-full rounded-full",
-            isLight ? "bg-primary/20" : "bg-white/90",
-          )}
-        />
-        <div
-          className={cn(
-            "mt-3 h-3 w-32 rounded-full",
-            isLight ? "bg-primary/10" : "bg-white/35",
-          )}
-        />
+      <div className="mt-7">
+        <div className="h-7 w-48 max-w-full rounded-full bg-primary/18" />
+        <div className="mt-3 h-3 w-36 rounded-full bg-primary/10" />
+        <div className="mt-3 h-3 w-56 max-w-full rounded-full bg-primary/10" />
 
-        <div className="mt-6 grid grid-cols-3 items-end gap-2">
-          <div
-            className={cn(
-              "h-20 rounded-xl",
-              isLight ? "bg-primary/10" : "bg-white/10",
-            )}
-          />
-          <div
-            className={cn(
-              "h-28 rounded-xl",
-              isLight ? "bg-primary/20" : "bg-white/20",
-            )}
-          />
-          <div
-            className={cn(
-              "h-16 rounded-xl",
-              isLight ? "bg-primary/10" : "bg-white/10",
-            )}
-          />
+        <div className="mt-7 grid grid-cols-3 items-end gap-2">
+          <div className="h-16 rounded-xl bg-primary/10" />
+          <div className="h-24 rounded-xl bg-primary/20" />
+          <div className="h-12 rounded-xl bg-primary/10" />
         </div>
       </div>
     </div>

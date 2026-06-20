@@ -15,7 +15,7 @@ import { buttonVariants, Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { label: "Work", href: "/work" },
+  { label: "Projects", href: "/work" },
   { label: "Services", href: "/services" },
   { label: "Process", href: "/process" },
   { label: "About", href: "/about" },

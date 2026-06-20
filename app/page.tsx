@@ -10,8 +10,8 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <ServicesSection />
       <SelectedWorkSection />
+      <ServicesSection />
       <ProcessSection />
       <WhyCaseviaSection />
       <TestimonialsSection />

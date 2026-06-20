@@ -5,26 +5,24 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { ProjectCard } from "@/components/work/project-card";
-import { Eyebrow, Heading, Text } from "@/components/ui/typography";
+import { Heading, Text } from "@/components/ui/typography";
 import { getHomepageProjects } from "@/lib/projects";
 
 export function SelectedWorkSection() {
   const projects = getHomepageProjects();
 
   return (
-    <Section>
+    <Section className="pt-10 sm:pt-14 lg:pt-16">
       <Container>
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-3xl">
-            <Eyebrow>Selected work</Eyebrow>
-
-            <Heading as="h2" variant="section" className="mt-4">
-              Work that blends strategy, design, and engineering.
+            <Heading as="h2" variant="section">
+              Selected work built for real businesses.
             </Heading>
 
             <Text variant="body" className="mt-5 max-w-2xl">
-              A focused look at websites, platforms, and digital products built
-              for real businesses — not template demos.
+              A focused look at platforms, client websites, and mobile products
+              with real users, real operations, and real business outcomes.
             </Text>
           </div>
 
@@ -42,7 +40,7 @@ export function SelectedWorkSection() {
           </Link>
         </div>
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+        <div className="mt-10 grid gap-5 lg:grid-cols-3">
           {projects.map((project, index) => (
             <ProjectCard
               key={project.slug}
