@@ -4,7 +4,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { ProjectCard } from "@/components/work/project-card";
+import { WorkProjectCard } from "@/components/work/work-project-card";
 import { Heading, Text } from "@/components/ui/typography";
 import { getHomepageProjects } from "@/lib/projects";
 
@@ -14,15 +14,15 @@ export function SelectedWorkSection() {
   return (
     <Section className="pt-10 sm:pt-14 lg:pt-16">
       <Container>
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-3xl">
             <Heading as="h2" variant="section">
-              Selected work built for real businesses.
+              Selected work.
             </Heading>
 
-            <Text variant="body" className="mt-5 max-w-2xl">
-              A focused look at platforms, client websites, and mobile products
-              with real users, real operations, and real business outcomes.
+            <Text variant="body" className="mt-4 max-w-2xl">
+              Platforms, websites, and mobile products built for real businesses
+              with real users, operations, and outcomes.
             </Text>
           </div>
 
@@ -40,9 +40,9 @@ export function SelectedWorkSection() {
           </Link>
         </div>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => (
-            <ProjectCard
+            <WorkProjectCard
               key={project.slug}
               project={project}
               priority={index === 0}

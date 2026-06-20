@@ -11,7 +11,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-import { buttonVariants, Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -49,7 +49,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-5 sm:h-20 sm:px-6 lg:px-8">
         <Link href="/" aria-label="Casevia home" className="flex items-center">
           <Image
             src="/logo.svg"
@@ -57,7 +57,7 @@ export function Navbar() {
             width={152}
             height={40}
             priority
-            className="h-9 w-auto"
+            className="h-8 w-auto sm:h-9"
           />
         </Link>
 
@@ -85,11 +85,9 @@ export function Navbar() {
           </Link>
         </div>
 
-        <Button
+        <button
           type="button"
-          variant="outline"
-          size="icon-lg"
-          className="rounded-full lg:hidden"
+          className="-mr-2 inline-flex size-10 items-center justify-center text-foreground transition-colors hover:text-primary lg:hidden"
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
@@ -97,18 +95,21 @@ export function Navbar() {
         >
           <HugeiconsIcon
             icon={isOpen ? Cancel01Icon : Menu01Icon}
-            size={22}
-            strokeWidth={1.8}
+            size={24}
+            strokeWidth={1.9}
           />
-        </Button>
+        </button>
       </div>
 
       {isOpen ? (
-        <div id="mobile-menu" className="fixed inset-x-0 top-20 z-50 lg:hidden">
+        <div
+          id="mobile-menu"
+          className="fixed inset-x-0 top-16 z-50 sm:top-20 lg:hidden"
+        >
           <button
             type="button"
             aria-label="Close menu overlay"
-            className="fixed inset-0 top-20 bg-foreground/5 backdrop-blur-[2px]"
+            className="fixed inset-0 top-16 bg-foreground/5 backdrop-blur-[2px] sm:top-20"
             onClick={() => setIsOpen(false)}
           />
 
@@ -134,10 +135,7 @@ export function Navbar() {
                         icon={ArrowRight02Icon}
                         size={17}
                         strokeWidth={1.8}
-                        className={cn(
-                          "transition-transform",
-                          isActive && "translate-x-0.5",
-                        )}
+                        className="transition-transform group-hover:translate-x-1"
                       />
                     </Link>
                   );
