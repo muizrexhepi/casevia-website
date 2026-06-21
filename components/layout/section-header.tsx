@@ -22,9 +22,9 @@ function SectionHeader({
         className,
       )}
     >
-      {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
+      {/* {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null} */}
 
-      <Heading as="h2" variant="section" className="mt-4">
+      <Heading as="h2" variant="section">
         {title}
       </Heading>
 

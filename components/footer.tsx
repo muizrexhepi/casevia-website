@@ -48,11 +48,11 @@ const socials = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/70 bg-background">
-      <div className="mx-auto w-full max-w-7xl px-5 pb-8 pt-14 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20">
+    <footer className="bg-muted/35">
+      <div className="mx-auto w-full max-w-7xl px-5 pb-8 pt-10 sm:px-6 sm:pt-12 lg:px-8 lg:pt-14">
         <FooterCta />
 
-        <div className="pt-12 sm:pt-14">
+        <div className="pt-10 sm:pt-12">
           <div className="grid gap-12 lg:grid-cols-[1.4fr_2fr]">
             <div>
               <Link href="/" aria-label="Casevia home" className="inline-flex">

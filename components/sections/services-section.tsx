@@ -39,7 +39,7 @@ export function ServicesSection() {
       <Container>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
-            <Eyebrow>What we do</Eyebrow>
+            {/* <Eyebrow>What we do</Eyebrow> */}
             <Heading as="h2" variant="section" className="mt-4">
               From business challenge to working software.
             </Heading>

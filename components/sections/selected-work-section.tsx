@@ -7,6 +7,8 @@ import { Section } from "@/components/layout/section";
 import { WorkProjectCard } from "@/components/work/work-project-card";
 import { Heading, Text } from "@/components/ui/typography";
 import { getHomepageProjects } from "@/lib/projects";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "../ui/button";
 
 export function SelectedWorkSection() {
   const projects = getHomepageProjects();
@@ -20,15 +22,18 @@ export function SelectedWorkSection() {
               Selected work.
             </Heading>
 
-            <Text variant="body" className="mt-4 max-w-2xl">
+            {/* <Text variant="body" className="mt-4 max-w-2xl">
               Platforms, websites, and mobile products built for real businesses
               with real users, operations, and outcomes.
-            </Text>
+            </Text> */}
           </div>
 
           <Link
             href="/work"
-            className="inline-flex items-center text-sm font-semibold text-primary"
+            className={cn(
+              buttonVariants({ size: "lg", variant: "secondary" }),
+              "h-11 w-full rounded-full px-5 font-semibold sm:w-auto hidden sm:flex",
+            )}
           >
             View all projects
             <HugeiconsIcon

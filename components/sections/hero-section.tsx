@@ -60,7 +60,6 @@ export function HeroSection() {
                 />
               </Link>
             </div>
-
           </div>
 
           <HeroVisual />
@@ -115,7 +114,6 @@ function HeroVisual() {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

@@ -15,25 +15,33 @@ export function FooterCta() {
   if (pathname === "/contact") return null;
 
   return (
-    <div className="pb-16 sm:pb-20">
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+    <div className="border-b border-border pb-10 sm:pb-12">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <Heading as="h2" variant="section" className="max-w-2xl">
-            Let&apos;s make the next move count.
+          <Heading as="h2" variant="subsection" className="max-w-xl">
+            Ready to build something clearer?
           </Heading>
 
-          <Text variant="lead" className="mt-4 max-w-xl">
-            Tell us where the business is going and what the product needs to
-            make possible.
+          <Text variant="body-sm" className="mt-3 max-w-xl">
+            Send the project details and we’ll help define the right scope,
+            direction, and next step.
           </Text>
         </div>
 
         <Link
           href="/contact"
-          className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto")}
+          className={cn(
+            buttonVariants({ size: "lg" }),
+            "h-11 w-full rounded-full px-5 font-semibold sm:w-auto",
+          )}
         >
-          Start a conversation
-          <HugeiconsIcon icon={ArrowRight02Icon} size={18} strokeWidth={1.8} />
+          Book a discovery call
+          <HugeiconsIcon
+            icon={ArrowRight02Icon}
+            size={17}
+            strokeWidth={1.8}
+            className="ml-2"
+          />
         </Link>
       </div>
     </div>

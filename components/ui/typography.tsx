@@ -25,14 +25,14 @@ function Heading({
   return (
     <Comp
       className={cn(
-        "font-heading font-semibold text-foreground tracking-tight",
+        "font-heading font-semibold text-foreground",
         {
-          hero: "text-4xl leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl",
+          hero: "text-[2.55rem] leading-[1.02] tracking-[-0.04em] sm:text-5xl sm:leading-[1] sm:tracking-[-0.045em] lg:text-6xl",
           section:
-            "text-3xl leading-[1.08] tracking-[-0.045em] sm:text-4xl lg:text-5xl",
-          subsection: "text-2xl leading-[1.15] tracking-[-0.035em] sm:text-3xl",
-          card: "text-xl leading-[1.2] tracking-[-0.025em]",
-          small: "text-lg leading-[1.25] tracking-[-0.02em]",
+            "text-[2rem] leading-[1.08] tracking-[-0.035em] sm:text-4xl lg:text-5xl",
+          subsection: "text-2xl leading-[1.15] tracking-[-0.025em] sm:text-3xl",
+          card: "text-xl leading-[1.2] tracking-[-0.018em]",
+          small: "text-lg leading-[1.25] tracking-[-0.015em]",
         }[variant],
         className,
       )}
@@ -51,9 +51,9 @@ function Text({
     <Comp
       className={cn(
         {
-          lead: "text-base leading-8 text-muted-foreground sm:text-lg",
-          body: "text-base leading-7 text-muted-foreground",
-          "body-sm": "text-sm leading-7 text-muted-foreground",
+          lead: "text-[15px] leading-7 text-muted-foreground sm:text-base sm:leading-8",
+          body: "text-[15px] leading-7 text-muted-foreground sm:text-base",
+          "body-sm": "text-sm leading-6 text-muted-foreground",
           caption: "text-xs font-medium leading-5 text-muted-foreground",
           muted: "text-sm leading-6 text-muted-foreground",
         }[variant],
@@ -71,7 +71,7 @@ function Eyebrow({
   return (
     <p
       className={cn(
-        "text-xs font-semibold uppercase tracking-[0.18em] text-primary",
+        "text-xs font-semibold uppercase tracking-[0.16em] text-primary",
         className,
       )}
       {...props}
