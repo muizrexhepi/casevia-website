@@ -1,85 +1,85 @@
 import Link from "next/link";
-import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
+import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { SectionHeader } from "@/components/layout/section-header";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Heading, Text } from "@/components/ui/typography";
+import { Eyebrow, Heading, Text } from "@/components/ui/typography";
 
 const services = [
   {
-    title: "Business Websites",
+    id: "business-websites",
+    title: "Business websites",
     description:
-      "Premium websites that help restaurants, clinics, service businesses, and brands look credible and convert visitors.",
+      "Distinctive, high-performing websites that clarify the offer, strengthen trust, and turn attention into action.",
   },
   {
-    title: "Web Apps & Dashboards",
+    id: "web-apps-dashboards",
+    title: "Web apps & platforms",
     description:
-      "Custom dashboards, admin panels, booking systems, portals, and tools built around real business workflows.",
+      "Operational software, dashboards, portals, and booking systems designed around the way the business actually works.",
   },
   {
+    id: "ecommerce",
     title: "E-commerce",
     description:
-      "Fast, polished product catalogs and online stores with strong presentation and clean buying flows.",
+      "Product and shopping experiences that balance brand presentation, clear discovery, and frictionless buying journeys.",
   },
   {
-    title: "AI & Automation",
+    id: "ai-automation",
+    title: "AI & automation",
     description:
-      "AI-powered features and automations that reduce manual work, improve operations, and create leverage.",
+      "Practical AI features and connected workflows that reduce repetitive work and create useful product capabilities.",
   },
 ];
 
 export function ServicesSection() {
   return (
-    <Section>
+    <Section className="bg-muted/40">
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-          <SectionHeader
-            eyebrow="Services"
-            title="End-to-end software solutions tailored to you."
-            description="From strategy to launch, we build digital products that are clean, scalable, and focused on business outcomes."
-          />
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {services.map((service, index) => (
-              <Link key={service.title} href="/services" className="block">
-                <Card className="h-full">
-                  <CardHeader>
-                    <div className="flex size-11 items-center justify-center rounded-2xl bg-accent font-heading text-sm font-semibold text-primary">
-                      {String(index + 1).padStart(2, "0")}
-                    </div>
-
-                    <Heading as="h3" variant="card" className="mt-6">
-                      {service.title}
-                    </Heading>
-                  </CardHeader>
-
-                  <CardContent className="pt-3">
-                    <Text variant="body-sm">{service.description}</Text>
-                  </CardContent>
-
-                  <CardFooter className="pt-6">
-                    <span className="inline-flex items-center text-sm font-semibold text-primary">
-                      Learn more
-                      <HugeiconsIcon
-                        icon={ArrowRight02Icon}
-                        size={17}
-                        strokeWidth={1.8}
-                        className="ml-2 transition-transform duration-300 group-hover/card:translate-x-1"
-                      />
-                    </span>
-                  </CardFooter>
-                </Card>
-              </Link>
-            ))}
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl">
+            <Eyebrow>What we do</Eyebrow>
+            <Heading as="h2" variant="section" className="mt-4">
+              From business challenge to working software.
+            </Heading>
           </div>
+
+          <Text variant="body" className="max-w-lg lg:text-right">
+            Strategy, design, and engineering stay connected from the first
+            decision through launch and continued improvement.
+          </Text>
+        </div>
+
+        <div className="mt-12 grid gap-4 md:grid-cols-2">
+          {services.map((service, index) => (
+            <Link
+              key={service.id}
+              href={`/services#${service.id}`}
+              className="group flex min-h-[240px] flex-col rounded-3xl bg-background p-6 transition-transform duration-300 hover:-translate-y-1 sm:min-h-[270px] sm:p-8"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <span className="font-heading text-sm font-semibold text-primary">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <HugeiconsIcon
+                  icon={ArrowUpRight01Icon}
+                  size={21}
+                  strokeWidth={1.7}
+                  className="text-muted-foreground transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary"
+                />
+              </div>
+
+              <div className="mt-auto pt-10">
+                <Heading as="h3" variant="subsection">
+                  {service.title}
+                </Heading>
+                <Text variant="body-sm" className="mt-4 max-w-lg">
+                  {service.description}
+                </Text>
+              </div>
+            </Link>
+          ))}
         </div>
       </Container>
     </Section>

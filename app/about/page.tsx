@@ -1,132 +1,142 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { buttonVariants } from "@/components/ui/button";
-import { Heading, Text } from "@/components/ui/typography";
-import { cn } from "@/lib/utils";
+import { Eyebrow, Heading, Text } from "@/components/ui/typography";
 
 export const metadata: Metadata = {
   title: "About — Casevia",
   description:
-    "Casevia is a software studio building premium websites, apps, dashboards, booking systems, e-commerce platforms, and AI workflows.",
-  alternates: {
-    canonical: "/about",
-  },
+    "Casevia is a software studio combining product strategy, interface design, and engineering for business-critical digital products.",
+  alternates: { canonical: "/about" },
   openGraph: {
     title: "About — Casevia",
     description:
-      "Premium software studio focused on clean design, strong engineering, and real business outcomes.",
+      "A software studio focused on clear design, strong engineering, and meaningful business outcomes.",
     url: "/about",
     siteName: "Casevia",
     type: "website",
   },
 };
 
+const disciplines = [
+  {
+    title: "Product thinking",
+    description:
+      "We begin with the business model, user needs, operational constraints, and the result the product must create.",
+  },
+  {
+    title: "Design discipline",
+    description:
+      "Clear hierarchy, deliberate interaction, and a coherent visual system make complex products easier to trust and use.",
+  },
+  {
+    title: "Engineering ownership",
+    description:
+      "We build for production: responsive behavior, maintainable systems, dependable integrations, and real operational use.",
+  },
+];
+
 const principles = [
   {
-    title: "Design should create trust",
+    title: "Understand before making",
     description:
-      "A product should feel credible from the first screen. Clean visuals, strong hierarchy, and polished details matter.",
+      "Good execution starts with a precise understanding of the business, the user, and the constraint behind the request.",
   },
   {
-    title: "Software should match the workflow",
+    title: "Clarity over decoration",
     description:
-      "The best systems are built around how the business actually works, not around generic templates.",
+      "Visual decisions should improve comprehension, confidence, and action—not compete for attention.",
   },
   {
-    title: "Shipping matters",
+    title: "Build the real workflow",
     description:
-      "A polished idea is not enough. The final product needs to work, launch, and support real users.",
+      "Software should reflect how the operation actually works rather than forcing the business into a generic template.",
   },
   {
-    title: "Long-term quality wins",
+    title: "Stay accountable after launch",
     description:
-      "Good structure, maintainable code, and clear product decisions make the product easier to improve after launch.",
+      "A launch is the start of real use. We design systems that can be measured, maintained, and improved over time.",
   },
 ];
 
 const capabilities = [
   "Business websites",
-  "Web apps",
-  "Dashboards",
+  "Web applications",
+  "Operations platforms",
   "Booking systems",
   "E-commerce",
+  "Mobile products",
   "AI workflows",
-  "Mobile apps",
-  "CMS platforms",
-];
-
-const stats = [
-  {
-    value: "7+",
-    label: "Projects shipped",
-  },
-  {
-    value: "4+",
-    label: "Years building",
-  },
-  {
-    value: "EU",
-    label: "Client experience",
-  },
+  "Headless CMS",
 ];
 
 export default function AboutPage() {
   return (
-    <main className="bg-background">
-      <Section
-        spacing="sm"
-        className="pb-8 pt-10 sm:pb-10 sm:pt-14 lg:pb-12 lg:pt-16"
-      >
+    <main>
+      <Section spacing="sm" className="pt-10 sm:pt-14 lg:pt-16">
         <Container>
-          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
-            <Heading as="h1" variant="hero" className="max-w-3xl">
-              About Casevia.
-            </Heading>
+          <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-16">
+            <div>
+              <Eyebrow>About Casevia</Eyebrow>
+              <Heading as="h1" variant="hero" className="mt-4 max-w-3xl">
+                Built around the work, not the agency theatre.
+              </Heading>
+            </div>
 
-            <Text variant="lead" className="max-w-2xl lg:pb-2">
-              Casevia is a software studio building premium websites, apps,
-              dashboards, booking systems, e-commerce platforms, and AI
-              workflows for businesses that care about quality.
+            <Text variant="lead" className="max-w-2xl lg:pb-1">
+              Casevia is a software studio combining strategy, interface design,
+              and engineering to create digital products that earn trust and
+              hold up in real business operations.
             </Text>
           </div>
         </Container>
       </Section>
 
-      <section className="border-y border-border bg-card">
+      <Section className="bg-muted/40">
         <Container>
-          <div className="grid divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
-            {stats.map((stat) => (
-              <div key={stat.label} className="py-7 md:px-8 first:md:pl-0">
-                <div className="font-heading text-4xl font-semibold tracking-tight text-foreground">
-                  {stat.value}
-                </div>
+          <div className="max-w-3xl">
+            <Eyebrow>How we work</Eyebrow>
+            <Heading as="h2" variant="section" className="mt-4">
+              One studio across product, design, and engineering.
+            </Heading>
+          </div>
 
-                <Text variant="caption" className="mt-2">
-                  {stat.label}
-                </Text>
-              </div>
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
+            {disciplines.map((discipline, index) => (
+              <article
+                key={discipline.title}
+                className="flex min-h-[250px] flex-col rounded-3xl bg-background p-6 sm:p-8"
+              >
+                <p className="font-heading text-sm font-semibold text-primary">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <div className="mt-auto pt-10">
+                  <Heading as="h3" variant="card">
+                    {discipline.title}
+                  </Heading>
+                  <Text variant="body-sm" className="mt-4">
+                    {discipline.description}
+                  </Text>
+                </div>
+              </article>
             ))}
           </div>
         </Container>
-      </section>
+      </Section>
 
       <Section>
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
+          <div className="grid gap-12 lg:grid-cols-[0.42fr_0.58fr] lg:gap-20">
             <div>
-              <Heading as="h2" variant="section">
-                What Casevia builds.
+              <Eyebrow>What we build</Eyebrow>
+              <Heading as="h2" variant="section" className="mt-4">
+                Digital foundations for growing businesses.
               </Heading>
-
-              <Text variant="body" className="mt-5 max-w-xl">
-                The focus is not just making things look good. The goal is to
-                build digital products that feel credible, support real
-                workflows, and can keep improving after launch.
+              <Text variant="body" className="mt-5 max-w-lg">
+                The format changes with the problem. The standard does not:
+                focused design, production-quality engineering, and a clear
+                connection to the business outcome.
               </Text>
             </div>
 
@@ -134,45 +144,31 @@ export default function AboutPage() {
               {capabilities.map((capability) => (
                 <div
                   key={capability}
-                  className="rounded-2xl border border-border bg-card px-5 py-4 text-sm font-semibold text-foreground shadow-sm"
+                  className="rounded-2xl bg-muted/50 px-5 py-4 text-sm font-semibold text-foreground"
                 >
                   {capability}
                 </div>
               ))}
             </div>
           </div>
-        </Container>
-      </Section>
 
-      <Section className="border-t border-border">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-            <div>
-              <Heading as="h2" variant="section">
-                Principles.
-              </Heading>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              {principles.map((principle, index) => (
-                <div
-                  key={principle.title}
-                  className="rounded-[1.5rem] border border-border bg-card p-6 shadow-sm"
-                >
-                  <div className="font-heading text-sm font-semibold text-primary">
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
-
-                  <Heading as="h3" variant="card" className="mt-6">
-                    {principle.title}
-                  </Heading>
-
-                  <Text variant="body-sm" className="mt-4">
-                    {principle.description}
-                  </Text>
-                </div>
-              ))}
-            </div>
+          <div className="mt-20 grid gap-4 md:grid-cols-2">
+            {principles.map((principle, index) => (
+              <article
+                key={principle.title}
+                className="rounded-3xl bg-muted/40 p-6 sm:p-8"
+              >
+                <p className="font-heading text-sm font-semibold text-primary">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <Heading as="h3" variant="card" className="mt-8">
+                  {principle.title}
+                </Heading>
+                <Text variant="body-sm" className="mt-4 max-w-lg">
+                  {principle.description}
+                </Text>
+              </article>
+            ))}
           </div>
         </Container>
       </Section>

@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import {
-  ArrowRight02Icon,
-  CheckmarkCircle02Icon,
-} from "@hugeicons/core-free-icons";
+import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { Heading } from "@/components/ui/typography";
+import { Heading, Text } from "@/components/ui/typography";
 
 export const metadata: Metadata = {
   title: "Services — Casevia",
@@ -165,19 +161,25 @@ export default function ServicesPage() {
         className="pb-8 pt-10 sm:pb-10 sm:pt-14 lg:pb-12 lg:pt-16"
       >
         <Container>
-          <Heading as="h1" variant="hero" className="max-w-4xl">
-            Services.
-          </Heading>
+          <div className="max-w-3xl">
+            <Heading as="h1" variant="hero">
+              Services.
+            </Heading>
+            <Text variant="lead" className="mt-5 max-w-2xl">
+              Strategy, design, and engineering for focused digital products
+              and business-critical software.
+            </Text>
+          </div>
         </Container>
       </Section>
 
-      <section className="border-y border-border bg-card">
+      <section className="bg-muted/40 py-12 sm:py-16">
         <Container>
-          <div className="grid divide-y divide-border lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+          <div className="grid gap-12 lg:grid-cols-3 lg:gap-16">
             {capabilityColumns.map((column) => (
               <div
                 key={column.title}
-                className="py-8 lg:px-8 lg:py-10 first:lg:pl-0 last:lg:pr-0"
+                className="first:lg:pl-0 last:lg:pr-0"
               >
                 <Heading as="h2" variant="subsection">
                   {column.title}
@@ -211,12 +213,12 @@ export default function ServicesPage() {
 
       <Section>
         <Container>
-          <div className="divide-y divide-border rounded-[2rem] border border-border bg-card shadow-sm">
+          <div>
             {services.map((service) => (
               <article
                 key={service.id}
                 id={service.id}
-                className="scroll-mt-28 p-6 sm:p-8 lg:p-10"
+                className="scroll-mt-28 border-t border-border py-8 sm:py-10 lg:py-12"
               >
                 <div className="grid gap-7 lg:grid-cols-[0.16fr_0.84fr]">
                   <div className="font-heading text-sm font-semibold text-primary">
@@ -229,9 +231,9 @@ export default function ServicesPage() {
                         {service.title}
                       </Heading>
 
-                      <p className="mt-4 max-w-xl text-base leading-8 text-muted-foreground">
+                      <Text variant="body" className="mt-4 max-w-xl">
                         {service.description}
-                      </p>
+                      </Text>
                     </div>
 
                     <div>
@@ -262,24 +264,6 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-[1.75rem] border border-border bg-card p-6 shadow-sm sm:flex-row sm:items-center sm:p-7">
-            <Heading as="h2" variant="card">
-              Need something more custom?
-            </Heading>
-
-            <Link
-              href="/contact"
-              className="inline-flex items-center text-sm font-semibold text-primary"
-            >
-              Start a project
-              <HugeiconsIcon
-                icon={ArrowRight02Icon}
-                size={17}
-                strokeWidth={1.8}
-                className="ml-2"
-              />
-            </Link>
-          </div>
         </Container>
       </Section>
     </main>

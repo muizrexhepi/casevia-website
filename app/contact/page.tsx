@@ -40,15 +40,15 @@ export default function ContactPage() {
       className="pb-10 pt-8 sm:pb-14 sm:pt-12 lg:pb-16 lg:pt-14"
     >
       <Container>
-        <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
+        <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-16">
           <div className="max-w-xl">
             <Eyebrow>Contact</Eyebrow>
 
-            <Heading as="h1" variant="section" className="mt-4">
+            <Heading as="h1" variant="hero" className="mt-4">
               Start a project.
             </Heading>
 
-            <Text variant="body" className="mt-4">
+            <Text variant="lead" className="mt-5">
               Tell us what you want to build. We’ll reply with the clearest next
               step, scope direction, and timeline.
             </Text>

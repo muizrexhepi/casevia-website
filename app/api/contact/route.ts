@@ -1,39 +1,83 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const BRAND_BLUE = "#2563EB";
 const ICON_URL = "https://casevia.io/icon.png";
 const SITE_URL = "https://casevia.io";
 
 export async function POST(request: Request) {
     try {
-        const { name, email, company, projectType, budget, message } =
-            await request.json();
+        const body = (await request.json()) as Record<string, unknown>;
+        const name = readSingleLineField(body.name, 120);
+        const email = readSingleLineField(body.email, 254).toLowerCase();
+        const company = readSingleLineField(body.company, 120);
+        const projectType = readSingleLineField(body.projectType, 120);
+        const budget = readSingleLineField(body.budget, 120);
+        const message = readField(body.message, 4000);
+        const website = readField(body.website, 200);
 
-        if (!name || !email || !message) {
+        if (website) {
+            return NextResponse.json({ success: true });
+        }
+
+        if (
+            !name ||
+            !isValidEmail(email) ||
+            message.length < 20 ||
+            !projectType
+        ) {
             return NextResponse.json(
-                { error: "Missing required fields" },
+                {
+                    error: "Please complete all required fields with valid details.",
+                },
                 { status: 400 },
             );
         }
 
-        await Promise.all([
+        const apiKey = process.env.RESEND_API_KEY;
+
+        if (!apiKey) {
+            console.error("Contact form error: RESEND_API_KEY is not configured");
+            return NextResponse.json(
+                { error: "Message delivery is temporarily unavailable." },
+                { status: 503 },
+            );
+        }
+
+        const resend = new Resend(apiKey);
+
+        const results = await Promise.all([
             resend.emails.send({
                 from: "Casevia <hello@muizrexhepi.com>",
                 to: email,
                 subject: "Thanks for reaching out — Casevia",
-                html: confirmationEmail(name),
+                html: confirmationEmail(escapeHtml(name)),
             }),
             resend.emails.send({
                 from: "Casevia <hello@muizrexhepi.com>",
                 to: "007lazi@gmail.com",
                 replyTo: email,
                 subject: `New inquiry from ${name}${company ? ` (${company})` : ""}`,
-                html: notificationEmail({ name, email, company, projectType, budget, message }),
+                html: notificationEmail({
+                    name: escapeHtml(name),
+                    email: escapeHtml(email),
+                    company: escapeHtml(company),
+                    projectType: escapeHtml(projectType),
+                    budget: escapeHtml(budget),
+                    message: escapeHtml(message),
+                }),
             }),
         ]);
+
+        const deliveryError = results.find((result) => result.error)?.error;
+
+        if (deliveryError) {
+            console.error("Contact form delivery error:", deliveryError);
+            return NextResponse.json(
+                { error: "Message delivery failed. Please try again." },
+                { status: 502 },
+            );
+        }
 
         return NextResponse.json({ success: true });
     } catch (error) {
@@ -43,6 +87,32 @@ export async function POST(request: Request) {
             { status: 500 },
         );
     }
+}
+
+function readField(value: unknown, maxLength: number) {
+    return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
+}
+
+function readSingleLineField(value: unknown, maxLength: number) {
+    return readField(value, maxLength).replace(/[\r\n]+/g, " ");
+}
+
+function isValidEmail(value: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function escapeHtml(value: string) {
+    return value.replace(
+        /[&<>"']/g,
+        (character) =>
+            ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;",
+            })[character] ?? character,
+    );
 }
 
 function emailShell(content: string) {

@@ -17,52 +17,34 @@ export function WorkProjectCard({
   return (
     <Link
       href={`/work/${project.slug}`}
-      className="group/card block h-full overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-sm transition-transform duration-300 ease-out hover:-translate-y-1"
+      className="group/card block h-full"
     >
       <ProjectPreview project={project} priority={priority} />
 
-      <div className="flex min-h-[250px] flex-col p-5 sm:p-6">
+      <div className="pt-5 sm:pt-6">
         <div className="flex items-start justify-between gap-4">
           <div>
             <Heading as="h2" variant="card">
               {project.name}
             </Heading>
 
-            <Text variant="caption" className="mt-1">
-              {project.status}
+            <Text variant="body-sm" className="mt-2 line-clamp-2 max-w-md">
+              {project.summary}
             </Text>
           </div>
 
-          <span className="shrink-0 rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-            {project.categories[0]}
-          </span>
+          <HugeiconsIcon
+            icon={ArrowRight02Icon}
+            size={20}
+            strokeWidth={1.6}
+            className="mt-1 shrink-0 text-muted-foreground transition-transform duration-300 group-hover/card:translate-x-1 group-hover/card:text-primary"
+          />
         </div>
 
-        <Text variant="body-sm" className="mt-4 line-clamp-3">
-          {project.summary}
-        </Text>
-
-        <div className="mt-5 flex flex-wrap gap-2">
-          {project.proof.slice(0, 3).map((item) => (
-            <span
-              key={item}
-              className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-auto pt-7">
-          <span className="inline-flex items-center text-sm font-semibold text-primary">
-            View case study
-            <HugeiconsIcon
-              icon={ArrowRight02Icon}
-              size={17}
-              strokeWidth={1.8}
-              className="ml-2 transition-transform duration-300 group-hover/card:translate-x-1"
-            />
-          </span>
+        <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-muted-foreground">
+          <span>{project.categories[0]}</span>
+          <span aria-hidden="true" className="size-1 rounded-full bg-border" />
+          <span>{project.status}</span>
         </div>
       </div>
     </Link>
@@ -77,23 +59,19 @@ function ProjectPreview({
   priority: boolean;
 }) {
   return (
-    <div className="relative h-[230px] overflow-hidden border-b border-border bg-[radial-gradient(circle_at_76%_16%,rgba(37,99,235,0.16),transparent_44%),linear-gradient(135deg,#f6f8ff,#ffffff)] sm:h-[255px]">
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.35),rgba(255,255,255,0))]" />
-
+    <div className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-muted">
       {project.coverImage ? (
-        <div className="absolute inset-x-4 -bottom-3 top-8 translate-y-3 overflow-hidden rounded-t-[1.35rem] border border-black/5 bg-white shadow-[0_18px_55px_rgba(15,23,42,0.12)] transition-transform duration-500 ease-out group-hover/card:translate-y-0">
-          <Image
-            src={project.coverImage}
-            alt={project.coverAlt ?? `${project.name} project preview`}
-            fill
-            priority={priority}
-            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-            className={cn(
-              "object-cover object-top",
-              project.coverImageClassName,
-            )}
-          />
-        </div>
+        <Image
+          src={project.coverImage}
+          alt={project.coverAlt ?? `${project.name} project preview`}
+          fill
+          priority={priority}
+          sizes="(min-width: 1280px) 31vw, (min-width: 768px) 50vw, 100vw"
+          className={cn(
+            "object-cover object-top transition-transform duration-500 ease-out group-hover/card:scale-[1.015]",
+            project.coverImageClassName,
+          )}
+        />
       ) : (
         <FallbackPreview />
       )}
@@ -103,7 +81,7 @@ function ProjectPreview({
 
 function FallbackPreview() {
   return (
-    <div className="absolute inset-x-4 -bottom-3 top-8 translate-y-3 overflow-hidden rounded-t-[1.35rem] border border-black/5 bg-white p-4 shadow-[0_18px_55px_rgba(15,23,42,0.12)] transition-transform duration-500 ease-out group-hover/card:translate-y-0">
+    <div className="absolute inset-0 bg-white p-5">
       <div className="flex items-center gap-2">
         <span className="size-2 rounded-full bg-red-400" />
         <span className="size-2 rounded-full bg-yellow-400" />

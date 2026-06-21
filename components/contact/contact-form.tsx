@@ -86,7 +86,7 @@ export function ContactForm() {
 
   if (isSubmitted) {
     return (
-      <div className="rounded-[2rem] border border-border bg-card p-6 shadow-sm sm:p-8">
+      <div className="rounded-3xl border border-border bg-card p-6 sm:p-8">
         <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
           <HugeiconsIcon
             icon={CheckmarkCircle02Icon}
@@ -121,7 +121,7 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-[2rem] border border-border bg-card p-5 shadow-sm sm:p-6 lg:p-8"
+      className="rounded-3xl border border-border bg-card p-5 sm:p-6 lg:p-8"
     >
       <input
         type="text"
@@ -159,6 +159,7 @@ export function ContactForm() {
           label="Project type"
           name="projectType"
           options={projectTypes}
+          required
         />
       </div>
 
@@ -173,6 +174,8 @@ export function ContactForm() {
           id="message"
           name="message"
           required
+          minLength={20}
+          maxLength={4000}
           rows={5}
           placeholder="What are you building? What should it solve? Any deadline, reference websites, or must-have features?"
           className="mt-2 w-full resize-none rounded-2xl border border-border bg-background px-4 py-4 text-sm font-medium leading-7 text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/40 focus:ring-4 focus:ring-primary/10"
@@ -180,7 +183,11 @@ export function ContactForm() {
       </div>
 
       {error ? (
-        <div className="mt-4 rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+        <div
+          role="alert"
+          aria-live="polite"
+          className="mt-4 rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive"
+        >
           {error}
         </div>
       ) : null}
@@ -247,6 +254,7 @@ function Field({
         name={name}
         type={type}
         required={required}
+        maxLength={type === "email" ? 254 : 120}
         placeholder={placeholder}
         className="mt-2 h-12 w-full rounded-2xl border border-border bg-background px-4 text-sm font-medium text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/40 focus:ring-4 focus:ring-primary/10"
       />
@@ -258,10 +266,12 @@ function Select({
   label,
   name,
   options,
+  required = false,
 }: {
   label: string;
   name: string;
   options: string[];
+  required?: boolean;
 }) {
   return (
     <div>
@@ -270,6 +280,7 @@ function Select({
       <select
         id={name}
         name={name}
+        required={required}
         className="mt-2 h-12 w-full rounded-2xl border border-border bg-background px-4 text-sm font-medium text-foreground outline-none transition-colors focus:border-primary/40 focus:ring-4 focus:ring-primary/10"
       >
         <option value="">Select</option>

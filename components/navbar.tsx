@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import {
   ArrowRight02Icon,
   Cancel01Icon,
@@ -23,12 +22,7 @@ const navItems = [
 ];
 
 export function Navbar() {
-  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
@@ -48,7 +42,7 @@ export function Navbar() {
   }, [isOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/85 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/90 backdrop-blur-xl">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-5 sm:h-20 sm:px-6 lg:px-8">
         <Link href="/" aria-label="Casevia home" className="flex items-center">
           <Image
@@ -63,7 +57,7 @@ export function Navbar() {
 
         <nav className="hidden items-center gap-8 lg:flex">
           {navItems.map((item) => (
-            <NavLink key={item.href} item={item} pathname={pathname} />
+            <NavLink key={item.href} item={item} />
           ))}
         </nav>
 
@@ -72,7 +66,7 @@ export function Navbar() {
             href="/contact"
             className={cn(
               buttonVariants({ size: "lg" }),
-              "h-11 rounded-full px-5 font-semibold",
+              "h-11 px-5",
             )}
           >
             Book a discovery call
@@ -117,18 +111,12 @@ export function Navbar() {
             <div className="mx-auto w-full max-w-7xl">
               <nav className="overflow-hidden rounded-[1.75rem] border border-border bg-card p-2 shadow-sm">
                 {navItems.map((item) => {
-                  const isActive = isActivePath(pathname, item.href);
-
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={cn(
-                        "flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-colors",
-                        isActive
-                          ? "bg-accent text-primary"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                      )}
+                      onClick={() => setIsOpen(false)}
+                      className="group flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
                     >
                       {item.label}
                       <HugeiconsIcon
@@ -144,9 +132,10 @@ export function Navbar() {
                 <div className="mt-2 border-t border-border p-2">
                   <Link
                     href="/contact"
+                    onClick={() => setIsOpen(false)}
                     className={cn(
                       buttonVariants({ size: "lg" }),
-                      "h-12 w-full rounded-full font-semibold",
+                      "h-11 w-full",
                     )}
                   >
                     Book a discovery call
@@ -169,28 +158,15 @@ export function Navbar() {
 
 function NavLink({
   item,
-  pathname,
 }: {
   item: { label: string; href: string };
-  pathname: string;
 }) {
-  const isActive = isActivePath(pathname, item.href);
-
   return (
     <Link
       href={item.href}
-      className={cn(
-        "text-sm font-medium transition-colors",
-        isActive
-          ? "text-foreground"
-          : "text-muted-foreground hover:text-foreground",
-      )}
+      className="py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
     >
       {item.label}
     </Link>
   );
-}
-
-function isActivePath(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`);
 }

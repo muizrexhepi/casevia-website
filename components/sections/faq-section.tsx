@@ -6,7 +6,6 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeader } from "@/components/layout/section-header";
 import { Text } from "@/components/ui/typography";
-import { cn } from "@/lib/utils";
 
 const faqs = [
   {
@@ -49,18 +48,12 @@ export function FaqSection() {
           align="center"
         />
 
-        <div className="mt-12 space-y-3">
+        <div className="mt-12 border-t border-border">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
 
             return (
-              <div
-                key={faq.question}
-                className={cn(
-                  "overflow-hidden rounded-[1.5rem] border bg-card shadow-sm transition-colors",
-                  isOpen ? "border-primary/25" : "border-border",
-                )}
-              >
+              <div key={faq.question} className="border-b border-border">
                 <button
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : index)}
@@ -71,25 +64,17 @@ export function FaqSection() {
                     {faq.question}
                   </span>
 
-                  <span
-                    className={cn(
-                      "flex size-9 shrink-0 items-center justify-center rounded-full text-lg font-medium transition-colors",
-                      isOpen
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-accent text-primary",
-                    )}
-                  >
+                  <span className="flex size-9 shrink-0 items-center justify-center text-xl font-medium text-primary">
                     {isOpen ? "−" : "+"}
                   </span>
                 </button>
 
                 <div
-                  className={cn(
-                    "grid transition-all duration-300 ease-out",
+                  className={`grid transition-all duration-300 ease-out ${
                     isOpen
                       ? "grid-rows-[1fr] opacity-100"
-                      : "grid-rows-[0fr] opacity-0",
-                  )}
+                      : "grid-rows-[0fr] opacity-0"
+                  }`}
                 >
                   <div className="overflow-hidden">
                     <Text variant="body-sm" className="px-5 pb-5 sm:px-6">

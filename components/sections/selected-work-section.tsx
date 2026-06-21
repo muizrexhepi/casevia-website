@@ -12,7 +12,7 @@ export function SelectedWorkSection() {
   const projects = getHomepageProjects();
 
   return (
-    <Section className="pt-10 sm:pt-14 lg:pt-16">
+    <Section>
       <Container>
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-3xl">
@@ -40,7 +40,7 @@ export function SelectedWorkSection() {
           </Link>
         </div>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-x-6 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => (
             <WorkProjectCard
               key={project.slug}

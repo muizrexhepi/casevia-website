@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 type SectionProps = React.HTMLAttributes<HTMLElement> & {
-  spacing?: "default" | "sm" | "lg";
+  spacing?: "xs" | "default" | "sm" | "lg";
 };
 
 function Section({ className, spacing = "default", ...props }: SectionProps) {
@@ -12,9 +12,10 @@ function Section({ className, spacing = "default", ...props }: SectionProps) {
       className={cn(
         "bg-background",
         {
-          sm: "py-16 sm:py-20",
-          default: "py-20 sm:py-24",
-          lg: "py-24 sm:py-28",
+          xs: "py-8 sm:py-10",
+          sm: "py-14 sm:py-18",
+          default: "py-16 sm:py-20 lg:py-24",
+          lg: "py-20 sm:py-24 lg:py-28",
         }[spacing],
         className,
       )}

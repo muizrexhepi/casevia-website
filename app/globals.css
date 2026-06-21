@@ -127,7 +127,7 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply overflow-x-clip bg-background text-foreground antialiased;
   }
 
   ::selection {
@@ -135,11 +135,37 @@
     color: var(--foreground);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
 @keyframes casevia-marquee {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.casevia-logo-track {
+  animation-name: casevia-marquee;
+  animation-duration: 18s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .casevia-logo-track {
+    animation: none;
+    transform: none;
   }
 }

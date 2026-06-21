@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { WorkProjectCard } from "@/components/work/work-project-card";
-import { Eyebrow, Heading, Text } from "@/components/ui/typography";
+import { Heading, Text } from "@/components/ui/typography";
 import type { Project, ProjectCategory } from "@/lib/projects";
 import { cn } from "@/lib/utils";
 
@@ -34,16 +34,14 @@ export function WorkPageClient({
     <Section spacing="sm" className="pt-10 sm:pt-14 lg:pt-16">
       <Container>
         <div className="max-w-3xl">
-          {/* <Eyebrow>Work</Eyebrow> */}
-
-          <Heading as="h1" variant="section" className="mt-4">
+          <Heading as="h1" variant="hero">
             Projects.
           </Heading>
 
-          {/* <Text variant="body" className="mt-4 max-w-2xl">
-            Websites, web apps, booking platforms, e-commerce products, and AI
-            apps built for real users and real businesses.
-          </Text> */}
+          <Text variant="lead" className="mt-5 max-w-2xl">
+            Selected websites, platforms, and products designed and engineered
+            for real businesses and real users.
+          </Text>
         </div>
 
         <div className="mt-8 flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -69,7 +67,7 @@ export function WorkPageClient({
           })}
         </div>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-x-6 gap-y-14 md:grid-cols-2">
           {filteredProjects.map((project, index) => (
             <WorkProjectCard
               key={project.slug}
@@ -80,7 +78,7 @@ export function WorkPageClient({
         </div>
 
         {filteredProjects.length === 0 ? (
-          <div className="mt-8 rounded-[2rem] border border-border bg-card p-10 text-center shadow-sm">
+          <div className="mt-8 rounded-3xl border border-border bg-card p-10 text-center">
             <Heading as="h2" variant="subsection">
               No projects in this category yet.
             </Heading>
