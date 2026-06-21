@@ -171,7 +171,7 @@ function HeroLogoStrip({
     logoImageClassName?: string;
   }[];
 }) {
-  const repeatedProjects = [...projects, ...projects];
+  const repeatedProjects = [...projects, ...projects, ...projects];
 
   if (!projects.length) {
     return null;
@@ -179,49 +179,27 @@ function HeroLogoStrip({
 
   return (
     <div className="relative mt-12 sm:mt-14 lg:mt-16">
-      <div className="relative grid gap-5 pt-5 lg:grid-cols-[1fr_auto] lg:items-center">
-        <div className="relative min-w-0 overflow-hidden py-4 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-          <div className="flex w-max animate-[casevia-marquee_34s_linear_infinite] items-center gap-8 pr-8 hover:[animation-play-state:paused]">
-            {repeatedProjects.map((project, index) => (
-              <Link
-                key={`${project.slug}-${index}`}
-                href={`/work/${project.slug}`}
-                aria-label={`View ${project.name} case study`}
-                title={project.name}
-                className="group/logo relative flex h-12 w-[150px] shrink-0 items-center justify-center opacity-65 transition duration-300 hover:opacity-100"
-              >
-                <Image
-                  src={project.logoImage ?? ""}
-                  alt={project.logoAlt ?? `${project.name} logo`}
-                  width={160}
-                  height={48}
-                  className={cn(
-                    "h-7 max-h-7 w-auto max-w-[128px] object-contain grayscale transition duration-300 group-hover/logo:grayscale-0",
-                    project.logoImageClassName,
-                  )}
-                />
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div className="hidden grid-cols-3 overflow-hidden rounded-2xl border border-border bg-background/90 shadow-sm backdrop-blur md:grid lg:min-w-[320px]">
-          {metrics.map((metric, index) => (
-            <div
-              key={metric.label}
-              className={cn(
-                "px-4 py-3 text-center",
-                index !== 0 && "border-l border-border",
-              )}
+      <div className="relative overflow-hidden py-4 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+        <div className="flex w-max animate-[casevia-marquee_38s_linear_infinite] items-center gap-12 pr-12 hover:[animation-play-state:paused] sm:gap-16 sm:pr-16">
+          {repeatedProjects.map((project, index) => (
+            <Link
+              key={`${project.slug}-${index}`}
+              href={`/work/${project.slug}`}
+              aria-label={`View ${project.name} case study`}
+              title={project.name}
+              className="group/logo flex h-12 w-[150px] shrink-0 items-center justify-center"
             >
-              <div className="font-heading text-2xl font-semibold tracking-tight text-foreground">
-                {metric.value}
-              </div>
-
-              <Text variant="caption" className="mt-0.5">
-                {metric.label}
-              </Text>
-            </div>
+              <Image
+                src={project.logoImage ?? ""}
+                alt={project.logoAlt ?? `${project.name} logo`}
+                width={160}
+                height={48}
+                className={cn(
+                  "max-h-8 w-auto max-w-[135px] object-contain opacity-35 grayscale transition duration-300 group-hover/logo:opacity-80 group-hover/logo:grayscale-0",
+                  project.logoImageClassName,
+                )}
+              />
+            </Link>
           ))}
         </div>
       </div>

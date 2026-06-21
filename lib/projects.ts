@@ -110,10 +110,10 @@ export const projects: Project[] = [
     {
         slug: "hakbus",
         name: "Hakbus",
-        role: "Full-Stack Developer",
+        role: "Product engineering and platform development",
         period: "2022 — 2023",
         status: "Major client platform",
-        clientType: "Large transport operator",
+        clientType: "Transport operator",
         industry: "Transport / Ticketing",
         featured: true,
         homepageFeatured: true,
@@ -122,15 +122,15 @@ export const projects: Project[] = [
         headline:
             "Digital ticketing and operations platform for a major Balkan bus operator.",
         subheadline:
-            "A multi-platform transport system spanning mobile apps, web booking flows, internal dashboards, and operator workflows.",
+            "A multi-platform transport system covering passenger booking, mobile experiences, internal dashboards, and operator workflows.",
         impact: "100+ buses · 100k+ visitors · Thousands of bookings",
         featuredReason:
-            "Hakbus is the strongest operational client project in the portfolio because it shows scale, reliability, booking flows, mobile work, and internal business tooling.",
+            "Hakbus is one of the strongest operational projects in the Casevia portfolio. It demonstrates transport-specific software, booking flows, mobile product work, and internal business tooling at real scale.",
 
         summary:
-            "Complete digital ticketing system for a large Balkan bus operator, including mobile apps, web booking, dashboards, and operational workflows.",
+            "A complete digital ticketing system for a Balkan transport operator, covering mobile apps, web booking, dashboards, and operational workflows.",
         description:
-            "Hakbus is a transport operator with 100+ buses operating across the Balkans and Europe. I worked across their digital system, including customer-facing mobile apps, web booking flows, internal dashboards, and operational tools.",
+            "Hakbus needed a digital system that could support passengers, bookings, route visibility, and internal transport operations across multiple touchpoints. Casevia contributed to the product experience across mobile, web, and dashboard interfaces.",
 
         liveUrl: "https://hakbus.org",
         liveLabel: "Open Hakbus",
@@ -147,6 +147,7 @@ export const projects: Project[] = [
         coverAlt: "Hakbus transport booking platform preview",
         heroImage: "/work/hakbus.webp",
         heroAlt: "Hakbus digital ticketing platform preview",
+        coverImageClassName: "",
 
         galleryImages: [
             {
@@ -154,7 +155,7 @@ export const projects: Project[] = [
                 alt: "Hakbus route search and booking flow",
                 label: "Booking flow",
                 description:
-                    "A clearer passenger flow for searching routes, choosing trip details, and moving toward ticket booking.",
+                    "Passenger-facing route search and booking flow designed around clarity, speed, and route availability.",
                 type: "flow",
             },
             {
@@ -162,7 +163,7 @@ export const projects: Project[] = [
                 alt: "Hakbus internal dashboard and operator tools",
                 label: "Internal dashboard",
                 description:
-                    "Operational views for managing bookings, routes, passengers, and transport workflows.",
+                    "Operational dashboard views for managing transport workflows, bookings, and route activity.",
                 type: "dashboard",
             },
             {
@@ -170,18 +171,18 @@ export const projects: Project[] = [
                 alt: "Hakbus mobile app screens",
                 label: "Mobile app",
                 description:
-                    "Mobile booking and passenger-facing screens designed for route discovery and ticket access.",
+                    "Mobile passenger screens for route discovery, ticket access, and booking-related actions.",
                 type: "mobile",
             },
         ],
 
         services: [
-            "Product Engineering",
-            "Frontend Development",
-            "Mobile App Development",
-            "Dashboard Development",
+            "Product engineering",
+            "Frontend development",
+            "Mobile app development",
+            "Dashboard development",
             "Booking UX",
-            "Operational Tooling",
+            "Operational tooling",
         ],
         deliverables: [
             "Mobile app flows",
@@ -197,17 +198,17 @@ export const projects: Project[] = [
             {
                 value: "100+",
                 label: "Buses",
-                description: "Large regional operator",
+                description: "Large regional transport operation",
             },
             {
                 value: "100k+",
                 label: "Visitors",
-                description: "Public traffic scale",
+                description: "Public traffic across the platform",
             },
             {
                 value: "Multi",
                 label: "Platform",
-                description: "Mobile, web, dashboard",
+                description: "Mobile, web, and dashboard interfaces",
             },
         ],
 
@@ -222,7 +223,7 @@ export const projects: Project[] = [
         ],
 
         scope: [
-            "Mobile apps",
+            "Mobile app interfaces",
             "Web booking flows",
             "Admin dashboards",
             "Passenger booking UX",
@@ -232,57 +233,58 @@ export const projects: Project[] = [
         ],
 
         challenge:
-            "A large transport operator needed reliable digital systems across passenger booking, mobile access, web flows, and internal operations.",
+            "A transport operator with real operational volume needed reliable digital systems across passenger booking, mobile access, web flows, and internal operations.",
         solution:
-            "We worked across customer-facing apps, web booking flows, dashboards, and operator workflows to support a real transport business operating across the Balkans and Europe.",
+            "Casevia contributed to a multi-platform product system connecting customer-facing booking experiences with operational dashboards and transport-specific workflows.",
 
         caseStudy: [
             {
                 eyebrow: "Starting point",
                 title: "A real operator needed more than a public website.",
                 body:
-                    "Hakbus was not a simple brochure project. The business needed digital systems that could support passengers, booking flows, route visibility, and internal transport operations across multiple touchpoints.",
+                    "Hakbus was not a brochure project. The business needed digital systems that could support route discovery, passenger booking, mobile access, and internal transport operations across multiple touchpoints.",
             },
             {
                 eyebrow: "Product system",
                 title: "Mobile, web, and dashboards working together.",
                 body:
-                    "The work covered customer-facing mobile experiences, web booking flows, and internal dashboards. The goal was to make the digital system useful for passengers while also supporting the operational needs behind the business.",
+                    "The platform connected customer-facing mobile and web booking experiences with internal dashboard views. The goal was to make the system useful for passengers while supporting the operational workflows behind the business.",
             },
             {
                 eyebrow: "Execution",
                 title: "Built around booking, operations, and reliability.",
                 body:
-                    "The project required practical product decisions: clear route flows, responsive interfaces, operational views, and components that could be used in production rather than just looking good in static mockups.",
+                    "Transport software needs practical product decisions. The work focused on clear route flows, responsive interfaces, operational views, and production-ready components that could support real business use.",
             },
             {
                 eyebrow: "Result",
                 title: "A serious proof point for transport software.",
                 body:
-                    "Hakbus shows the ability to build for a real operational business with scale, not just for a small landing page. It demonstrates mobile development, web product work, dashboards, and transport-specific workflows.",
+                    "Hakbus demonstrates Casevia’s ability to support operational businesses, not just static marketing websites. It shows experience across mobile products, booking systems, dashboards, and real-world transport workflows.",
             },
         ],
 
         highlights: [
-            "Built customer-facing booking experiences across mobile and web.",
-            "Worked on dashboards and internal tools for transport operations.",
-            "Delivered production UI for a real operator with large regional activity.",
-            "Handled multi-platform product work across mobile, web, and business workflows.",
+            "Customer-facing booking experiences across mobile and web.",
+            "Dashboard and internal tool interfaces for transport operations.",
+            "Production UI for a real operator with meaningful regional activity.",
+            "Multi-platform product work across mobile, web, and business workflows.",
         ],
         outcome: [
-            "Delivered digital systems for a real transport operator.",
-            "Improved the operator’s ability to present routes, manage bookings, and support passengers digitally.",
-            "Strong proof of production work across mobile apps, web apps, dashboards, and transport operations.",
+            "A stronger digital foundation for route visibility, passenger booking, and transport operations.",
+            "A serious portfolio proof point across mobile apps, web apps, dashboards, and transport workflows.",
+            "A more credible digital product experience for a real operational business.",
         ],
 
         seoTitle: "Hakbus Case Study | Transport Booking Platform",
         seoDescription:
-            "Case study for Hakbus, a digital ticketing and operations platform for a major Balkan bus operator.",
+            "Case study for Hakbus, a digital ticketing and operations platform for a Balkan bus operator.",
     },
+
     {
         slug: "doros-premium",
         name: "Doros Premium",
-        role: "Design & Development",
+        role: "E-commerce design and frontend development",
         period: "2025",
         status: "E-commerce website",
         clientType: "Swiss e-commerce client",
@@ -294,15 +296,15 @@ export const projects: Project[] = [
         headline:
             "Premium e-commerce website for a Swiss coffee brand entering Macedonia.",
         subheadline:
-            "A polished retail experience built around trust, product presentation, responsive shopping, and market expansion.",
+            "A polished retail experience built around product presentation, trust, responsive shopping, and market expansion.",
         impact: "Swiss client · Premium retail · Macedonian expansion",
         featuredReason:
-            "Doros Premium gives the portfolio a serious client-commerce proof point with a polished visual direction and a real business behind it.",
+            "Doros Premium adds a strong client-commerce case study to the Casevia portfolio. It shows premium visual direction, responsive e-commerce execution, and commercial website delivery for a real business.",
 
         summary:
-            "Premium e-commerce website for a Swiss client expanding into the Macedonian market.",
+            "A premium e-commerce website for a Swiss coffee brand expanding into the Macedonian market.",
         description:
-            "Doros Premium is a capsule and coffee e-commerce website built for a Swiss client expanding into Macedonia. The website focuses on premium presentation, clear product browsing, responsive layouts, and mobile-first shopping.",
+            "Doros Premium needed a digital storefront that made the brand feel credible, polished, and ready for a new market. Casevia shaped the website around premium product presentation, responsive browsing, and a cleaner retail experience.",
 
         liveUrl: "https://dorospremium.com.mk",
         liveLabel: "Open Doros Premium",
@@ -311,7 +313,7 @@ export const projects: Project[] = [
         icon: "/doros.svg",
         logoImage: "/logos/doros.svg",
         logoAlt: "Doros Premium logo",
-        logoImageClassName: "h-8 max-h-8",
+        logoImageClassName: "h-6 max-h-6",
 
         visualTheme: "doros",
 
@@ -319,16 +321,17 @@ export const projects: Project[] = [
         coverAlt: "Doros Premium e-commerce website preview",
         heroImage: "/work/doros-premium.webp",
         heroAlt: "Doros Premium e-commerce website preview",
+        coverImageClassName: "",
 
         galleryImages: [],
 
         services: [
-            "Interface Design",
-            "Frontend Development",
+            "Interface design",
+            "Frontend development",
             "E-commerce UI",
-            "Responsive Design",
-            "Product Presentation",
-            "Launch Support",
+            "Responsive design",
+            "Product presentation",
+            "Launch support",
         ],
         deliverables: [
             "E-commerce website",
@@ -344,12 +347,12 @@ export const projects: Project[] = [
             {
                 value: "Premium",
                 label: "Brand feel",
-                description: "Positioned for trust",
+                description: "Positioned for trust and credibility",
             },
             {
                 value: "Mobile",
                 label: "Optimized",
-                description: "Responsive shopping flow",
+                description: "Responsive shopping experience",
             },
             {
                 value: "Launch",
@@ -377,60 +380,61 @@ export const projects: Project[] = [
         ],
 
         challenge:
-            "The client needed a digital presence that made the brand feel premium and credible while supporting market expansion into Macedonia.",
+            "The brand needed a polished online presence that could communicate quality, support product discovery, and feel credible in a new market.",
         solution:
-            "We created a clean e-commerce experience with strong product presentation, responsive pages, clear browsing, and a polished visual direction aligned with a premium retail brand.",
+            "Casevia developed a clean e-commerce experience with strong product presentation, responsive pages, clear browsing, and a premium visual direction aligned with the brand’s market positioning.",
 
         caseStudy: [
             {
                 eyebrow: "Starting point",
                 title: "A premium product needed a premium digital presence.",
                 body:
-                    "Doros Premium needed to feel credible from the first impression. The website had to support a Swiss coffee brand entering the Macedonian market while keeping the product presentation clear, polished, and easy to browse.",
+                    "Doros Premium needed to avoid the feeling of a generic local shop. The website had to communicate quality, trust, and retail clarity for a Swiss brand entering the Macedonian market.",
             },
             {
                 eyebrow: "Visual direction",
                 title: "A clean retail experience built around trust.",
                 body:
-                    "The interface focused on strong spacing, simple navigation, clear product sections, and a refined visual tone. The goal was to avoid a cheap local-shop feeling and position the brand as serious and premium.",
+                    "The interface focused on spacing, simple navigation, clear product sections, and a refined visual tone. The goal was to make the brand feel serious while keeping browsing simple.",
             },
             {
                 eyebrow: "Shopping flow",
                 title: "Product browsing that works on mobile.",
                 body:
-                    "The website was structured for responsive shopping, making it easy for users to understand the products, browse the catalogue, and move through the site on mobile devices.",
+                    "The website was structured for responsive shopping, helping users understand the products, browse the catalogue, and move through the site comfortably on mobile devices.",
             },
             {
                 eyebrow: "Result",
                 title: "A commercial website ready for expansion.",
                 body:
-                    "Doros Premium is a strong client-facing proof point because it shows e-commerce execution, responsive frontend quality, and the ability to translate a real business expansion into a polished digital experience.",
+                    "Doros Premium demonstrates Casevia’s ability to translate a real business expansion into a polished digital storefront with strong visual execution and practical e-commerce structure.",
             },
         ],
 
         highlights: [
-            "Built a polished e-commerce website for coffee capsules and related products.",
-            "Focused on making the brand feel premium, trustworthy, and clear for the Macedonian market.",
-            "Designed responsive product browsing and clean conversion-focused pages.",
-            "Delivered a client-facing commercial website with strong visual execution.",
+            "Premium e-commerce website for coffee capsules and related products.",
+            "Responsive product browsing and clean conversion-focused pages.",
+            "Visual direction shaped around trust, clarity, and premium positioning.",
+            "Commercial website delivery for a Swiss client expanding into Macedonia.",
         ],
         outcome: [
-            "Delivered a premium client-facing e-commerce website.",
-            "Created a stronger digital presence for a Swiss client entering the Macedonian market.",
-            "Strong proof of e-commerce UI, responsive design, and client delivery.",
+            "A stronger digital presence for a real e-commerce business.",
+            "A polished storefront that supports brand trust and product discovery.",
+            "A strong case study for premium e-commerce and client delivery.",
         ],
 
         seoTitle: "Doros Premium Case Study | Premium E-commerce Website",
         seoDescription:
             "Case study for Doros Premium, a premium coffee e-commerce website built for a Swiss client expanding into Macedonia.",
     },
+
     {
         slug: "logly",
         name: "Logly",
-        role: "Founder & Lead Developer",
+        role: "Product strategy and mobile engineering",
         period: "2026 — Present",
         status: "Live iOS app",
-        clientType: "Owned SaaS/mobile product",
+        clientType: "Casevia-owned product",
         industry: "Health / AI / Nutrition",
         featured: true,
         homepageFeatured: true,
@@ -442,12 +446,12 @@ export const projects: Project[] = [
             "A production iOS app with natural-language food logging, macro estimates, Apple Health integration, analytics, onboarding, and Pro subscriptions.",
         impact: "Live iOS app · 200+ users · AI + subscriptions",
         featuredReason:
-            "Logly proves product ownership, mobile engineering, AI workflows, subscriptions, analytics, and real shipping experience.",
+            "Logly proves end-to-end product ownership inside Casevia: product strategy, mobile engineering, AI workflows, subscriptions, analytics, and real shipping experience.",
 
         summary:
-            "AI nutrition tracker for iOS with natural-language meal logging, macros, Health sync, subscriptions, and weekly insights.",
+            "An AI nutrition tracker for iOS with natural-language meal logging, macros, Health sync, subscriptions, and weekly insights.",
         description:
-            "Logly is a production iOS nutrition tracker built around fast natural-language food logging. Users write what they ate, and the app estimates calories, macros, nutrition details, and progress insights.",
+            "Logly is a production iOS nutrition tracker built around faster food logging. Users write what they ate, and the app estimates calories, macros, nutrition details, and progress insights.",
 
         liveUrl: "https://uselogly.app",
         liveLabel: "Open Logly",
@@ -464,16 +468,17 @@ export const projects: Project[] = [
         coverAlt: "Logly AI nutrition tracker app preview",
         heroImage: "/work/logly.webp",
         heroAlt: "Logly AI nutrition tracker app preview",
+        coverImageClassName: "",
 
         galleryImages: [],
 
         services: [
-            "Product Strategy",
-            "Mobile App Development",
-            "AI Integration",
-            "Subscription Architecture",
+            "Product strategy",
+            "Mobile app development",
+            "AI integration",
+            "Subscription architecture",
             "Analytics",
-            "App Store Launch",
+            "App Store launch",
         ],
         deliverables: [
             "iOS app",
@@ -490,7 +495,7 @@ export const projects: Project[] = [
             {
                 value: "Live",
                 label: "iOS app",
-                description: "Published product",
+                description: "Published mobile product",
             },
             {
                 value: "200+",
@@ -500,7 +505,7 @@ export const projects: Project[] = [
             {
                 value: "AI",
                 label: "Nutrition",
-                description: "Natural-language logging",
+                description: "Natural-language meal logging",
             },
         ],
 
@@ -527,60 +532,61 @@ export const projects: Project[] = [
         ],
 
         challenge:
-            "Calorie tracking is slow and repetitive, especially for users eating meals that do not fit well into generic food databases.",
+            "Calorie tracking is slow and repetitive, especially for users eating meals that do not fit neatly into generic food databases.",
         solution:
-            "We built an AI-first mobile app where users can write meals naturally, estimate nutrition, track progress, sync Apple Health data, and unlock Pro features through subscriptions.",
+            "Casevia built an AI-first mobile product where users can describe meals naturally, estimate nutrition, track progress, sync Apple Health data, and unlock Pro features through subscriptions.",
 
         caseStudy: [
             {
                 eyebrow: "Product problem",
                 title: "Food logging needed to feel less painful.",
                 body:
-                    "Traditional calorie tracking asks users to search databases, weigh food, and repeat the same manual steps every day. Logly was built around a faster interaction: write what you ate, then let AI estimate the nutrition.",
+                    "Traditional calorie tracking asks users to search databases, weigh food, and repeat manual steps every day. Logly was designed around a faster interaction: write what you ate, then let AI structure the nutrition data.",
             },
             {
                 eyebrow: "Core workflow",
                 title: "Natural-language meals into structured nutrition.",
                 body:
-                    "The main product flow turns plain meal descriptions into calories, macros, and nutrition details. The experience is designed to feel fast enough that users can log food without breaking their routine.",
+                    "The main product flow turns plain meal descriptions into calories, macros, and nutrition details. The experience is designed to feel fast enough for everyday use.",
             },
             {
                 eyebrow: "Product system",
                 title: "Subscriptions, insights, analytics, and Health sync.",
                 body:
-                    "Beyond the AI logging flow, Logly includes onboarding, goals, Apple Health context, RevenueCat subscriptions, PostHog analytics, Pro gating, and weekly insights.",
+                    "Beyond AI logging, the product includes onboarding, goals, Apple Health context, RevenueCat subscriptions, PostHog analytics, Pro gating, and weekly insights.",
             },
             {
                 eyebrow: "Result",
                 title: "A shipped mobile product with real users.",
                 body:
-                    "Logly is important because it proves end-to-end product execution: mobile UX, AI infrastructure, subscriptions, analytics, App Store release, and continued iteration based on real usage.",
+                    "Logly demonstrates end-to-end product execution: mobile UX, AI infrastructure, subscriptions, analytics, App Store release, and continued iteration based on real usage.",
             },
         ],
 
         highlights: [
-            "Built and launched a production iOS app with onboarding, authentication, subscriptions, and analytics.",
-            "Implemented AI-powered meal parsing for calories, macros, and nutrition estimates.",
-            "Integrated RevenueCat, Convex, Apple HealthKit, and PostHog across the mobile app.",
-            "Designed Pro gating, weekly insights, nutrition targets, and App Store release workflows.",
+            "Production iOS app with onboarding, authentication, subscriptions, and analytics.",
+            "AI-powered meal parsing for calories, macros, and nutrition estimates.",
+            "RevenueCat, Convex, Apple HealthKit, and PostHog integrated across the mobile product.",
+            "Pro gating, weekly insights, nutrition targets, and App Store release workflows.",
         ],
         outcome: [
-            "Published a real iOS product with real users.",
-            "Built the product end-to-end from product direction to release.",
-            "Strong proof of mobile, AI, subscriptions, analytics, and product execution.",
+            "A published iOS product with real users.",
+            "A strong proof point for mobile, AI, subscriptions, analytics, and product execution.",
+            "A Casevia-owned product that shows shipping discipline beyond client websites.",
         ],
 
         seoTitle: "Logly Case Study | AI Nutrition Tracker iOS App",
         seoDescription:
             "Case study for Logly, a live AI nutrition tracker for iOS with food logging, subscriptions, Apple Health sync, and weekly insights.",
     },
+
     {
         slug: "gobusly",
         name: "GoBusly",
-        role: "Product Engineer / Co-founder",
+        role: "Product strategy and platform development",
         period: "2025 — Present",
         status: "Live platform",
-        clientType: "Owned transport platform",
+        clientType: "Casevia-owned transport product",
         industry: "Transport / Booking",
         featured: true,
         homepageFeatured: false,
@@ -592,12 +598,12 @@ export const projects: Project[] = [
             "A transport booking platform with route pages, booking flows, operator workflows, payments, email notifications, and SEO-focused destination pages.",
         impact: "20k+ visitors · Live operators · Balkan ↔ EU routes",
         featuredReason:
-            "GoBusly shows marketplace thinking, SEO structure, booking flows, payments, and transport product strategy.",
+            "GoBusly shows booking-platform thinking, SEO structure, transport workflows, payments, route pages, and marketplace-style product strategy.",
 
         summary:
-            "Bus booking platform for Balkan and European routes with route pages, booking flows, payments, and operator workflows.",
+            "A bus booking platform for Balkan and European routes with route pages, booking flows, payments, and operator workflows.",
         description:
-            "GoBusly is a public transport booking platform focused on routes between the Balkans and Europe. The product includes customer-facing pages, booking flows, route SEO, payment flows, email notifications, and operator-facing workflows.",
+            "GoBusly is a public transport booking platform focused on routes between the Balkans and Europe. The product includes customer-facing route pages, booking flows, payment handling, email notifications, and operator-facing workflows.",
 
         liveUrl: "https://gobusly.com",
         liveLabel: "Open GoBusly",
@@ -614,16 +620,17 @@ export const projects: Project[] = [
         coverAlt: "GoBusly online bus booking platform preview",
         heroImage: "/work/gobusly.webp",
         heroAlt: "GoBusly bus booking platform preview",
+        coverImageClassName: "",
 
         galleryImages: [],
 
         services: [
-            "Product Strategy",
-            "Frontend Development",
+            "Product strategy",
+            "Frontend development",
             "Booking UX",
             "Payments",
-            "Operator Workflows",
-            "SEO Structure",
+            "Operator workflows",
+            "SEO structure",
         ],
         deliverables: [
             "Booking platform",
@@ -677,7 +684,7 @@ export const projects: Project[] = [
         challenge:
             "Bus booking in the Balkan market is fragmented, trust-sensitive, and often handled through outdated flows, manual communication, or offline operator processes.",
         solution:
-            "We built a modern booking experience with route discovery, destination pages, booking flows, operator workflows, payments, emails, and a production-ready foundation for expansion.",
+            "Casevia built a modern booking experience with route discovery, destination pages, booking flows, operator workflows, payments, emails, and a production-ready foundation for expansion.",
 
         caseStudy: [
             {
@@ -696,36 +703,37 @@ export const projects: Project[] = [
                 eyebrow: "Growth layer",
                 title: "SEO pages built around real travel intent.",
                 body:
-                    "Instead of only building a booking form, the product includes destination and route pages that can capture people searching for specific travel routes between the Balkans and Europe.",
+                    "Instead of only building a booking form, the product includes destination and route pages that can capture people searching for specific travel paths between the Balkans and Europe.",
             },
             {
                 eyebrow: "Result",
                 title: "A real transport product, not a generic marketplace demo.",
                 body:
-                    "GoBusly demonstrates product thinking across booking UX, operator operations, SEO, payments, and launch strategy in a niche market.",
+                    "GoBusly demonstrates product thinking across booking UX, operator operations, SEO, payments, and launch strategy in a specific travel market.",
             },
         ],
 
         highlights: [
-            "Built customer-facing route pages and booking experiences for international bus routes.",
-            "Worked on SEO-focused pages for destinations across the Balkans and Europe.",
-            "Supported production workflows for operators, bookings, and customer communication.",
-            "Worked across product, frontend, backend integrations, and launch strategy.",
+            "Customer-facing route pages and booking experiences for international bus routes.",
+            "SEO-focused destination and route pages for Balkan and European travel intent.",
+            "Production workflows for operators, bookings, payments, and customer communication.",
+            "Product, frontend, backend integration, and launch strategy across one focused platform.",
         ],
         outcome: [
-            "Live booking platform with real operators.",
-            "Strong proof of product thinking, SEO, payments, and booking workflows.",
-            "Production web product experience in a real transport market.",
+            "A live booking platform with real operators.",
+            "A strong proof point for product thinking, SEO, payments, and booking workflows.",
+            "A production web product in a real transport market.",
         ],
 
         seoTitle: "GoBusly Case Study | Bus Booking Platform",
         seoDescription:
             "Case study for GoBusly, a bus booking platform for Balkan and European travel routes.",
     },
+
     {
         slug: "nextloop",
         name: "Nextloop",
-        role: "Design & Development",
+        role: "Marketplace design and frontend development",
         period: "2025",
         status: "Swiss marketplace",
         clientType: "Swiss marketplace client",
@@ -740,20 +748,20 @@ export const projects: Project[] = [
             "A polished marketplace experience for high-end product browsing, live auctioning, bidding flows, and premium product presentation.",
         impact: "Swiss client · Luxury marketplace · Auction workflows",
         featuredReason:
-            "Nextloop shows premium marketplace UI, product browsing, auction UX, and high-end client positioning.",
-
-        icon: "/nextloop.svg",
-        logoImage: "/logos/nextloop.svg",
-        logoAlt: "Nextloop logo",
-        logoImageClassName: "h-6 max-h-6",
+            "Nextloop shows premium marketplace UI, luxury product presentation, auction UX, and high-end client positioning.",
 
         summary:
-            "Luxury goods marketplace for a Swiss client with premium browsing, auctions, and bidding workflows.",
+            "A luxury goods marketplace for a Swiss client with premium browsing, auctions, and bidding workflows.",
         description:
             "Nextloop is a luxury goods marketplace built for a Swiss client, focused on high-end product presentation, live auctioning, bidding flows, and a polished marketplace experience.",
 
         liveUrl: "https://nextloop.ch",
         liveLabel: "Open Nextloop",
+
+        icon: "/nextloop.svg",
+        logoImage: "/logos/nextloop.svg",
+        logoAlt: "Nextloop logo",
+        logoImageClassName: "h-8 max-h-8",
 
         initials: "NL",
         visualTheme: "nextloop",
@@ -762,16 +770,17 @@ export const projects: Project[] = [
         coverAlt: "Nextloop luxury marketplace preview",
         heroImage: "/work/nextloop.webp",
         heroAlt: "Nextloop luxury marketplace preview",
+        coverImageClassName: "",
 
         galleryImages: [],
 
         services: [
             "Marketplace UX",
-            "Interface Design",
-            "Frontend Development",
+            "Interface design",
+            "Frontend development",
             "Auction UX",
-            "Responsive Design",
-            "Launch Support",
+            "Responsive design",
+            "Launch support",
         ],
         deliverables: [
             "Marketplace website",
@@ -824,7 +833,7 @@ export const projects: Project[] = [
         challenge:
             "The marketplace needed to feel premium and trustworthy while supporting browsing, product discovery, and auction-oriented interactions.",
         solution:
-            "We built a refined marketplace experience with luxury visual direction, clean product presentation, responsive layouts, and bidding-focused UX patterns.",
+            "Casevia developed a refined marketplace experience with luxury visual direction, clean product presentation, responsive layouts, and bidding-focused UX patterns.",
 
         caseStudy: [
             {
@@ -849,33 +858,34 @@ export const projects: Project[] = [
                 eyebrow: "Result",
                 title: "A stronger proof point for marketplace work.",
                 body:
-                    "Nextloop shows that Casevia can work beyond basic websites and handle commercial product experiences with more complex interaction patterns.",
+                    "Nextloop shows that Casevia can work beyond basic websites and support commercial product experiences with more complex interaction patterns.",
             },
         ],
 
         highlights: [
-            "Designed and built a polished marketplace experience for luxury goods.",
-            "Worked on auction and bidding-oriented product flows.",
-            "Focused on premium visuals, trust, responsive polish, and clear product browsing.",
-            "Created a clean structure that supports marketplace expansion and future product categories.",
+            "Polished marketplace experience for luxury goods.",
+            "Auction and bidding-oriented product flows.",
+            "Premium visuals, responsive polish, and clear product browsing.",
+            "Marketplace structure that can support future product categories.",
         ],
         outcome: [
-            "Delivered a premium marketplace experience for a Swiss client.",
-            "Created proof of complex commercial UX beyond a standard business website.",
-            "Strengthened the portfolio with luxury marketplace and auction workflow experience.",
+            "A premium marketplace experience for a Swiss client.",
+            "Proof of commercial UX beyond standard business websites.",
+            "A strong case study for marketplace, auction, and frontend execution.",
         ],
 
         seoTitle: "Nextloop Case Study | Luxury Marketplace Website",
         seoDescription:
             "Case study for Nextloop, a Swiss luxury goods marketplace with auction and bidding workflows.",
     },
+
     {
         slug: "speaksure",
         name: "SpeakSure",
-        role: "Founder & Lead Developer",
+        role: "Product strategy and mobile engineering",
         period: "2026 — Present",
         status: "Live iOS app",
-        clientType: "Owned SaaS/mobile product",
+        clientType: "Casevia-owned product",
         industry: "AI / Communication",
         featured: true,
         homepageFeatured: false,
@@ -890,7 +900,7 @@ export const projects: Project[] = [
             "SpeakSure shows AI audio workflows, mobile UX, voice recording, transcription, scoring systems, and subscription product experience.",
 
         summary:
-            "AI speaking coach for interviews, leadership updates, negotiations, and difficult conversations.",
+            "An AI speaking coach for interviews, leadership updates, negotiations, and difficult conversations.",
         description:
             "SpeakSure helps users practice high-pressure communication scenarios by recording answers, transcribing speech, and receiving structured AI feedback.",
 
@@ -909,16 +919,17 @@ export const projects: Project[] = [
         coverAlt: "SpeakSure AI speaking coach app preview",
         heroImage: "/work/speaksure.webp",
         heroAlt: "SpeakSure AI speaking coach app preview",
+        coverImageClassName: "",
 
         galleryImages: [],
 
         services: [
-            "Product Strategy",
-            "Mobile App Development",
-            "AI Integration",
+            "Product strategy",
+            "Mobile app development",
+            "AI integration",
             "Voice UX",
-            "Subscription Architecture",
-            "App Store Launch",
+            "Subscription architecture",
+            "App Store launch",
         ],
         deliverables: [
             "iOS app",
@@ -935,12 +946,12 @@ export const projects: Project[] = [
             {
                 value: "Live",
                 label: "iOS app",
-                description: "Published product",
+                description: "Published mobile product",
             },
             {
                 value: "Voice",
                 label: "AI feedback",
-                description: "Speech + scoring",
+                description: "Speech, transcription, and scoring",
             },
             {
                 value: "Pro",
@@ -972,9 +983,9 @@ export const projects: Project[] = [
         ],
 
         challenge:
-            "People struggle to practice important conversations because feedback is usually delayed, vague, or unavailable.",
+            "People often practice important conversations without structured feedback, making it difficult to improve before interviews, leadership updates, negotiations, or difficult discussions.",
         solution:
-            "We built a mobile AI speaking coach with recording, transcription, scoring, rewritten answers, scenario-based drills, and subscription-aware practice flows.",
+            "Casevia built a mobile AI speaking coach with recording, transcription, scoring, rewritten answers, scenario-based drills, and subscription-aware practice flows.",
 
         caseStudy: [
             {
@@ -999,30 +1010,31 @@ export const projects: Project[] = [
                 eyebrow: "Result",
                 title: "Proof of AI audio and mobile product execution.",
                 body:
-                    "SpeakSure strengthens the portfolio by showing AI voice workflows, mobile UX, transcription, feedback systems, and subscription product thinking.",
+                    "SpeakSure strengthens the Casevia portfolio by showing AI voice workflows, mobile UX, transcription, feedback systems, and subscription product thinking.",
             },
         ],
 
         highlights: [
-            "Built mobile voice-recording flows with AI transcription and structured feedback.",
-            "Integrated Deepgram, OpenAI, Convex, RevenueCat, and PostHog.",
-            "Created scenario-based drills for interviews, leadership, negotiation, and difficult conversations.",
-            "Implemented answer scoring, rewritten answers, drill history, and subscription-aware access.",
+            "Mobile voice-recording flows with AI transcription and structured feedback.",
+            "Deepgram, OpenAI, Convex, RevenueCat, and PostHog integrations.",
+            "Scenario-based drills for interviews, leadership, negotiation, and difficult conversations.",
+            "Answer scoring, rewritten answers, drill history, and subscription-aware access.",
         ],
         outcome: [
-            "Published a production AI mobile app.",
-            "Built voice, transcription, feedback, and subscription workflows end-to-end.",
-            "Strong proof of AI audio, mobile UX, and subscription product experience.",
+            "A production AI mobile app.",
+            "End-to-end voice, transcription, feedback, and subscription workflows.",
+            "A strong proof point for AI audio, mobile UX, and subscription product experience.",
         ],
 
         seoTitle: "SpeakSure Case Study | AI Speaking Coach iOS App",
         seoDescription:
             "Case study for SpeakSure, a live AI speaking coach app with voice recording, transcription, feedback, and subscriptions.",
     },
+
     {
         slug: "am-gebaeudereinigung",
         name: "AM Gebäudereinigung",
-        role: "Design & Development",
+        role: "Business website and CMS development",
         period: "2022",
         status: "Client website + CMS",
         clientType: "German service business",
@@ -1040,9 +1052,9 @@ export const projects: Project[] = [
             "AM Gebäudereinigung shows practical client delivery for a real European service business with CMS-backed content.",
 
         summary:
-            "Business website with CMS for a cleaning company in Hamburg, built for credibility, services, and lead generation.",
+            "A business website with CMS for a cleaning company in Hamburg, built for credibility, service clarity, and lead generation.",
         description:
-            "AM Gebäudereinigung is a business website for a Hamburg-based cleaning company, built with a clean service structure, responsive pages, and CMS-backed content management.",
+            "AM Gebäudereinigung needed a professional web presence that could present services clearly, improve trust, and make website content easier to maintain. Casevia delivered a responsive business website with CMS-backed content structure.",
 
         liveUrl: "https://amgebaeudereinigung.hamburg",
         liveLabel: "Open website",
@@ -1059,16 +1071,17 @@ export const projects: Project[] = [
         coverAlt: "AM Gebäudereinigung business website preview",
         heroImage: "/work/am-gebaeudereinigung.webp",
         heroAlt: "AM Gebäudereinigung business website preview",
+        coverImageClassName: "",
 
         galleryImages: [],
 
         services: [
-            "Interface Design",
-            "Frontend Development",
-            "CMS Integration",
-            "SEO Foundations",
-            "Responsive Design",
-            "Client Delivery",
+            "Interface design",
+            "Frontend development",
+            "CMS integration",
+            "SEO foundations",
+            "Responsive design",
+            "Client delivery",
         ],
         deliverables: [
             "Business website",
@@ -1084,17 +1097,17 @@ export const projects: Project[] = [
             {
                 value: "CMS",
                 label: "Powered",
-                description: "Editable content",
+                description: "Editable content structure",
             },
             {
                 value: "Lead",
                 label: "Focused",
-                description: "Service-driven structure",
+                description: "Service-driven website",
             },
             {
                 value: "EU",
                 label: "Client",
-                description: "Hamburg business",
+                description: "Hamburg-based business",
             },
         ],
 
@@ -1117,9 +1130,9 @@ export const projects: Project[] = [
         ],
 
         challenge:
-            "The client needed a professional web presence that clearly presented services, improved credibility, and allowed easier content updates.",
+            "The business needed a professional web presence that clearly presented services, improved credibility, and allowed easier content updates.",
         solution:
-            "We created a responsive business website with service pages, SEO foundations, and CMS-backed content management for practical day-to-day use.",
+            "Casevia delivered a responsive business website with service pages, SEO foundations, and CMS-backed content management for practical long-term use.",
 
         caseStudy: [
             {
@@ -1143,14 +1156,14 @@ export const projects: Project[] = [
         ],
 
         highlights: [
-            "Built a clean business website for a real client in Hamburg.",
-            "Implemented CMS-backed content updates for easier maintenance.",
-            "Focused on services, trust, responsive layouts, and lead-generation structure.",
+            "Clean business website for a real client in Hamburg.",
+            "CMS-backed content updates for easier maintenance.",
+            "Service structure shaped around clarity, trust, and lead generation.",
         ],
         outcome: [
-            "Delivered a practical client website for a European service business.",
+            "A practical client website for a European service business.",
             "Improved service presentation and content maintainability.",
-            "Useful proof of CMS-backed business website development.",
+            "A useful proof point for CMS-backed business website development.",
         ],
 
         seoTitle: "AM Gebäudereinigung Case Study | Business Website + CMS",
@@ -1178,8 +1191,6 @@ export const projectCategories: ProjectCategory[] = [
     "Marketplace",
     "E-commerce",
     "Business Website",
-    // "CMS",
-    // "Client Work",
 ];
 
 export function getProject(slug: string) {
@@ -1201,7 +1212,7 @@ export function getHeroStripProjects() {
         .map((slug) => getProject(slug))
         .filter(
             (project): project is Project =>
-                Boolean(project?.showInHeroStrip && project.logoImage)
+                Boolean(project?.showInHeroStrip && project.logoImage),
         );
 }
 
@@ -1220,8 +1231,8 @@ export function getRelatedProjects(slug: string, limit = 2) {
         .filter((project) => project.slug !== slug)
         .filter((project) =>
             project.categories.some((category) =>
-                currentProject.categories.includes(category)
-            )
+                currentProject.categories.includes(category),
+            ),
         )
         .slice(0, limit);
 }
