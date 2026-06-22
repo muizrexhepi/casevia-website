@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { Container } from "@/components/layout/container";
+import { PageIntro } from "@/components/layout/page-intro";
 import { Section } from "@/components/layout/section";
 import { WorkProjectCard } from "@/components/work/work-project-card";
 import { Heading, Text } from "@/components/ui/typography";
@@ -33,16 +34,10 @@ export function WorkPageClient({
   return (
     <Section spacing="sm" className="pt-10 sm:pt-14 lg:pt-16">
       <Container>
-        <div className="max-w-3xl">
-          <Heading as="h1" variant="hero">
-            Projects.
-          </Heading>
-
-          <Text variant="lead" className="mt-5 max-w-2xl">
-            Selected websites, platforms, and products designed and engineered
-            for real businesses and real users.
-          </Text>
-        </div>
+        <PageIntro
+          title="Work shaped by the business behind it."
+          description="Websites, platforms, marketplaces, and mobile products built for real customers, internal teams, and day-to-day operations."
+        />
 
         <div className="mt-8 flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {filters.map((category) => {

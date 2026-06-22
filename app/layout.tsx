@@ -24,9 +24,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://casevia.io"),
-  title: "Casevia — Premium Software Studio",
+  title: "Casevia — Software Studio for European Businesses",
   description:
-    "Casevia designs and builds premium websites, web apps, dashboards, e-commerce platforms, and AI-powered products.",
+    "An independent Balkan software studio designing and building websites, platforms, and digital products for businesses across Europe.",
 };
 
 export default function RootLayout({

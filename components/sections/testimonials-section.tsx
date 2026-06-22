@@ -30,7 +30,6 @@ export function TestimonialsSection() {
     <Section>
       <Container>
         <SectionHeader
-          eyebrow="What clients say"
           title="Trusted by businesses that care about quality."
           description="We work with founders, operators, and business owners who want a serious digital presence — not another generic template."
         />

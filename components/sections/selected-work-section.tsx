@@ -19,13 +19,13 @@ export function SelectedWorkSection() {
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-3xl">
             <Heading as="h2" variant="section">
-              Selected work.
+              Products that had to work beyond the launch.
             </Heading>
 
-            {/* <Text variant="body" className="mt-4 max-w-2xl">
-              Platforms, websites, and mobile products built for real businesses
-              with real users, operations, and outcomes.
-            </Text> */}
+            <Text variant="body" className="mt-4 max-w-2xl">
+              Booking platforms, operational software, commerce, and mobile
+              products shaped around the business behind the interface.
+            </Text>
           </div>
 
           <Link

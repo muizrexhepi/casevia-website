@@ -1,14 +1,12 @@
-import { Eyebrow, Heading, Text } from "@/components/ui/typography";
+import { Heading, Text } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 
 function SectionHeader({
-  eyebrow,
   title,
   description,
   align = "left",
   className,
 }: {
-  eyebrow?: string;
   title: string;
   description?: string;
   align?: "left" | "center";
@@ -22,14 +20,15 @@ function SectionHeader({
         className,
       )}
     >
-      {/* {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null} */}
-
       <Heading as="h2" variant="section">
         {title}
       </Heading>
 
       {description ? (
-        <Text variant="body" className="mt-5 max-w-2xl">
+        <Text
+          variant="body"
+          className={cn("mt-5 max-w-2xl", align === "center" && "mx-auto")}
+        >
           {description}
         </Text>
       ) : null}

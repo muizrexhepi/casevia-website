@@ -64,19 +64,4 @@ function Text({
   );
 }
 
-function Eyebrow({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLParagraphElement>) {
-  return (
-    <p
-      className={cn(
-        "text-xs font-semibold uppercase tracking-[0.16em] text-primary",
-        className,
-      )}
-      {...props}
-    />
-  );
-}
-
-export { Heading, Text, Eyebrow };
+export { Heading, Text };

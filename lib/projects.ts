@@ -101,13 +101,13 @@ export const projects: Project[] = [
     featured: true,
     homepageFeatured: true,
     showInHeroStrip: true,
-    headline: "A connected digital operation for a leading travel agency.",
+    headline: "One travel business, connected from discovery to daily operations.",
     subheadline:
-      "From the public brand and booking experience to the internal system used to coordinate agencies, reservations, hotels, and tours.",
+      "A long-term partnership spanning the public brand, travel discovery, bookings, and the internal system coordinating agencies, reservations, hotels, and tours.",
     summary:
       "A complete digital ecosystem for travel discovery, bookings, and multi-agency operations.",
     description:
-      "Agim Tours needed more than a new website. The engagement connected its customer-facing brand with a fully operational agency management system, giving teams one clearer way to manage travel products, bookings, and day-to-day coordination.",
+      "The work began with the customer experience and grew with the business. Casevia connected Agim Tours’ public brand to the operational system behind it, creating one clearer foundation for travel products, bookings, and coordination across agencies.",
     liveUrl: "https://agimtours.com",
     liveLabel: "Visit Agim Tours",
     logoImage: "/logos/agimtours.webp",
@@ -140,12 +140,12 @@ export const projects: Project[] = [
     proof: ["Travel platform", "Multi-agency system", "Live operations"],
     metrics: [
       {
-        value: "Multi",
+        value: "Multi-agency",
         label: "Agency operations",
         description: "Shared workflows across locations and teams",
       },
       {
-        value: "End-to-end",
+        value: "Public + ops",
         label: "Booking workflow",
         description: "From travel discovery to operational management",
       },
@@ -208,13 +208,13 @@ export const projects: Project[] = [
     featured: true,
     homepageFeatured: true,
     showInHeroStrip: true,
-    headline: "Passenger booking and operations, connected across every platform.",
+    headline: "A transport platform built for passengers and the operation behind them.",
     subheadline:
-      "A multi-platform ticketing system supporting route discovery, passenger bookings, mobile access, dashboards, and operator workflows.",
+      "Web booking, mobile access, internal dashboards, and operator workflows designed as one connected ticketing service for a regional bus company.",
     summary:
       "A digital ticketing and operations platform for a major Balkan transport operator.",
     description:
-      "Hakbus needed customer-facing booking tools and internal operational interfaces to work together reliably. Casevia helped shape a connected product system spanning web, mobile, and dashboards for a transport business operating at meaningful scale.",
+      "For Hakbus, booking could not stop at a confirmation screen. Casevia worked across the passenger journey and the operational tools behind each trip, connecting web, mobile, and dashboards for a fleet of more than 100 buses.",
     liveUrl: "https://hakbus.org",
     liveLabel: "Visit Hakbus",
     logoImage: "/logos/hakbus.png",
@@ -257,7 +257,7 @@ export const projects: Project[] = [
     metrics: [
       { value: "100+", label: "Buses", description: "Regional transport fleet" },
       { value: "100k+", label: "Visitors", description: "Public platform traffic" },
-      { value: "Multi", label: "Platform", description: "Web, mobile, and operations" },
+      { value: "3 surfaces", label: "Platform", description: "Web, mobile, and operations" },
     ],
     stack: ["React Native", "Expo", "Next.js", "TypeScript", "Analytics", "Booking systems"],
     challenge:
@@ -305,13 +305,13 @@ export const projects: Project[] = [
     featured: true,
     homepageFeatured: true,
     showInHeroStrip: true,
-    headline: "A premium storefront for a coffee brand entering a new market.",
+    headline: "Bringing a Swiss coffee brand into a new market with confidence.",
     subheadline:
-      "A responsive e-commerce experience shaped around product discovery, brand trust, and commercial expansion into Macedonia.",
+      "A market-specific storefront for Macedonia, translating Doros Premium’s product quality into clear discovery, credible presentation, and a direct path to purchase.",
     summary:
       "A refined e-commerce website for a Swiss coffee brand expanding into Macedonia.",
     description:
-      "Doros Premium needed a storefront that could translate established product quality into a credible new-market experience. Casevia created a cleaner retail system with focused product presentation and responsive browsing.",
+      "Entering Macedonia meant earning trust with customers who did not yet know the brand. Casevia adapted the Swiss positioning into a focused local storefront where the coffee range, product detail, and buying journey stay clear on every screen.",
     liveUrl: "https://dorospremium.com.mk",
     liveLabel: "Visit Doros Premium",
     logoImage: "/logos/doros.svg",
@@ -329,8 +329,8 @@ export const projects: Project[] = [
     categories: ["E-commerce", "Business Website", "Client Work"],
     proof: ["Swiss client", "New-market launch", "E-commerce platform"],
     metrics: [
-      { value: "Swiss", label: "Brand", description: "Adapted for a new regional market" },
-      { value: "Mobile", label: "Commerce", description: "Responsive product discovery" },
+      { value: "CH → MK", label: "Market", description: "Adapted for a new regional audience" },
+      { value: "Mobile-first", label: "Commerce", description: "Responsive product discovery" },
       { value: "Live", label: "Storefront", description: "Public commercial platform" },
     ],
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "E-commerce UX", "Responsive design", "SEO"],
@@ -451,13 +451,13 @@ export const projects: Project[] = [
     industry: "Transport / Booking",
     featured: true,
     showInHeroStrip: true,
-    headline: "A clearer way to find and book routes between the Balkans and Europe.",
+    headline: "Making bus travel between the Balkans and Europe easier to book.",
     subheadline:
-      "A transport marketplace combining route discovery, operator workflows, payments, communication, and search-led destination content.",
+      "A focused booking marketplace where destination discovery, cross-border routes, payments, operator workflows, and traveler communication work as one system.",
     summary:
       "A live bus-booking platform connecting travelers with Balkan and European routes.",
     description:
-      "GoBusly addresses a fragmented travel market with one focused booking experience. Route pages, payments, operator workflows, and transactional communication work together as a platform rather than separate features.",
+      "GoBusly was created around a regional reality: cross-border routes are in demand, but the journey from finding a bus to holding a valid booking is often fragmented. Casevia brought discovery, payments, operators, and customer communication into one production platform.",
     liveUrl: "https://gobusly.com",
     liveLabel: "Visit GoBusly",
     logoImage: "/logos/gobusly.svg",
@@ -469,7 +469,23 @@ export const projects: Project[] = [
     coverAlt: "GoBusly booking platform",
     heroImage: "/work/gobusly.webp",
     heroAlt: "GoBusly route booking experience",
-    galleryImages: [],
+    galleryImages: [
+      {
+        src: "/work/gobusly/Screenshot 2026-06-20 at 15.18.21.png",
+        alt: "GoBusly route discovery and booking interface",
+        type: "mobile",
+      },
+      {
+        src: "/work/gobusly/Screenshot 2026-06-20 at 15.18.33.png",
+        alt: "GoBusly passenger booking experience",
+        type: "mobile",
+      },
+      {
+        src: "/work/gobusly/Screenshot 2026-06-20 at 15.17.47.png",
+        alt: "GoBusly destination and route content",
+        type: "mobile",
+      },
+    ],
     services: ["Product strategy", "Booking UX", "Platform development", "Payments", "Operator workflows", "SEO architecture"],
     deliverables: ["Booking platform", "Route pages", "Destination pages", "Payment flow", "Operator tools", "Email notifications"],
     categories: ["Booking", "Transport", "Operations"],
@@ -524,13 +540,13 @@ export const projects: Project[] = [
     industry: "Luxury / Marketplace",
     featured: true,
     showInHeroStrip: true,
-    headline: "Luxury commerce designed around discovery, trust, and live bidding.",
+    headline: "A Swiss luxury marketplace where presentation and bidding carry equal weight.",
     subheadline:
-      "A Swiss marketplace experience balancing high-end product presentation with the functional demands of auctions and bidding.",
+      "An editorial commerce experience that gives high-value objects room to feel considered while keeping auction status, pricing, timing, and bidding unmistakably clear.",
     summary:
       "A luxury goods marketplace with premium browsing, auction, and bidding experiences.",
     description:
-      "Nextloop needed the confidence of a luxury storefront and the clarity of a transactional marketplace. Casevia designed a responsive experience where product storytelling and auction interactions support one another.",
+      "Nextloop sits between two demanding experiences: a luxury storefront and a live marketplace. Casevia designed the responsive frontend so product provenance and imagery build desire while auction mechanics build confidence.",
     liveUrl: "https://nextloop.ch",
     liveLabel: "Visit Nextloop",
     logoImage: "/logos/nextloop.svg",
@@ -670,13 +686,13 @@ export const projects: Project[] = [
     industry: "Cleaning services",
     featured: true,
     showInHeroStrip: true,
-    headline: "A clearer digital presence for a Hamburg service business.",
+    headline: "Turning a Hamburg cleaning company’s services into a clearer sales journey.",
     subheadline:
-      "A responsive, CMS-backed website designed to improve service clarity, credibility, and lead generation.",
+      "A responsive, CMS-backed website that organizes the company’s commercial cleaning offer around customer intent and makes inquiry the natural next step.",
     summary:
       "A business website and content system for a commercial cleaning company in Hamburg.",
     description:
-      "AM Gebäudereinigung needed to explain its services more clearly and maintain content without depending on development work. Casevia delivered a focused service website with an editable content foundation.",
+      "For AM Gebäudereinigung, credibility depended on being specific: what gets cleaned, who the service is for, and how to request an offer. Casevia rebuilt that journey and paired it with a headless CMS the company could maintain without developer support.",
     liveUrl: "https://www.amgebaeudereinigung.hamburg/",
     liveLabel: "Visit website",
     logoImage: "/logos/am.svg",
@@ -721,6 +737,12 @@ export const projects: Project[] = [
         title: "A CMS that keeps routine updates practical.",
         body:
           "The content system allows the business to maintain key service information without turning every change into a development task.",
+      },
+      {
+        eyebrow: "Outcome",
+        title: "A maintainable website with a more direct route to inquiry.",
+        body:
+          "The finished system gives prospective customers a clearer view of the offer while giving the business practical control over the content supporting it.",
       },
     ],
     seoTitle: "AM Gebäudereinigung Case Study | Business Website",

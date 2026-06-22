@@ -6,7 +6,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { ContactForm } from "@/components/contact/contact-form";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { Eyebrow, Heading, Text } from "@/components/ui/typography";
+import { Heading, Text } from "@/components/ui/typography";
 
 export const metadata: Metadata = {
   title: "Contact Casevia | Start Your Project",
@@ -42,9 +42,7 @@ export default function ContactPage() {
       <Container>
         <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-16">
           <div className="max-w-xl">
-            <Eyebrow>Contact</Eyebrow>
-
-            <Heading as="h1" variant="hero" className="mt-4">
+            <Heading as="h1" variant="hero">
               Start a project.
             </Heading>
 

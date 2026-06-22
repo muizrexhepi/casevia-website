@@ -66,9 +66,9 @@ export function Footer() {
               </Link>
 
               <Text variant="body-sm" className="mt-5 max-w-sm">
-                A software studio designing and building websites, web apps,
-                dashboards, e-commerce platforms, and AI products for modern
-                businesses.
+                An independent software studio in the Balkans, designing and
+                building digital products for ambitious businesses across
+                Europe.
               </Text>
 
               <div className="mt-6 flex items-center gap-3">

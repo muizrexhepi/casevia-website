@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout/container";
+import { PageIntro } from "@/components/layout/page-intro";
 import { Section } from "@/components/layout/section";
 import { Heading, Text } from "@/components/ui/typography";
 import { processSteps } from "@/lib/process";
@@ -29,20 +30,20 @@ export default function ProcessPage() {
         className="pb-8 pt-10 sm:pb-10 sm:pt-14 lg:pb-12 lg:pt-16"
       >
         <Container>
-          <div className="max-w-4xl">
-            <Heading as="h1" variant="hero">
-              Process.
-            </Heading>
-
-            <Text variant="lead" className="mt-5 max-w-2xl">
-              A clear path from rough idea to polished digital product.
-            </Text>
-          </div>
+          <PageIntro
+            title="Enough structure to move quickly."
+            description="A visible, collaborative path from the first business question to production—built around decisions, not ceremony."
+          />
         </Container>
       </Section>
 
       <Section className="pt-8 sm:pt-10 lg:pt-12">
         <Container>
+          <div className="mb-10 max-w-2xl">
+            <Heading as="h2" variant="section">
+              Six stages, one continuous conversation.
+            </Heading>
+          </div>
           <div className="divide-y divide-border border-y border-border">
             {processSteps.map((step, index) => (
               <article
@@ -54,7 +55,7 @@ export default function ProcessPage() {
                 </div>
 
                 <div>
-                  <Heading as="h2" variant="subsection">
+                  <Heading as="h3" variant="subsection">
                     {step.title}
                   </Heading>
 

@@ -1,67 +1,57 @@
-import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { SectionHeader } from "@/components/layout/section-header";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Heading, Text } from "@/components/ui/typography";
 
-const reasons = [
+const principles = [
   {
-    title: "Premium design",
+    number: "01",
+    title: "Direct collaboration",
     description:
-      "Clean visual hierarchy, polished spacing, and interfaces that make your business look serious.",
+      "The people making the product stay close to the business context. Less translation, faster decisions, and clearer accountability.",
   },
   {
-    title: "Conversion focused",
+    number: "02",
+    title: "Design and engineering together",
     description:
-      "Every page is built with a goal: leads, bookings, sales, trust, or operational efficiency.",
+      "The interface and the implementation are developed as one system, so the quality agreed in design reaches production.",
   },
   {
-    title: "Fast & scalable",
+    number: "03",
+    title: "Built around the operation",
     description:
-      "Modern architecture, responsive layouts, optimized performance, and clean code you can build on.",
-  },
-  {
-    title: "Long-term partner",
-    description:
-      "We can support, maintain, improve, and scale the product after launch instead of disappearing.",
+      "We learn the workflow behind the screen and make decisions that work for the team running the product after launch.",
   },
 ];
 
 export function WhyCaseviaSection() {
   return (
-    <Section>
+    <Section className="bg-muted/40">
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-          <SectionHeader
-            eyebrow="Why Casevia"
-            title="Built like a product team, not a template shop."
-            description="We combine design taste, engineering skill, and business thinking to create websites and platforms that feel premium and actually help the business."
-          />
+        <div className="grid gap-12 lg:grid-cols-[0.42fr_0.58fr] lg:gap-20">
+          <div>
+            <Heading as="h2" variant="section" className="max-w-xl">
+              A studio that stays close to the work.
+            </Heading>
+            <Text className="mt-5 max-w-md">
+              Based in Tetovo and working across Europe, Casevia keeps product
+              thinking, design, and engineering in one continuous process.
+            </Text>
+          </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {reasons.map((reason) => (
-              <Card key={reason.title} className="h-full">
-                <CardHeader>
-                  <div className="flex size-11 items-center justify-center rounded-2xl bg-accent text-primary">
-                    <HugeiconsIcon
-                      icon={CheckmarkCircle02Icon}
-                      size={22}
-                      strokeWidth={1.8}
-                    />
-                  </div>
-
-                  <Heading as="h3" variant="card" className="mt-6">
-                    {reason.title}
-                  </Heading>
-                </CardHeader>
-
-                <CardContent className="pt-3">
-                  <Text variant="body-sm">{reason.description}</Text>
-                </CardContent>
-              </Card>
+          <div className="border-t border-foreground/15">
+            {principles.map((principle) => (
+              <article
+                key={principle.number}
+                className="grid gap-4 border-b border-foreground/15 py-7 sm:grid-cols-[0.12fr_0.34fr_0.54fr] sm:gap-6 sm:py-8"
+              >
+                <p className="font-heading text-sm font-semibold text-primary">
+                  {principle.number}
+                </p>
+                <Heading as="h3" variant="card">
+                  {principle.title}
+                </Heading>
+                <Text variant="body-sm">{principle.description}</Text>
+              </article>
             ))}
           </div>
         </div>

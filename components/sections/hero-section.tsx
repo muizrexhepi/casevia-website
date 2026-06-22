@@ -19,12 +19,13 @@ export function HeroSection() {
         <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div>
             <Heading as="h1" variant="hero" className="max-w-2xl">
-              Digital products built for businesses in motion.
+              Websites and software for businesses moving forward.
             </Heading>
 
             <Text variant="lead" className="mt-6 max-w-xl">
-              Casevia brings strategy, design, and engineering together to
-              create websites and software that move real businesses forward.
+              Casevia connects strategy, design, and engineering to turn
+              commercial challenges and complex workflows into useful digital
+              products.
             </Text>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">

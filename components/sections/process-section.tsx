@@ -35,12 +35,10 @@ export function ProcessSection() {
             <Heading as="h2" variant="section" className="max-w-xl">
               From rough idea to working product.
             </Heading>
-
             <Text variant="body" className="mt-5 max-w-xl">
               A focused process for turning unclear requirements into polished
               websites, dashboards, booking systems, and digital workflows.
             </Text>
-
             <Link
               href="/process"
               className={cn(
@@ -62,16 +60,14 @@ export function ProcessSection() {
             {phases.map((phase, index) => (
               <div
                 key={phase.title}
-                className="border-border py-8 sm:px-7 lg:border-r lg:py-2 first:sm: last:lg:border-r-0"
+                className="border-border py-8 sm:px-7 lg:border-r lg:py-2 last:lg:border-r-0"
               >
                 <div className="font-heading text-sm font-semibold text-primary">
                   {String(index + 1).padStart(2, "0")}
                 </div>
-
                 <Heading as="h3" variant="card" className="mt-8">
                   {phase.title}
                 </Heading>
-
                 <Text variant="body-sm" className="mt-4 max-w-[18rem]">
                   {phase.description}
                 </Text>

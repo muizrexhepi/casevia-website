@@ -3,13 +3,14 @@ import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
+import { PageIntro } from "@/components/layout/page-intro";
 import { Section } from "@/components/layout/section";
 import { Heading, Text } from "@/components/ui/typography";
 
 export const metadata: Metadata = {
   title: "Services — Casevia",
   description:
-    "Websites, web apps, dashboards, e-commerce platforms, booking systems, and AI automation systems built for modern businesses.",
+    "Connected product strategy, design, and software engineering for European businesses building websites, platforms, commerce, and AI workflows.",
   keywords: [
     "software agency",
     "website development",
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Services — Casevia",
     description:
-      "Websites, web apps, dashboards, e-commerce platforms, booking systems, and AI automation systems.",
+      "Strategy, design, and engineering for websites, platforms, commerce, and useful AI workflows.",
     url: "/services",
     siteName: "Casevia",
     type: "website",
@@ -100,7 +101,7 @@ const services = [
     number: "01",
     title: "Business Websites",
     description:
-      "Premium websites for restaurants, clinics, service businesses, local brands, and companies that need credibility, clarity, and conversion.",
+      "Distinctive business websites that sharpen the positioning, build confidence, and turn interest into a useful next step.",
     deliverables: [
       "Landing pages",
       "Multi-page websites",
@@ -114,7 +115,7 @@ const services = [
     number: "02",
     title: "Web Apps & Dashboards",
     description:
-      "Custom platforms, admin dashboards, booking systems, portals, and internal tools built around real business workflows.",
+      "Custom platforms, booking systems, portals, and internal tools shaped around the people, data, and decisions in the real workflow.",
     deliverables: [
       "Product architecture",
       "Dashboard UI",
@@ -128,7 +129,7 @@ const services = [
     number: "03",
     title: "E-commerce",
     description:
-      "Polished product catalogs and online stores with strong presentation, clean browsing, responsive pages, and buying flows.",
+      "Storefronts and marketplaces where strong product presentation, confident decision-making, and a direct buying journey work together.",
     deliverables: [
       "Storefront UI",
       "Product pages",
@@ -142,7 +143,7 @@ const services = [
     number: "04",
     title: "AI & Automation",
     description:
-      "AI-powered features and automations that reduce manual work, improve operations, and create leverage inside the business.",
+      "Focused AI features and connected automations that remove repetitive work or create a genuinely useful product capability.",
     deliverables: [
       "AI-assisted workflows",
       "Automation logic",
@@ -161,27 +162,29 @@ export default function ServicesPage() {
         className="pb-8 pt-10 sm:pb-10 sm:pt-14 lg:pb-12 lg:pt-16"
       >
         <Container>
-          <div className="max-w-3xl">
-            <Heading as="h1" variant="hero">
-              Services.
-            </Heading>
-            <Text variant="lead" className="mt-5 max-w-2xl">
-              Strategy, design, and engineering for focused digital products
-              and business-critical software.
-            </Text>
-          </div>
+          <PageIntro
+            title="Design and engineering, connected from day one."
+            description="We help businesses clarify the opportunity, shape the right experience, and put dependable software into production."
+          />
         </Container>
       </Section>
 
       <section className="bg-muted/40 py-12 sm:py-16">
         <Container>
-          <div className="grid gap-12 lg:grid-cols-3 lg:gap-16">
+          <div className="mb-12 max-w-2xl">
+            <Heading as="h2" variant="subsection">
+              The thinking, craft, and technical ownership needed to move from
+              an open question to a working product.
+            </Heading>
+          </div>
+
+          <div className="grid gap-12 border-t border-foreground/15 pt-10 lg:grid-cols-3 lg:gap-16">
             {capabilityColumns.map((column) => (
               <div
                 key={column.title}
                 className="first:lg:pl-0 last:lg:pr-0"
               >
-                <Heading as="h2" variant="subsection">
+                <Heading as="h3" variant="subsection">
                   {column.title}
                 </Heading>
 
@@ -213,6 +216,11 @@ export default function ServicesPage() {
 
       <Section>
         <Container>
+          <div className="mb-10 max-w-2xl">
+            <Heading as="h2" variant="section">
+              Four ways we can move the business forward.
+            </Heading>
+          </div>
           <div>
             {services.map((service) => (
               <article
@@ -227,7 +235,7 @@ export default function ServicesPage() {
 
                   <div className="grid gap-8 lg:grid-cols-[0.9fr_1fr]">
                     <div>
-                      <Heading as="h2" variant="subsection">
+                      <Heading as="h3" variant="subsection">
                         {service.title}
                       </Heading>
 
