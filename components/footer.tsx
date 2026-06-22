@@ -66,9 +66,8 @@ export function Footer() {
               </Link>
 
               <Text variant="body-sm" className="mt-5 max-w-sm">
-                An independent software studio in the Balkans, designing and
-                building digital products for ambitious businesses across
-                Europe.
+                An independent European software studio designing and building
+                digital products for ambitious businesses.
               </Text>
 
               <div className="mt-6 flex items-center gap-3">
@@ -138,7 +137,7 @@ export function Footer() {
                       strokeWidth={1.8}
                       className="shrink-0"
                     />
-                    <span>Tetovo, North Macedonia</span>
+                    <span>Europe</span>
                   </li>
                 </ul>
               </div>

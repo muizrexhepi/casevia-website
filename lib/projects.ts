@@ -39,6 +39,7 @@ export type ProjectCaseSection = {
 };
 
 export type ProjectVisualTheme =
+  | "asknoel"
   | "agimtours"
   | "logly"
   | "speaksure"
@@ -91,6 +92,132 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "asknoel",
+    name: "AskNoel",
+    role: "Product strategy, platform engineering, and mobile development",
+    period: "Ongoing partnership",
+    status: "Live crypto intelligence platform",
+    clientType: "Dubai-based fintech client",
+    industry: "Crypto / AI / Fintech",
+    featured: true,
+    homepageFeatured: true,
+    showInHeroStrip: true,
+    headline: "Turning a high-growth crypto product into one connected intelligence platform.",
+    subheadline:
+      "A multi-surface product spanning real-time market data, editorial intelligence, an AI chatbot, and mobile access for a global crypto audience.",
+    summary: "Crypto intelligence, built as one product.",
+    description:
+      "AskNoel needed more than a market dashboard. Casevia helped shape and build the platform across web, conversational AI, and mobile, creating a cohesive product that could support a fast-moving crypto company backed by multi-million-dollar investment.",
+    liveUrl: "https://app.asknoel.ai/",
+    liveLabel: "Visit AskNoel",
+    logoImage: "/logos/asknoel.png",
+    logoAlt: "AskNoel logo",
+    logoImageClassName: "h-7 max-h-7",
+    initials: "AN",
+    visualTheme: "asknoel",
+    coverImage: "/work/asknoel.png",
+    coverAlt: "AskNoel cryptocurrency market intelligence platform",
+    heroImage: "/work/asknoel.png",
+    heroAlt: "AskNoel market dashboard with crypto prices, analytics, and news",
+    galleryImages: [
+      {
+        src: "/work/asknoel/asknoel-news.png",
+        alt: "AskNoel crypto news and market intelligence feed",
+        type: "desktop",
+      },
+      {
+        src: "/work/asknoel/asknoel-coin.png",
+        alt: "AskNoel Bitcoin market data and charting interface",
+        type: "dashboard",
+      },
+      {
+        src: "/work/asknoel/asknoel-chatbot.png",
+        alt: "AskNoel AI crypto chatbot and featured agents",
+        type: "desktop",
+      },
+    ],
+    services: [
+      "Product strategy",
+      "UX and interface design",
+      "Full-stack platform development",
+      "AI chatbot development",
+      "Mobile app development",
+      "Product infrastructure",
+    ],
+    deliverables: [
+      "Crypto market platform",
+      "AI assistant",
+      "Mobile application",
+      "Market dashboards",
+      "News experience",
+      "Responsive product system",
+    ],
+    categories: ["AI", "Mobile App", "Client Work"],
+    proof: [
+      "Dubai client",
+      "Multi-million-dollar backing",
+      "Web, mobile, and AI product",
+    ],
+    metrics: [
+      {
+        value: "Multi-million",
+        label: "Backing",
+        description: "Investment supporting growth",
+      },
+      {
+        value: "3",
+        label: "Product surfaces",
+        description: "Web, AI assistant, and mobile",
+      },
+      {
+        value: "Global",
+        label: "Audience",
+        description: "Crypto users across markets",
+      },
+    ],
+    stack: [
+      "Product strategy",
+      "Full-stack engineering",
+      "AI systems",
+      "Mobile engineering",
+      "Market data",
+      "Product analytics",
+    ],
+    challenge:
+      "Crypto users move between price trackers, news sources, research tools, and community channels, creating a fragmented experience in a market where speed and clarity matter.",
+    solution:
+      "Casevia helped build a unified product across web, AI, and mobile, bringing live market information, editorial content, and conversational assistance into a consistent platform.",
+    caseStudy: [
+      {
+        eyebrow: "The brief",
+        title: "Crypto intelligence, clearly organized.",
+        body:
+          "AskNoel set out to give crypto users a clearer way to follow markets, understand news, and act on information. The product needed to handle dense financial data without feeling fragmented or difficult to navigate.",
+      },
+      {
+        eyebrow: "Platform",
+        title: "Market data meets editorial context.",
+        body:
+          "The web platform organizes prices, market indicators, trending assets, watchlists, and news into a coherent dashboard designed for repeated daily use across screen sizes.",
+      },
+      {
+        eyebrow: "Product ecosystem",
+        title: "AI guidance across web and mobile.",
+        body:
+          "The engagement expanded beyond the core platform to include an AI chatbot and mobile application, giving users more direct ways to ask questions, follow the market, and access the product away from desktop.",
+      },
+      {
+        eyebrow: "Outcome",
+        title: "Built as one connected product.",
+        body:
+          "The result is a multi-surface product system built to support AskNoel's growth: one experience spanning market intelligence, content, AI assistance, and mobile access for an international audience.",
+      },
+    ],
+    seoTitle: "AskNoel Case Study | Crypto Intelligence and AI Platform",
+    seoDescription:
+      "Case study for AskNoel, a Dubai-based crypto intelligence platform spanning market data, news, an AI chatbot, and a mobile app.",
+  },
+  {
     slug: "agim-tours",
     name: "Agim Tours",
     role: "Brand, web experience, and operations platform",
@@ -99,13 +226,11 @@ export const projects: Project[] = [
     clientType: "Travel agency",
     industry: "Travel / Hospitality",
     featured: true,
-    homepageFeatured: true,
     showInHeroStrip: true,
     headline: "One travel business, connected from discovery to daily operations.",
     subheadline:
       "A long-term partnership spanning the public brand, travel discovery, bookings, and the internal system coordinating agencies, reservations, hotels, and tours.",
-    summary:
-      "A complete digital ecosystem for travel discovery, bookings, and multi-agency operations.",
+    summary: "Travel discovery and operations, connected.",
     description:
       "The work began with the customer experience and grew with the business. Casevia connected Agim Tours’ public brand to the operational system behind it, creating one clearer foundation for travel products, bookings, and coordination across agencies.",
     liveUrl: "https://agimtours.com",
@@ -141,18 +266,18 @@ export const projects: Project[] = [
     metrics: [
       {
         value: "Multi-agency",
-        label: "Agency operations",
-        description: "Shared workflows across locations and teams",
+        label: "Operations",
+        description: "Shared workflows across teams",
       },
       {
         value: "Public + ops",
-        label: "Booking workflow",
-        description: "From travel discovery to operational management",
+        label: "Platform",
+        description: "Discovery through fulfillment",
       },
       {
         value: "Live",
-        label: "Business system",
-        description: "Used in the agency’s daily operation",
+        label: "Daily use",
+        description: "Runs real agency workflows",
       },
     ],
     stack: [
@@ -170,25 +295,25 @@ export const projects: Project[] = [
     caseStudy: [
       {
         eyebrow: "The brief",
-        title: "Turn a complex travel business into one coherent experience.",
+        title: "One experience for a complex operation.",
         body:
           "Agim Tours manages far more than destination pages. Its teams coordinate hotels, tours, bookings, customers, and agency-level operations. The challenge was to make the public brand feel clear while giving the business a serious operational backbone.",
       },
       {
         eyebrow: "Customer experience",
-        title: "A travel website built to create confidence before the journey begins.",
+        title: "Confidence before the journey.",
         body:
           "The public experience organizes destinations, accommodation, tours, and agency information around the questions travelers actually have. The visual direction gives the established company a more consistent and credible digital presence.",
       },
       {
         eyebrow: "Operations",
-        title: "One management system across agencies and bookings.",
+        title: "One system across every agency.",
         body:
           "Behind the website, the operational platform supports the workflows that keep the business moving: managing travel products, coordinating bookings, and maintaining visibility across multiple agencies and teams.",
       },
       {
         eyebrow: "Outcome",
-        title: "A digital platform that serves both customers and the business behind them.",
+        title: "Customers and operations, connected.",
         body:
           "The result is not a standalone marketing site. It is a connected business platform that improves how Agim Tours presents its offer, handles demand, and manages day-to-day travel operations.",
       },
@@ -211,8 +336,7 @@ export const projects: Project[] = [
     headline: "A transport platform built for passengers and the operation behind them.",
     subheadline:
       "Web booking, mobile access, internal dashboards, and operator workflows designed as one connected ticketing service for a regional bus company.",
-    summary:
-      "A digital ticketing and operations platform for a major Balkan transport operator.",
+    summary: "Ticketing and transport operations, connected.",
     description:
       "For Hakbus, booking could not stop at a confirmation screen. Casevia worked across the passenger journey and the operational tools behind each trip, connecting web, mobile, and dashboards for a fleet of more than 100 buses.",
     liveUrl: "https://hakbus.org",
@@ -255,9 +379,9 @@ export const projects: Project[] = [
     categories: ["Booking", "Transport", "Mobile App", "Operations", "Client Work"],
     proof: ["100+ buses", "100k+ visitors", "Thousands of bookings"],
     metrics: [
-      { value: "100+", label: "Buses", description: "Regional transport fleet" },
-      { value: "100k+", label: "Visitors", description: "Public platform traffic" },
-      { value: "3 surfaces", label: "Platform", description: "Web, mobile, and operations" },
+      { value: "100+", label: "Buses", description: "Fleet in active operation" },
+      { value: "100k+", label: "Visitors", description: "Proven public reach" },
+      { value: "3", label: "Surfaces", description: "Web, mobile, and operations" },
     ],
     stack: ["React Native", "Expo", "Next.js", "TypeScript", "Analytics", "Booking systems"],
     challenge:
@@ -267,25 +391,25 @@ export const projects: Project[] = [
     caseStudy: [
       {
         eyebrow: "The brief",
-        title: "A transport operator needed a product system, not a brochure site.",
+        title: "More than a brochure site.",
         body:
           "The platform had to support route discovery and passenger booking while giving internal teams practical views into the operation behind every journey.",
       },
       {
         eyebrow: "Product architecture",
-        title: "Web, mobile, and dashboards designed as one service.",
+        title: "One service across every screen.",
         body:
           "Customer journeys and operational workflows were treated as parts of the same product. Shared patterns helped keep booking clear for passengers and information useful for operators.",
       },
       {
         eyebrow: "Execution",
-        title: "Interfaces built around real transport constraints.",
+        title: "Designed for transport reality.",
         body:
           "The work focused on route clarity, responsive booking flows, operational visibility, and maintainable components capable of supporting real traffic and day-to-day use.",
       },
       {
         eyebrow: "Outcome",
-        title: "A stronger digital foundation for passengers and operators.",
+        title: "A stronger operational foundation.",
         body:
           "Hakbus demonstrates how product design and engineering can improve both sides of an operational business: the customer experience and the system that delivers it.",
       },
@@ -303,13 +427,11 @@ export const projects: Project[] = [
     clientType: "Swiss retail brand",
     industry: "Coffee / Retail",
     featured: true,
-    homepageFeatured: true,
     showInHeroStrip: true,
     headline: "Bringing a Swiss coffee brand into a new market with confidence.",
     subheadline:
       "A market-specific storefront for Macedonia, translating Doros Premium’s product quality into clear discovery, credible presentation, and a direct path to purchase.",
-    summary:
-      "A refined e-commerce website for a Swiss coffee brand expanding into Macedonia.",
+    summary: "Premium coffee, introduced to a new market.",
     description:
       "Entering Macedonia meant earning trust with customers who did not yet know the brand. Casevia adapted the Swiss positioning into a focused local storefront where the coffee range, product detail, and buying journey stay clear on every screen.",
     liveUrl: "https://dorospremium.com.mk",
@@ -329,9 +451,9 @@ export const projects: Project[] = [
     categories: ["E-commerce", "Business Website", "Client Work"],
     proof: ["Swiss client", "New-market launch", "E-commerce platform"],
     metrics: [
-      { value: "CH → MK", label: "Market", description: "Adapted for a new regional audience" },
-      { value: "Mobile-first", label: "Commerce", description: "Responsive product discovery" },
-      { value: "Live", label: "Storefront", description: "Public commercial platform" },
+      { value: "CH → MK", label: "Market", description: "Swiss brand, local launch" },
+      { value: "Mobile-first", label: "Storefront", description: "Built for product discovery" },
+      { value: "Live", label: "Commerce", description: "Public retail platform" },
     ],
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "E-commerce UX", "Responsive design", "SEO"],
     challenge:
@@ -341,25 +463,25 @@ export const projects: Project[] = [
     caseStudy: [
       {
         eyebrow: "The brief",
-        title: "Make an established product feel credible in a new market.",
+        title: "Credibility in a new market.",
         body:
           "The website had to introduce the brand, explain the range, and create enough trust for customers encountering Doros Premium for the first time.",
       },
       {
         eyebrow: "Visual direction",
-        title: "Let the product carry the experience.",
+        title: "Let the product lead.",
         body:
           "A restrained layout, deliberate spacing, and clear product hierarchy gave the brand room to feel premium without adding unnecessary visual noise.",
       },
       {
         eyebrow: "Commerce",
-        title: "Product discovery designed for smaller screens first.",
+        title: "Mobile-first product discovery.",
         body:
           "The browsing structure makes categories and product details easier to understand across devices, keeping the commercial journey direct and comfortable.",
       },
       {
         eyebrow: "Outcome",
-        title: "A storefront ready to support market expansion.",
+        title: "Ready for market expansion.",
         body:
           "The final platform gives Doros Premium a consistent retail presence and a stronger foundation for product discovery and customer trust.",
       },
@@ -381,8 +503,7 @@ export const projects: Project[] = [
     headline: "Nutrition tracking without the repetitive data entry.",
     subheadline:
       "A production iOS app that turns natural-language meal descriptions into structured nutrition data, goals, and useful weekly insights.",
-    summary:
-      "An AI nutrition tracker with natural-language logging, subscriptions, Health sync, and analytics.",
+    summary: "AI nutrition tracking without the friction.",
     description:
       "Logly explores a faster model for everyday food tracking. Users describe a meal naturally; the product structures the information into calories and macros while maintaining the goals, insights, and account systems expected from a production health app.",
     liveUrl: "https://uselogly.app",
@@ -403,8 +524,8 @@ export const projects: Project[] = [
     proof: ["Live iOS app", "200+ users", "AI and Health sync"],
     metrics: [
       { value: "200+", label: "Users", description: "Registered accounts" },
-      { value: "Live", label: "iOS app", description: "Published production product" },
-      { value: "AI", label: "Meal logging", description: "Natural language to nutrition data" },
+      { value: "Live", label: "iOS", description: "Shipped to the App Store" },
+      { value: "AI", label: "Logging", description: "Meals described naturally" },
     ],
     stack: ["React Native", "Expo", "TypeScript", "Convex", "RevenueCat", "Apple Health", "PostHog", "OpenAI"],
     challenge:
@@ -414,25 +535,25 @@ export const projects: Project[] = [
     caseStudy: [
       {
         eyebrow: "Product problem",
-        title: "Food logging asks too much effort for a daily habit.",
+        title: "Less friction in every log.",
         body:
           "Database search, weighing, and repeated manual input create friction exactly where a tracking product needs consistency. Logly starts with the way people already describe food.",
       },
       {
         eyebrow: "Core interaction",
-        title: "Natural language in. Structured nutrition out.",
+        title: "Natural language becomes nutrition.",
         body:
           "The central flow converts a meal description into estimated calories, macros, and nutritional context, then lets the user review and continue without breaking momentum.",
       },
       {
         eyebrow: "Product system",
-        title: "A complete mobile product around the AI interaction.",
+        title: "An AI feature becomes a product.",
         body:
           "Onboarding, goals, Apple Health context, subscriptions, analytics, Pro access, and weekly insights turn the core idea into a product that can operate and improve over time.",
       },
       {
         eyebrow: "Outcome",
-        title: "An iOS product shipped to real users.",
+        title: "Shipped to real users.",
         body:
           "Logly brings product strategy, mobile engineering, AI infrastructure, subscriptions, and analytics together in one continuously evolving product.",
       },
@@ -450,12 +571,12 @@ export const projects: Project[] = [
     clientType: "Casevia venture",
     industry: "Transport / Booking",
     featured: true,
+    homepageFeatured: true,
     showInHeroStrip: true,
     headline: "Making bus travel between the Balkans and Europe easier to book.",
     subheadline:
       "A focused booking marketplace where destination discovery, cross-border routes, payments, operator workflows, and traveler communication work as one system.",
-    summary:
-      "A live bus-booking platform connecting travelers with Balkan and European routes.",
+    summary: "Cross-border bus travel, easier to book.",
     description:
       "GoBusly was created around a regional reality: cross-border routes are in demand, but the journey from finding a bus to holding a valid booking is often fragmented. Casevia brought discovery, payments, operators, and customer communication into one production platform.",
     liveUrl: "https://gobusly.com",
@@ -471,19 +592,19 @@ export const projects: Project[] = [
     heroAlt: "GoBusly route booking experience",
     galleryImages: [
       {
-        src: "/work/gobusly/Screenshot 2026-06-20 at 15.18.21.png",
-        alt: "GoBusly route discovery and booking interface",
+        src: "/work/gobusly/gobusly-home.png",
+        alt: "GoBusly mobile route search experience",
         type: "mobile",
       },
       {
-        src: "/work/gobusly/Screenshot 2026-06-20 at 15.18.33.png",
-        alt: "GoBusly passenger booking experience",
-        type: "mobile",
+        src: "/work/gobusly/gobusly-search-web.png",
+        alt: "GoBusly web trip search results",
+        type: "desktop",
       },
       {
-        src: "/work/gobusly/Screenshot 2026-06-20 at 15.17.47.png",
-        alt: "GoBusly destination and route content",
-        type: "mobile",
+        src: "/work/gobusly/gobusly-checkout-web.png",
+        alt: "GoBusly web passenger and checkout flow",
+        type: "flow",
       },
     ],
     services: ["Product strategy", "Booking UX", "Platform development", "Payments", "Operator workflows", "SEO architecture"],
@@ -491,9 +612,9 @@ export const projects: Project[] = [
     categories: ["Booking", "Transport", "Operations"],
     proof: ["20k+ visitors", "Live operators", "Balkan–EU routes"],
     metrics: [
-      { value: "20k+", label: "Visitors", description: "Public platform traffic" },
-      { value: "Live", label: "Operators", description: "Real booking workflows" },
-      { value: "Balkan–EU", label: "Routes", description: "Cross-border travel focus" },
+      { value: "20k+", label: "Visitors", description: "Measured platform traffic" },
+      { value: "Live", label: "Bookings", description: "Real routes and operators" },
+      { value: "Balkan ↔ EU", label: "Reach", description: "Cross-border coverage" },
     ],
     stack: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Stripe", "Resend", "SEO architecture"],
     challenge:
@@ -503,25 +624,25 @@ export const projects: Project[] = [
     caseStudy: [
       {
         eyebrow: "Market problem",
-        title: "Cross-border bus travel lacked a dependable digital journey.",
+        title: "A better cross-border booking journey.",
         body:
           "Travelers often move between operator websites, phone calls, and offline counters. GoBusly was shaped around making route discovery and booking feel more transparent.",
       },
       {
         eyebrow: "Platform",
-        title: "Route discovery and operations designed together.",
+        title: "Discovery and operations, connected.",
         body:
           "The customer journey connects destination content, route selection, booking, payment, and transactional email while operator workflows support the supply behind it.",
       },
       {
-        eyebrow: "Growth",
-        title: "Search architecture built around real travel intent.",
+        eyebrow: "Booking",
+        title: "Checkout without uncertainty.",
         body:
-          "Route and destination pages answer specific travel searches, allowing useful content and the booking product to reinforce one another.",
+          "Passenger details, service options, trip context, and payment stay visible in one clear flow, reducing uncertainty before the booking is confirmed.",
       },
       {
         eyebrow: "Outcome",
-        title: "A live marketplace for a specific transport region.",
+        title: "A live regional booking marketplace.",
         body:
           "GoBusly combines product strategy, booking infrastructure, operator workflows, payments, and acquisition into one production platform.",
       },
@@ -543,8 +664,7 @@ export const projects: Project[] = [
     headline: "A Swiss luxury marketplace where presentation and bidding carry equal weight.",
     subheadline:
       "An editorial commerce experience that gives high-value objects room to feel considered while keeping auction status, pricing, timing, and bidding unmistakably clear.",
-    summary:
-      "A luxury goods marketplace with premium browsing, auction, and bidding experiences.",
+    summary: "Luxury commerce with auction clarity.",
     description:
       "Nextloop sits between two demanding experiences: a luxury storefront and a live marketplace. Casevia designed the responsive frontend so product provenance and imagery build desire while auction mechanics build confidence.",
     liveUrl: "https://nextloop.ch",
@@ -564,9 +684,9 @@ export const projects: Project[] = [
     categories: ["Marketplace", "E-commerce", "Client Work"],
     proof: ["Swiss client", "Luxury marketplace", "Live auction flows"],
     metrics: [
-      { value: "Swiss", label: "Market", description: "High-trust commercial context" },
-      { value: "Live", label: "Auctions", description: "Bidding-oriented interactions" },
-      { value: "Luxury", label: "Commerce", description: "Editorial product presentation" },
+      { value: "Swiss", label: "Market", description: "A high-trust context" },
+      { value: "Live", label: "Auctions", description: "Clear real-time bidding" },
+      { value: "Luxury", label: "Positioning", description: "Editorial product focus" },
     ],
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Marketplace UX", "Auction flows", "Responsive design"],
     challenge:
@@ -576,25 +696,25 @@ export const projects: Project[] = [
     caseStudy: [
       {
         eyebrow: "The brief",
-        title: "Luxury goods cannot be presented like generic inventory.",
+        title: "Luxury needs room to breathe.",
         body:
           "The marketplace needed enough restraint to let each item feel considered while preserving the information and actions buyers need to make a decision.",
       },
       {
         eyebrow: "Experience",
-        title: "Editorial product presentation with commercial clarity.",
+        title: "Editorial polish, commercial clarity.",
         body:
           "Layouts use hierarchy and space to support high-end imagery, while consistent interaction patterns keep browsing and evaluation straightforward.",
       },
       {
         eyebrow: "Interaction",
-        title: "Auction behavior made legible across the journey.",
+        title: "Every bid stays clear.",
         body:
           "Bidding requires clear status, timing, price, and action feedback. Those signals were treated as core product information rather than secondary interface details.",
       },
       {
         eyebrow: "Outcome",
-        title: "A marketplace that carries both brand and transaction.",
+        title: "Brand and transaction, balanced.",
         body:
           "Nextloop shows how a strong visual system can support complex commerce without compromising clarity or credibility.",
       },
@@ -616,8 +736,7 @@ export const projects: Project[] = [
     headline: "Practice difficult conversations with feedback that helps.",
     subheadline:
       "An AI speaking coach combining voice recording, transcription, structured feedback, scoring, and repeatable practice scenarios.",
-    summary:
-      "An AI speaking coach for interviews, leadership updates, negotiations, and difficult conversations.",
+    summary: "Practice difficult conversations with AI feedback.",
     description:
       "SpeakSure gives users a private practice loop before high-pressure conversations. The product records and transcribes an answer, then returns structured feedback and a clearer rewritten response.",
     liveUrl: "https://speaksure.app",
@@ -637,9 +756,9 @@ export const projects: Project[] = [
     categories: ["AI", "Mobile App"],
     proof: ["Live iOS app", "AI voice feedback", "Subscription-ready"],
     metrics: [
-      { value: "Voice", label: "Input", description: "Practice through natural speech" },
-      { value: "AI", label: "Feedback", description: "Structured coaching and rewrites" },
-      { value: "Live", label: "iOS app", description: "Production mobile product" },
+      { value: "Voice", label: "Practice", description: "Speak naturally" },
+      { value: "AI", label: "Coaching", description: "Feedback and rewrites" },
+      { value: "Live", label: "iOS", description: "Production mobile app" },
     ],
     stack: ["React Native", "Expo", "TypeScript", "Convex", "RevenueCat", "PostHog", "Deepgram", "OpenAI"],
     challenge:
@@ -649,25 +768,25 @@ export const projects: Project[] = [
     caseStudy: [
       {
         eyebrow: "Product problem",
-        title: "Important conversations are usually practiced without feedback.",
+        title: "Practice needs useful feedback.",
         body:
           "Interviews, negotiations, and leadership updates carry real consequences, but most preparation happens alone. SpeakSure turns that rehearsal into a structured practice session.",
       },
       {
         eyebrow: "Core interaction",
-        title: "Record, understand, improve, and try again.",
+        title: "Record. Understand. Improve. Repeat.",
         body:
           "A voice answer becomes a transcript, scores, specific feedback, and a stronger rewritten response. The loop is designed to make improvement concrete rather than abstract.",
       },
       {
         eyebrow: "Product system",
-        title: "Scenario-based coaching inside a production mobile product.",
+        title: "Coaching built for real scenarios.",
         body:
           "Onboarding, drill history, analytics, Pro-aware access, and a growing scenario library support repeated use beyond a single AI interaction.",
       },
       {
         eyebrow: "Outcome",
-        title: "A focused AI product built around behavior change.",
+        title: "AI designed for behavior change.",
         body:
           "SpeakSure brings audio processing, AI feedback, mobile UX, and subscription infrastructure together around a clear user outcome: communicating with more confidence.",
       },
@@ -689,8 +808,7 @@ export const projects: Project[] = [
     headline: "Turning a Hamburg cleaning company’s services into a clearer sales journey.",
     subheadline:
       "A responsive, CMS-backed website that organizes the company’s commercial cleaning offer around customer intent and makes inquiry the natural next step.",
-    summary:
-      "A business website and content system for a commercial cleaning company in Hamburg.",
+    summary: "A clearer digital front door for commercial cleaning.",
     description:
       "For AM Gebäudereinigung, credibility depended on being specific: what gets cleaned, who the service is for, and how to request an offer. Casevia rebuilt that journey and paired it with a headless CMS the company could maintain without developer support.",
     liveUrl: "https://www.amgebaeudereinigung.hamburg/",
@@ -710,9 +828,9 @@ export const projects: Project[] = [
     categories: ["Business Website", "CMS", "Client Work"],
     proof: ["Hamburg client", "Headless CMS", "Lead-generation website"],
     metrics: [
-      { value: "Headless", label: "CMS", description: "Editable service information" },
-      { value: "Lead", label: "Focused", description: "Clearer inquiry paths" },
-      { value: "Live", label: "Website", description: "Operational client platform" },
+      { value: "Headless", label: "CMS", description: "Client-managed content" },
+      { value: "Lead-focused", label: "Journey", description: "Clear inquiry paths" },
+      { value: "Live", label: "Website", description: "Running in production" },
     ],
     stack: ["Next.js", "Tailwind CSS", "Headless CMS", "SEO", "Responsive design"],
     challenge:
@@ -722,25 +840,25 @@ export const projects: Project[] = [
     caseStudy: [
       {
         eyebrow: "The brief",
-        title: "Make a service business easier to understand and trust.",
+        title: "Clarity builds trust.",
         body:
           "The existing digital presence did not communicate the range or quality of the company’s services clearly enough for prospective customers.",
       },
       {
         eyebrow: "Structure",
-        title: "Service content organized around customer intent.",
+        title: "Services shaped around customer intent.",
         body:
           "Pages were structured around the work customers search for, with direct information and clearer paths to inquiry across screen sizes.",
       },
       {
         eyebrow: "Operations",
-        title: "A CMS that keeps routine updates practical.",
+        title: "Content updates, without the overhead.",
         body:
           "The content system allows the business to maintain key service information without turning every change into a development task.",
       },
       {
         eyebrow: "Outcome",
-        title: "A maintainable website with a more direct route to inquiry.",
+        title: "A clearer path to inquiry.",
         body:
           "The finished system gives prospective customers a clearer view of the offer while giving the business practical control over the content supporting it.",
       },
@@ -751,9 +869,14 @@ export const projects: Project[] = [
   },
 ];
 
-const homepageProjectSlugs = ["hakbus", "doros-premium", "logly"];
+const homepageProjectSlugs = [
+  "asknoel",
+  "gobusly",
+  "hakbus",
+];
 
 const heroStripProjectSlugs = [
+  "asknoel",
   "agim-tours",
   "hakbus",
   "doros-premium",

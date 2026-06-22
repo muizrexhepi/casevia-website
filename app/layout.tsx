@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://casevia.io"),
   title: "Casevia — Software Studio for European Businesses",
   description:
-    "An independent Balkan software studio designing and building websites, platforms, and digital products for businesses across Europe.",
+    "An independent European software studio designing and building websites, platforms, and digital products for ambitious businesses.",
 };
 
 export default function RootLayout({

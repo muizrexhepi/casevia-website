@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { ArrowRight02Icon, ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
+import {
+  ArrowRight02Icon,
+  ArrowUpRight01Icon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
@@ -13,7 +16,14 @@ const services = [
   ["AI & automation", "Workflow design, integrations, AI products"],
 ];
 
-const process = ["Discover", "Structure", "Design", "Build", "Launch", "Improve"];
+const process = [
+  "Discover",
+  "Structure",
+  "Design",
+  "Build",
+  "Launch",
+  "Improve",
+];
 
 export function StudioOverviewSection() {
   return (
@@ -40,7 +50,11 @@ export function StudioOverviewSection() {
                 aria-label="View all services"
                 className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
               >
-                <HugeiconsIcon icon={ArrowUpRight01Icon} size={19} strokeWidth={1.8} />
+                <HugeiconsIcon
+                  icon={ArrowUpRight01Icon}
+                  size={19}
+                  strokeWidth={1.8}
+                />
               </Link>
             </div>
 
@@ -70,7 +84,11 @@ export function StudioOverviewSection() {
             className="group flex min-h-[315px] flex-col rounded-[2rem] bg-primary p-6 text-primary-foreground sm:p-8 lg:col-span-5 lg:p-10"
           >
             <div className="flex items-start justify-between gap-6">
-              <Heading as="h3" variant="subsection" className="max-w-xs text-primary-foreground">
+              <Heading
+                as="h3"
+                variant="subsection"
+                className="max-w-xs text-primary-foreground"
+              >
                 A process built around momentum.
               </Heading>
               <HugeiconsIcon
@@ -86,7 +104,12 @@ export function StudioOverviewSection() {
                 <span key={step} className="inline-flex items-center gap-3">
                   {step}
                   {index < process.length - 1 ? (
-                    <span aria-hidden="true" className="text-primary-foreground/35">/</span>
+                    <span
+                      aria-hidden="true"
+                      className="text-primary-foreground/35"
+                    >
+                      /
+                    </span>
                   ) : null}
                 </span>
               ))}
@@ -110,8 +133,6 @@ export function StudioOverviewSection() {
                 />
               </div>
               <p className="mt-auto pt-10 font-heading text-3xl font-semibold leading-tight tracking-[-0.04em] text-foreground">
-                Tetovo
-                <span className="mx-2 text-primary">↔</span>
                 Europe
               </p>
               <Text variant="body-sm" className="mt-4">

@@ -147,6 +147,8 @@ function ProjectImage({
     <div
       className={cn(
         "absolute inset-0",
+        project.visualTheme === "asknoel" &&
+          "bg-[radial-gradient(circle_at_75%_20%,rgba(124,58,237,0.26),transparent_44%),linear-gradient(135deg,#080f1d,#171c2b)]",
         project.visualTheme === "gobusly" &&
           "bg-[radial-gradient(circle_at_75%_20%,rgba(47,91,211,0.34),transparent_42%),linear-gradient(135deg,#061b36,#0d2b55)]",
         project.visualTheme === "hakbus" &&

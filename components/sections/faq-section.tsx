@@ -10,7 +10,7 @@ const faqs = [
   {
     question: "Where are you based, and where do you work?",
     answer:
-      "Casevia is based in Tetovo, North Macedonia, and works remotely with businesses across the Balkans and the wider European market. Projects are run in English with clear written communication and regular working sessions.",
+      "Casevia is based in Europe and works remotely with businesses across Europe and internationally. Projects are run in English with clear written communication and regular working sessions.",
   },
   {
     question: "What kind of project is a good fit?",

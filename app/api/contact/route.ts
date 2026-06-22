@@ -140,7 +140,7 @@ function emailShell(content: string) {
                 Casevia
               </p>
               <p style="font-size: 12px; line-height: 1.7; color: #9CA3AF; margin: 0 0 14px;">
-                Tetovo, North Macedonia
+                Europe
               </p>
               <p style="font-size: 12px; color: #9CA3AF; margin: 0;">
                 <a href="${SITE_URL}" style="color: #9CA3AF; text-decoration: none;">casevia.io</a>

@@ -33,8 +33,9 @@ export function WhyCaseviaSection() {
               A studio that stays close to the work.
             </Heading>
             <Text className="mt-5 max-w-md">
-              Based in Tetovo and working across Europe, Casevia keeps product
-              thinking, design, and engineering in one continuous process.
+              Based in Europe and working internationally, Casevia keeps
+              product thinking, design, and engineering in one continuous
+              process.
             </Text>
           </div>
 

@@ -8,7 +8,7 @@ import { Heading, Text } from "@/components/ui/typography";
 export const metadata: Metadata = {
   title: "About — Casevia",
   description:
-    "Casevia is an independent Balkan software studio combining product strategy, interface design, and engineering for businesses across Europe.",
+    "Casevia is an independent European software studio combining product strategy, interface design, and engineering for ambitious businesses.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About — Casevia",
@@ -68,7 +68,7 @@ export default function AboutPage() {
         <Container>
           <PageIntro
             title="A software studio built to stay close to the work."
-            description="Casevia is an independent studio in Tetovo, working with businesses across Europe to turn commercial challenges and operational complexity into useful digital products."
+            description="Casevia is an independent European studio working internationally to turn commercial challenges and operational complexity into useful digital products."
           />
         </Container>
       </Section>
@@ -86,8 +86,8 @@ export default function AboutPage() {
                 behind the screen.
               </Heading>
               <div className="mt-10 grid gap-6 border-t border-border pt-8 sm:grid-cols-3">
-                <StudioFact label="Based in" value="Tetovo, North Macedonia" />
-                <StudioFact label="Working across" value="The Balkans and Europe" />
+                <StudioFact label="Based in" value="Europe" />
+                <StudioFact label="Working across" value="Europe and internationally" />
                 <StudioFact label="Core disciplines" value="Strategy, design, engineering" />
               </div>
             </div>
