@@ -1,25 +1,17 @@
-import type { Metadata } from "next";
-
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Heading, Text } from "@/components/ui/typography";
+import { pageMetadata, site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Terms of Service — Casevia",
-  description:
-    "Terms of Service for using the Casevia website and contacting Casevia about software design and development services.",
-  alternates: {
-    canonical: "/terms",
-  },
-};
+export const metadata = pageMetadata("/terms", "Terms of Service", "Terms for using the Muiz Rexhepi website and contacting Muiz about software development services.");
 
-const lastUpdated = "June 20, 2026";
+const lastUpdated = "November 16, 2026";
 
 export default function TermsPage() {
   return (
     <Section spacing="sm" className="pb-14 pt-10 sm:pb-20 sm:pt-14 lg:pt-16">
       <Container>
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-4xl rounded-2xl border border-border bg-card p-6 sm:p-12">
           <Heading as="h1" variant="section">
             Terms of Service.
           </Heading>
@@ -31,19 +23,19 @@ export default function TermsPage() {
           <div className="mt-10 space-y-10">
             <LegalSection title="1. Introduction">
               <p>
-                These Terms of Service govern your use of the Casevia website
-                and any communication with Casevia through the website.
+                These Terms of Service govern your use of the Muiz Rexhepi website
+                and any communication with Muiz Rexhepi through the website.
               </p>
 
               <p>
                 By using this website, submitting a contact form, or contacting
-                Casevia, you agree to these Terms.
+                Muiz Rexhepi, you agree to these Terms.
               </p>
             </LegalSection>
 
-            <LegalSection title="2. About Casevia">
+            <LegalSection title="2. About Muiz Rexhepi">
               <p>
-                Casevia provides software design, development, strategy, and
+                Muiz Rexhepi provides software design, development, strategy, and
                 related digital product services. This may include websites, web
                 apps, dashboards, e-commerce platforms, booking systems, AI
                 features, automation, and related consulting.
@@ -67,7 +59,7 @@ export default function TermsPage() {
             <LegalSection title="4. Project inquiries">
               <p>
                 Submitting a contact form or project inquiry does not create a
-                client relationship, contract, or obligation for Casevia to
+                client relationship, contract, or obligation for me to
                 accept your project.
               </p>
 
@@ -95,7 +87,7 @@ export default function TermsPage() {
             <LegalSection title="6. Intellectual property">
               <p>
                 All content on this website, including text, design, graphics,
-                layouts, branding, and code examples, belongs to Casevia or its
+                layouts, branding, and code examples, belongs to Muiz Rexhepi or its
                 respective owners unless stated otherwise.
               </p>
 
@@ -107,7 +99,7 @@ export default function TermsPage() {
 
             <LegalSection title="7. Portfolio and case studies">
               <p>
-                Casevia may display selected work, case studies, logos,
+                Muiz Rexhepi may display selected work, case studies, logos,
                 screenshots, and project descriptions on the website unless a
                 separate written agreement restricts this.
               </p>
@@ -121,7 +113,7 @@ export default function TermsPage() {
             <LegalSection title="8. Third-party links">
               <p>
                 The website may include links to third-party websites or
-                services. Casevia is not responsible for the content, policies,
+                services. Muiz Rexhepi is not responsible for the content, policies,
                 security, or practices of third-party websites.
               </p>
 
@@ -133,14 +125,14 @@ export default function TermsPage() {
             <LegalSection title="9. No guarantees">
               <p>
                 The website and its content are provided for general
-                informational purposes. Casevia makes reasonable efforts to keep
-                the website accurate and available, but we do not guarantee that
+                informational purposes. I make reasonable efforts to keep
+                the website accurate and available, but I do not guarantee that
                 it will always be error-free, uninterrupted, or fully up to
                 date.
               </p>
 
               <p>
-                Casevia does not guarantee specific business results, revenue,
+                Muiz Rexhepi does not guarantee specific business results, revenue,
                 rankings, conversions, traffic, or growth from using the website
                 or from any general information shown on it.
               </p>
@@ -148,7 +140,7 @@ export default function TermsPage() {
 
             <LegalSection title="10. Limitation of liability">
               <p>
-                To the maximum extent permitted by law, Casevia will not be
+                To the maximum extent permitted by law, Muiz Rexhepi will not be
                 liable for indirect, incidental, special, consequential, or
                 punitive damages arising from your use of the website.
               </p>
@@ -162,15 +154,15 @@ export default function TermsPage() {
 
             <LegalSection title="11. Privacy">
               <p>
-                Your use of the website is also governed by our{" "}
-                <a href="/privacy">Privacy Policy</a>, which explains how we
+                Your use of the website is also governed by my{" "}
+                <a href="/privacy">Privacy Policy</a>, which explains how I
                 collect and use information.
               </p>
             </LegalSection>
 
             <LegalSection title="12. Changes to these Terms">
               <p>
-                We may update these Terms from time to time. When we do, we will
+                I may update these Terms from time to time. When I do, I will
                 update the “Last updated” date at the top of this page.
               </p>
 
@@ -181,14 +173,14 @@ export default function TermsPage() {
             </LegalSection>
 
             <LegalSection title="13. Contact">
-              <p>For questions about these Terms, contact us at:</p>
+              <p>For questions about these Terms, contact me at:</p>
 
               <p>
-                <strong>Casevia</strong>
+                <strong>{site.name}</strong>
                 <br />
-                Email: <a href="mailto:hello@casevia.io">hello@casevia.io</a>
+                Email: <a href={`mailto:${site.email}`}>{site.email}</a>
                 <br />
-                Website: <a href="https://casevia.io">https://casevia.io</a>
+                Website: <a href={site.url}>{site.domain}</a>
               </p>
             </LegalSection>
           </div>

@@ -1,80 +1,36 @@
 import Link from "next/link";
-import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
+import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { buttonVariants } from "@/components/ui/button";
-import { Heading, Text } from "@/components/ui/typography";
-import { cn } from "@/lib/utils";
+import { Heading } from "@/components/ui/typography";
 
 const phases = [
-  {
-    title: "Define",
-    description:
-      "We clarify the goal, audience, scope, and product direction before anything gets designed.",
-  },
-  {
-    title: "Design",
-    description:
-      "We shape the experience, interface, and flows so the product feels clear, credible, and easy to use.",
-  },
-  {
-    title: "Build",
-    description:
-      "We develop, test, launch, and improve the product with production-ready foundations.",
-  },
+  ["Define what matters", "We agree on the problem, the people using the product, and what needs to be ready for launch."],
+  ["Design and build", "I share designs and working previews early so you can try the important flows and give feedback."],
+  ["Launch and improve", "I test the critical journeys, prepare the handover, and agree with you on what comes next."],
 ];
 
 export function ProcessSection() {
   return (
-    <Section className="bg-background">
+    <Section className="border-t border-border bg-[var(--yellow)] text-[var(--ink)]">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <div>
-            <Heading as="h2" variant="section" className="max-w-xl">
-              From rough idea to working product.
-            </Heading>
-            <Text variant="body" className="mt-5 max-w-xl">
-              A focused process for turning unclear requirements into polished
-              websites, dashboards, booking systems, and digital workflows.
-            </Text>
-            <Link
-              href="/process"
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "lg" }),
-                "mt-7 h-11 rounded-full px-5 font-semibold",
-              )}
-            >
-              View process
-              <HugeiconsIcon
-                icon={ArrowRight02Icon}
-                size={17}
-                strokeWidth={1.8}
-                className="ml-2"
-              />
-            </Link>
-          </div>
-
-          <div className="grid border-border sm:grid-cols-3 lg:border-l">
-            {phases.map((phase, index) => (
-              <div
-                key={phase.title}
-                className="border-border py-8 sm:px-7 lg:border-r lg:py-2 last:lg:border-r-0"
-              >
-                <div className="font-heading text-sm font-semibold text-primary">
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-                <Heading as="h3" variant="card" className="mt-8">
-                  {phase.title}
-                </Heading>
-                <Text variant="body-sm" className="mt-4 max-w-[18rem]">
-                  {phase.description}
-                </Text>
-              </div>
-            ))}
-          </div>
+        <div className="flex flex-wrap items-end justify-between gap-5">
+          <Heading as="h2" variant="section" className="text-[var(--ink)]">How we’ll work together.</Heading>
+          <Link href="/process" className="inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline">
+            See the process <HugeiconsIcon icon={ArrowUpRight01Icon} size={18} />
+          </Link>
         </div>
+        <ol className="mt-9 grid gap-px overflow-hidden rounded-xl border border-[var(--ink)] bg-[var(--ink)] md:grid-cols-3">
+          {phases.map(([title, description], index) => (
+            <li key={title} className="bg-[var(--yellow)] p-5 sm:p-7">
+              <span className="grid size-9 place-items-center rounded-full border border-[var(--ink)] text-sm font-semibold">{index + 1}</span>
+              <Heading as="h3" variant="card" className="mt-5 text-[var(--ink)]">{title}</Heading>
+              <p className="mt-3 max-w-sm text-sm leading-6">{description}</p>
+            </li>
+          ))}
+        </ol>
       </Container>
     </Section>
   );

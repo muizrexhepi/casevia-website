@@ -1,279 +1,83 @@
-import type { Metadata } from "next";
-import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import Image from "next/image";
+import Link from "next/link";
 
 import { Container } from "@/components/layout/container";
-import { PageIntro } from "@/components/layout/page-intro";
-import { Section } from "@/components/layout/section";
 import { Heading, Text } from "@/components/ui/typography";
+import { services } from "@/lib/services";
+import { pageMetadata } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "Services — Casevia",
-  description:
-    "Connected product strategy, design, and software engineering for European businesses building websites, platforms, commerce, and AI workflows.",
-  keywords: [
-    "software agency",
-    "website development",
-    "web app development",
-    "dashboard development",
-    "ecommerce development",
-    "AI automation",
-    "Casevia services",
-  ],
-  alternates: {
-    canonical: "/services",
-  },
-  openGraph: {
-    title: "Services — Casevia",
-    description:
-      "Strategy, design, and engineering for websites, platforms, commerce, and useful AI workflows.",
-    url: "/services",
-    siteName: "Casevia",
-    type: "website",
-  },
-};
+export const metadata = pageMetadata(
+  "/services",
+  "Software Development Services",
+  "Web development, custom software, booking and e-commerce systems, mobile apps, and business automation from Muiz Rexhepi.",
+  { url: "/brand/share-services.png", alt: "Muiz Rexhepi software development services", width: 1200, height: 630 },
+);
 
-const capabilityColumns = [
-  {
-    title: "Strategy",
-    groups: [
-      {
-        title: "Discovery",
-        items: [
-          "Business goals",
-          "User needs",
-          "Workflow mapping",
-          "Product direction",
-        ],
-      },
-      {
-        title: "Definition",
-        items: [
-          "Scope planning",
-          "Feature priorities",
-          "Content structure",
-          "Launch roadmap",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Design",
-    groups: [
-      {
-        title: "Interface",
-        items: [
-          "UX structure",
-          "Responsive layouts",
-          "Design systems",
-          "Conversion-focused pages",
-        ],
-      },
-      {
-        title: "Experience",
-        items: [
-          "Booking flows",
-          "Dashboard UX",
-          "Product browsing",
-          "Mobile-first polish",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Development",
-    groups: [
-      {
-        title: "Front-end",
-        items: ["Next.js", "React", "React Native", "Tailwind CSS"],
-      },
-      {
-        title: "Systems",
-        items: ["Dashboards", "CMS", "Payments", "AI integrations"],
-      },
-    ],
-  },
-];
+const [web, software, booking, mobile, automation] = services;
 
-const services = [
+const serviceGroups = [
   {
-    id: "business-websites",
-    number: "01",
-    title: "Business Websites",
-    description:
-      "Distinctive business websites that sharpen the positioning, build confidence, and turn interest into a useful next step.",
-    deliverables: [
-      "Landing pages",
-      "Multi-page websites",
-      "CMS-backed content",
-      "SEO foundations",
-      "Contact and booking flows",
-    ],
+    color: "var(--yellow)",
+    illustration: { src: "/brand/building-blocks.svg", width: 550, height: 500 },
+    entries: [web, mobile],
   },
   {
-    id: "web-apps-dashboards",
-    number: "02",
-    title: "Web Apps & Dashboards",
-    description:
-      "Custom platforms, booking systems, portals, and internal tools shaped around the people, data, and decisions in the real workflow.",
-    deliverables: [
-      "Product architecture",
-      "Dashboard UI",
-      "Authentication",
-      "Database-backed workflows",
-      "Production deployment",
-    ],
+    color: "var(--lilac)",
+    illustration: { src: "/brand/bookings.svg", width: 530, height: 420 },
+    entries: [booking],
   },
   {
-    id: "ecommerce",
-    number: "03",
-    title: "E-commerce",
-    description:
-      "Storefronts and marketplaces where strong product presentation, confident decision-making, and a direct buying journey work together.",
-    deliverables: [
-      "Storefront UI",
-      "Product pages",
-      "Category pages",
-      "Checkout-ready flows",
-      "Responsive shopping experience",
-    ],
-  },
-  {
-    id: "ai-automation",
-    number: "04",
-    title: "AI & Automation",
-    description:
-      "Focused AI features and connected automations that remove repetitive work or create a genuinely useful product capability.",
-    deliverables: [
-      "AI-assisted workflows",
-      "Automation logic",
-      "Prompt systems",
-      "Admin tools",
-      "API integrations",
-    ],
+    color: "var(--mint)",
+    illustration: { src: "/brand/automation.svg", width: 530, height: 420 },
+    entries: [software, automation],
   },
 ];
 
 export default function ServicesPage() {
   return (
-    <main className="bg-background">
-      <Section
-        spacing="sm"
-        className="pb-8 pt-10 sm:pb-10 sm:pt-14 lg:pb-12 lg:pt-16"
-      >
+    <>
+      <section className="relative isolate grid min-h-[26rem] place-items-center overflow-hidden border-b border-[var(--ink)] bg-[var(--yellow)] py-15 text-center text-[var(--ink)] sm:py-20">
+        <Image src="/brand/bracket-sticker.svg" alt="" width={234} height={181} className="pointer-events-none absolute -top-6 -left-8 -z-10 w-24 -rotate-12 sm:top-8 lg:left-[8%] lg:w-40" />
+        <Image src="/brand/cursor-sticker.svg" alt="" width={220} height={220} className="pointer-events-none absolute -right-9 -bottom-8 -z-10 w-28 rotate-12 sm:bottom-4 lg:right-[7%] lg:w-44" />
         <Container>
-          <PageIntro
-            title="Design and engineering, connected from day one."
-            description="We help businesses clarify the opportunity, shape the right experience, and put dependable software into production."
-          />
-        </Container>
-      </Section>
-
-      <section className="bg-muted/40 py-12 sm:py-16">
-        <Container>
-          <div className="mb-12 max-w-2xl">
-            <Heading as="h2" variant="subsection">
-              The thinking, craft, and technical ownership needed to move from
-              an open question to a working product.
-            </Heading>
-          </div>
-
-          <div className="grid gap-12 border-t border-foreground/15 pt-10 lg:grid-cols-3 lg:gap-16">
-            {capabilityColumns.map((column) => (
-              <div
-                key={column.title}
-                className="first:lg:pl-0 last:lg:pr-0"
-              >
-                <Heading as="h3" variant="subsection">
-                  {column.title}
-                </Heading>
-
-                <div className="mt-8 space-y-8">
-                  {column.groups.map((group) => (
-                    <div key={group.title}>
-                      <h3 className="text-sm font-semibold text-foreground">
-                        {group.title}
-                      </h3>
-
-                      <ul className="mt-4 space-y-3">
-                        {group.items.map((item) => (
-                          <li
-                            key={item}
-                            className="text-base leading-7 text-muted-foreground"
-                          >
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          <p className="mb-5 text-sm font-semibold">Software development services</p>
+          <Heading as="h1" variant="hero" className="mx-auto max-w-[15ch] text-[var(--ink)]">Software for the way you work.</Heading>
+          <Text variant="lead" className="mx-auto mt-6 max-w-[49ch] text-[var(--ink)]">
+            From a customer’s first visit to the work your team does every day, I build around the part of your business you want to improve.
+          </Text>
         </Container>
       </section>
-
-      <Section>
-        <Container>
-          <div className="mb-10 max-w-2xl">
-            <Heading as="h2" variant="section">
-              Four ways we can move the business forward.
-            </Heading>
+      {serviceGroups.map(({ color, illustration, entries }, index) => (
+        <section key={illustration.src} className="border-b border-border">
+          <div className="mx-auto grid max-w-[100rem] md:grid-cols-2" style={{ "--service-color": color } as React.CSSProperties}>
+            <div className="flex flex-col justify-center divide-y divide-border px-5 py-9 sm:px-10 md:py-13 lg:px-16 xl:px-22">
+              {entries.map((service) => (
+                <article key={service.id} id={service.id} className="scroll-mt-20 py-6 first:pt-0 last:pb-0">
+                  <Heading as="h2" variant="subsection" className="text-[var(--service-color)]">{service.title}</Heading>
+                  <Text className="mt-3 max-w-[46ch]">{service.description}</Text>
+                  <ul className="mt-5 flex flex-wrap gap-2">
+                    {service.deliverables.map((item) => (
+                      <li key={item} className="rounded-full border border-border px-3 py-1.5 text-xs text-foreground/90 sm:text-sm">{item}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+              {entries.length === 1 && (
+                <Link href="/work/ido-tours" className="mt-6 w-fit border-t-0 pt-0 text-sm font-semibold text-[var(--service-color)] underline-offset-4 hover:underline">
+                  See the Ido Tours case study ↗
+                </Link>
+              )}
+            </div>
+            <div className={cn(
+              "grid min-h-60 place-items-center border-t border-[var(--ink)] bg-[var(--service-color)] p-4 md:border-t-0 md:p-7",
+              index % 2 === 1 && "md:row-start-1",
+            )}>
+              <Image {...illustration} alt="" className="h-auto w-full max-w-[27rem]" />
+            </div>
           </div>
-          <div>
-            {services.map((service) => (
-              <article
-                key={service.id}
-                id={service.id}
-                className="scroll-mt-28 border-t border-border py-8 sm:py-10 lg:py-12"
-              >
-                <div className="grid gap-7 lg:grid-cols-[0.16fr_0.84fr]">
-                  <div className="font-heading text-sm font-semibold text-primary">
-                    {service.number}
-                  </div>
-
-                  <div className="grid gap-8 lg:grid-cols-[0.9fr_1fr]">
-                    <div>
-                      <Heading as="h3" variant="subsection">
-                        {service.title}
-                      </Heading>
-
-                      <Text variant="body" className="mt-4 max-w-xl">
-                        {service.description}
-                      </Text>
-                    </div>
-
-                    <div>
-                      <h3 className="text-sm font-semibold text-foreground">
-                        Deliverables
-                      </h3>
-
-                      <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                        {service.deliverables.map((item) => (
-                          <li
-                            key={item}
-                            className="flex gap-3 text-sm leading-6 text-muted-foreground"
-                          >
-                            <HugeiconsIcon
-                              icon={CheckmarkCircle02Icon}
-                              size={17}
-                              strokeWidth={1.8}
-                              className="mt-0.5 shrink-0 text-primary"
-                            />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-
-        </Container>
-      </Section>
-    </main>
+        </section>
+      ))}
+    </>
   );
 }

@@ -1,4 +1,8 @@
+import { featuredProjects } from "@/lib/featured-projects";
+
 export type ProjectCategory =
+  | "Custom Software"
+  | "Hospitality"
   | "AI"
   | "Mobile App"
   | "Booking"
@@ -31,6 +35,7 @@ export type ProjectCaseSection = {
   body: string;
   image?: string;
   imageAlt?: string;
+  imageType?: ProjectImage["type"];
   quote?: {
     text: string;
     author?: string;
@@ -39,6 +44,9 @@ export type ProjectCaseSection = {
 };
 
 export type ProjectVisualTheme =
+  | "rendo-pos"
+  | "ido-tours"
+  | "villa-noar"
   | "asknoel"
   | "agimtours"
   | "logly"
@@ -63,7 +71,8 @@ export type Project = {
   subheadline: string;
   featured?: boolean;
   homepageFeatured?: boolean;
-  showInHeroStrip?: boolean;
+  flag?: string;
+  inquiry?: [title: string, description: string];
   liveUrl?: string;
   liveLabel?: string;
   logoImage?: string;
@@ -88,9 +97,11 @@ export type Project = {
   solution: string;
   seoTitle?: string;
   seoDescription?: string;
+  socialImage?: string;
 };
 
 export const projects: Project[] = [
+  ...featuredProjects,
   {
     slug: "asknoel",
     name: "AskNoel",
@@ -100,14 +111,12 @@ export const projects: Project[] = [
     clientType: "Dubai-based fintech client",
     industry: "Crypto / AI / Fintech",
     featured: true,
-    homepageFeatured: true,
-    showInHeroStrip: true,
     headline: "Turning a high-growth crypto product into one connected intelligence platform.",
     subheadline:
       "A multi-surface product spanning real-time market data, editorial intelligence, an AI chatbot, and mobile access for a global crypto audience.",
     summary: "Crypto intelligence, built as one product.",
     description:
-      "AskNoel needed more than a market dashboard. Casevia helped shape and build the platform across web, conversational AI, and mobile, creating a cohesive product that could support a fast-moving crypto company backed by multi-million-dollar investment.",
+      "AskNoel needed more than a market dashboard. Muiz Rexhepi helped shape and build the platform across web, conversational AI, and mobile, creating a cohesive experience across those surfaces.",
     liveUrl: "https://app.asknoel.ai/",
     liveLabel: "Visit AskNoel",
     logoImage: "/logos/asknoel.png",
@@ -186,7 +195,7 @@ export const projects: Project[] = [
     challenge:
       "Crypto users move between price trackers, news sources, research tools, and community channels, creating a fragmented experience in a market where speed and clarity matter.",
     solution:
-      "Casevia helped build a unified product across web, AI, and mobile, bringing live market information, editorial content, and conversational assistance into a consistent platform.",
+      "Muiz Rexhepi helped build a unified product across web, AI, and mobile, bringing live market information, editorial content, and conversational assistance into a consistent platform.",
     caseStudy: [
       {
         eyebrow: "The brief",
@@ -226,13 +235,12 @@ export const projects: Project[] = [
     clientType: "Travel agency",
     industry: "Travel / Hospitality",
     featured: true,
-    showInHeroStrip: true,
     headline: "One travel business, connected from discovery to daily operations.",
     subheadline:
       "A long-term partnership spanning the public brand, travel discovery, bookings, and the internal system coordinating agencies, reservations, hotels, and tours.",
     summary: "Travel discovery and operations, connected.",
     description:
-      "The work began with the customer experience and grew with the business. Casevia connected Agim Tours’ public brand to the operational system behind it, creating one clearer foundation for travel products, bookings, and coordination across agencies.",
+      "The work began with the customer experience and grew with the business. Muiz Rexhepi connected Agim Tours’ public brand to the operational system behind it, creating one clearer foundation for travel products, bookings, and coordination across agencies.",
     liveUrl: "https://agimtours.com",
     liveLabel: "Visit Agim Tours",
     logoImage: "/logos/agimtours.webp",
@@ -291,7 +299,7 @@ export const projects: Project[] = [
     challenge:
       "The agency’s public experience and internal operation needed to work as one connected system rather than a collection of disconnected tools and manual processes.",
     solution:
-      "Casevia created a unified digital foundation spanning brand, website, booking journeys, travel inventory, and the operational workflows used by multiple agencies.",
+      "Muiz Rexhepi created a unified digital foundation spanning brand, website, booking journeys, travel inventory, and the operational workflows used by multiple agencies.",
     caseStudy: [
       {
         eyebrow: "The brief",
@@ -331,14 +339,12 @@ export const projects: Project[] = [
     clientType: "Transport operator",
     industry: "Transport / Ticketing",
     featured: true,
-    homepageFeatured: true,
-    showInHeroStrip: true,
     headline: "A transport platform built for passengers and the operation behind them.",
     subheadline:
       "Web booking, mobile access, internal dashboards, and operator workflows designed as one connected ticketing service for a regional bus company.",
     summary: "Ticketing and transport operations, connected.",
     description:
-      "For Hakbus, booking could not stop at a confirmation screen. Casevia worked across the passenger journey and the operational tools behind each trip, connecting web, mobile, and dashboards for a fleet of more than 100 buses.",
+      "For Hakbus, booking could not stop at a confirmation screen. Muiz Rexhepi worked across the passenger journey and the operational tools behind each trip, connecting web, mobile, and dashboards for transport operators.",
     liveUrl: "https://hakbus.org",
     liveLabel: "Visit Hakbus",
     logoImage: "/logos/hakbus.png",
@@ -387,7 +393,7 @@ export const projects: Project[] = [
     challenge:
       "A high-volume transport operator needed reliable customer booking experiences and internal tools across several operational touchpoints.",
     solution:
-      "Casevia connected passenger-facing mobile and web journeys with dashboards designed around the realities of transport operations.",
+      "Muiz Rexhepi connected passenger-facing mobile and web journeys with dashboards designed around the realities of transport operations.",
     caseStudy: [
       {
         eyebrow: "The brief",
@@ -427,13 +433,12 @@ export const projects: Project[] = [
     clientType: "Swiss retail brand",
     industry: "Coffee / Retail",
     featured: true,
-    showInHeroStrip: true,
     headline: "Bringing a Swiss coffee brand into a new market with confidence.",
     subheadline:
       "A market-specific storefront for Macedonia, translating Doros Premium’s product quality into clear discovery, credible presentation, and a direct path to purchase.",
     summary: "Premium coffee, introduced to a new market.",
     description:
-      "Entering Macedonia meant earning trust with customers who did not yet know the brand. Casevia adapted the Swiss positioning into a focused local storefront where the coffee range, product detail, and buying journey stay clear on every screen.",
+      "Entering Macedonia meant earning trust with customers who did not yet know the brand. Muiz Rexhepi adapted the Swiss positioning into a focused local storefront where the coffee range, product detail, and buying journey stay clear on every screen.",
     liveUrl: "https://dorospremium.com.mk",
     liveLabel: "Visit Doros Premium",
     logoImage: "/logos/doros.svg",
@@ -459,7 +464,7 @@ export const projects: Project[] = [
     challenge:
       "The brand needed to establish trust in a new market without losing the premium positioning of its product range.",
     solution:
-      "Casevia translated the brand into a focused storefront with clear product hierarchy, strong mobile behavior, and a more credible path to purchase.",
+      "Muiz Rexhepi translated the brand into a focused storefront with clear product hierarchy, strong mobile behavior, and a more credible path to purchase.",
     caseStudy: [
       {
         eyebrow: "The brief",
@@ -496,10 +501,9 @@ export const projects: Project[] = [
     role: "Product strategy and mobile engineering",
     period: "2026 — Present",
     status: "Live iOS product",
-    clientType: "Casevia venture",
+    clientType: "Independent product",
     industry: "Health / AI / Nutrition",
     featured: true,
-    showInHeroStrip: true,
     headline: "Nutrition tracking without the repetitive data entry.",
     subheadline:
       "A production iOS app that turns natural-language meal descriptions into structured nutrition data, goals, and useful weekly insights.",
@@ -531,7 +535,7 @@ export const projects: Project[] = [
     challenge:
       "Traditional calorie tracking is too slow and repetitive for many users to maintain consistently.",
     solution:
-      "Casevia designed and built an AI-first mobile workflow that turns plain-language meals into trackable nutrition data and connects it to a complete subscription product.",
+      "Muiz Rexhepi designed and built an AI-first mobile workflow that turns plain-language meals into trackable nutrition data and connects it to a complete subscription product.",
     caseStudy: [
       {
         eyebrow: "Product problem",
@@ -568,17 +572,15 @@ export const projects: Project[] = [
     role: "Product strategy and platform development",
     period: "2025 — Present",
     status: "Live booking platform",
-    clientType: "Casevia venture",
+    clientType: "Independent product",
     industry: "Transport / Booking",
     featured: true,
-    homepageFeatured: true,
-    showInHeroStrip: true,
     headline: "Making bus travel between the Balkans and Europe easier to book.",
     subheadline:
       "A focused booking marketplace where destination discovery, cross-border routes, payments, operator workflows, and traveler communication work as one system.",
     summary: "Cross-border bus travel, easier to book.",
     description:
-      "GoBusly was created around a regional reality: cross-border routes are in demand, but the journey from finding a bus to holding a valid booking is often fragmented. Casevia brought discovery, payments, operators, and customer communication into one production platform.",
+      "GoBusly was created around a regional reality: cross-border routes are in demand, but the journey from finding a bus to holding a valid booking is often fragmented. Muiz Rexhepi brought discovery, payments, operators, and customer communication into one production platform.",
     liveUrl: "https://gobusly.com",
     liveLabel: "Visit GoBusly",
     logoImage: "/logos/gobusly.svg",
@@ -620,7 +622,7 @@ export const projects: Project[] = [
     challenge:
       "International bus booking in the region is fragmented across offline counters, phone calls, and inconsistent operator experiences.",
     solution:
-      "Casevia built a destination-led booking platform that brings discovery, reservations, payments, operators, and customer communication into one system.",
+      "Muiz Rexhepi built a destination-led booking platform that brings discovery, reservations, payments, operators, and customer communication into one system.",
     caseStudy: [
       {
         eyebrow: "Market problem",
@@ -660,13 +662,12 @@ export const projects: Project[] = [
     clientType: "Swiss marketplace client",
     industry: "Luxury / Marketplace",
     featured: true,
-    showInHeroStrip: true,
     headline: "A Swiss luxury marketplace where presentation and bidding carry equal weight.",
     subheadline:
       "An editorial commerce experience that gives high-value objects room to feel considered while keeping auction status, pricing, timing, and bidding unmistakably clear.",
     summary: "Luxury commerce with auction clarity.",
     description:
-      "Nextloop sits between two demanding experiences: a luxury storefront and a live marketplace. Casevia designed the responsive frontend so product provenance and imagery build desire while auction mechanics build confidence.",
+      "Nextloop sits between two demanding experiences: a luxury storefront and a live marketplace. Muiz Rexhepi designed the responsive frontend so product provenance and imagery build desire while auction mechanics build confidence.",
     liveUrl: "https://nextloop.ch",
     liveLabel: "Visit Nextloop",
     logoImage: "/logos/nextloop.svg",
@@ -692,7 +693,7 @@ export const projects: Project[] = [
     challenge:
       "The platform had to feel premium and trustworthy while still making complex auction actions easy to understand.",
     solution:
-      "Casevia balanced editorial product presentation with clear marketplace patterns for browsing, evaluation, bidding, and responsive use.",
+      "Muiz Rexhepi balanced editorial product presentation with clear marketplace patterns for browsing, evaluation, bidding, and responsive use.",
     caseStudy: [
       {
         eyebrow: "The brief",
@@ -729,10 +730,9 @@ export const projects: Project[] = [
     role: "Product strategy and mobile engineering",
     period: "2026 — Present",
     status: "Live iOS product",
-    clientType: "Casevia venture",
+    clientType: "Independent product",
     industry: "AI / Communication",
     featured: true,
-    showInHeroStrip: true,
     headline: "Practice difficult conversations with feedback that helps.",
     subheadline:
       "An AI speaking coach combining voice recording, transcription, structured feedback, scoring, and repeatable practice scenarios.",
@@ -764,7 +764,7 @@ export const projects: Project[] = [
     challenge:
       "People rarely receive useful feedback before the interviews, negotiations, and leadership conversations where communication matters most.",
     solution:
-      "Casevia built a repeatable mobile practice loop combining voice capture, transcription, scoring, AI coaching, and subscription-aware access.",
+      "Muiz Rexhepi built a repeatable mobile practice loop combining voice capture, transcription, scoring, AI coaching, and subscription-aware access.",
     caseStudy: [
       {
         eyebrow: "Product problem",
@@ -804,13 +804,12 @@ export const projects: Project[] = [
     clientType: "German service business",
     industry: "Cleaning services",
     featured: true,
-    showInHeroStrip: true,
     headline: "Turning a Hamburg cleaning company’s services into a clearer sales journey.",
     subheadline:
       "A responsive, CMS-backed website that organizes the company’s commercial cleaning offer around customer intent and makes inquiry the natural next step.",
     summary: "A clearer digital front door for commercial cleaning.",
     description:
-      "For AM Gebäudereinigung, credibility depended on being specific: what gets cleaned, who the service is for, and how to request an offer. Casevia rebuilt that journey and paired it with a headless CMS the company could maintain without developer support.",
+      "For AM Gebäudereinigung, credibility depended on being specific: what gets cleaned, who the service is for, and how to request an offer. Muiz Rexhepi rebuilt that journey and paired it with a headless CMS the company could maintain without developer support.",
     liveUrl: "https://www.amgebaeudereinigung.hamburg/",
     liveLabel: "Visit website",
     logoImage: "/logos/am.svg",
@@ -836,7 +835,7 @@ export const projects: Project[] = [
     challenge:
       "The business needed a more credible web presence and a practical way to keep service content current.",
     solution:
-      "Casevia organized the offer around customer intent, built a responsive frontend, and connected it to a manageable content system.",
+      "Muiz Rexhepi organized the offer around customer intent, built a responsive frontend, and connected it to a manageable content system.",
     caseStudy: [
       {
         eyebrow: "The brief",
@@ -869,25 +868,9 @@ export const projects: Project[] = [
   },
 ];
 
-const homepageProjectSlugs = [
-  "asknoel",
-  "gobusly",
-  "hakbus",
-];
-
-const heroStripProjectSlugs = [
-  "asknoel",
-  "agim-tours",
-  "hakbus",
-  "doros-premium",
-  "logly",
-  "speaksure",
-  "gobusly",
-  "nextloop",
-  "am-gebaeudereinigung",
-];
-
 export const projectCategories: ProjectCategory[] = [
+  "Custom Software",
+  "Hospitality",
   "Travel",
   "Operations",
   "Booking",
@@ -908,18 +891,7 @@ export function getFeaturedProjects() {
 }
 
 export function getHomepageProjects() {
-  return homepageProjectSlugs
-    .map((slug) => getProject(slug))
-    .filter((project): project is Project => Boolean(project));
-}
-
-export function getHeroStripProjects() {
-  return heroStripProjectSlugs
-    .map((slug) => getProject(slug))
-    .filter(
-      (project): project is Project =>
-        Boolean(project?.showInHeroStrip && project.logoImage),
-    );
+  return projects.filter((project) => project.homepageFeatured);
 }
 
 export function getProjectsByCategory(category: ProjectCategory) {

@@ -1,17 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Globe02Icon,
-  GithubIcon,
-  Linkedin01Icon,
-  Location01Icon,
-  Mail01Icon,
-  NewTwitterIcon,
-} from "@hugeicons/core-free-icons";
+import { GithubIcon, Linkedin01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-import { FooterCta } from "@/components/footer-cta";
-import { Text } from "@/components/ui/typography";
+import { Container } from "@/components/layout/container";
+import { site } from "@/lib/site";
 
 const navigation = [
   { label: "Work", href: "/work" },
@@ -21,177 +14,58 @@ const navigation = [
   { label: "Contact", href: "/contact" },
 ];
 
-const services = [
-  { label: "Business Websites", href: "/services#business-websites" },
-  { label: "Web Apps & Dashboards", href: "/services#web-apps-dashboards" },
-  { label: "E-commerce", href: "/services#ecommerce" },
-  { label: "AI & Automation", href: "/services#ai-automation" },
-];
-
 const socials = [
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/muiz-rexhepi",
-    icon: Linkedin01Icon,
-  },
-  {
-    label: "GitHub",
-    href: "https://github.com/muizrexhepi",
-    icon: GithubIcon,
-  },
-  {
-    label: "X",
-    href: "https://x.com/muiz_rexhepi",
-    icon: NewTwitterIcon,
-  },
+  { label: "LinkedIn", href: site.profiles.linkedin, icon: Linkedin01Icon },
+  { label: "GitHub", href: site.profiles.github, icon: GithubIcon },
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-muted/35">
-      <div className="mx-auto w-full max-w-7xl px-5 pb-8 pt-10 sm:px-6 sm:pt-12 lg:px-8 lg:pt-14">
-        <FooterCta />
-
-        <div className="pt-10 sm:pt-12">
-          <div className="grid gap-12 lg:grid-cols-[1.4fr_2fr]">
-            <div>
-              <Link href="/" aria-label="Casevia home" className="inline-flex">
-                <Image
-                  src="/logo.svg"
-                  alt="Casevia"
-                  width={152}
-                  height={40}
-                  className="h-9 w-auto"
-                />
-              </Link>
-
-              <Text variant="body-sm" className="mt-5 max-w-sm">
-                An independent European software studio designing and building
-                digital products for ambitious businesses.
-              </Text>
-
-              <div className="mt-6 flex items-center gap-3">
-                {socials.map((social) => (
-                  <Link
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={social.label}
-                    className="flex size-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary/30 hover:bg-accent hover:text-primary"
-                  >
-                    <HugeiconsIcon
-                      icon={social.icon}
-                      size={18}
-                      strokeWidth={1.8}
-                    />
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid gap-10 sm:grid-cols-3">
-              <FooterColumn title="Navigation" links={navigation} />
-              <FooterColumn title="Services" links={services} />
-
-              <div>
-                <h3 className="text-sm font-semibold text-foreground">
-                  Let&apos;s talk
-                </h3>
-
-                <ul className="mt-5 space-y-4 text-sm text-muted-foreground">
-                  <li>
-                    <Link
-                      href="mailto:hello@casevia.io"
-                      className="inline-flex items-center gap-2 transition-colors hover:text-primary"
-                    >
-                      <HugeiconsIcon
-                        icon={Mail01Icon}
-                        size={17}
-                        strokeWidth={1.8}
-                        className="shrink-0"
-                      />
-                      hello@casevia.io
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link
-                      href="https://casevia.io"
-                      className="inline-flex items-center gap-2 transition-colors hover:text-primary"
-                    >
-                      <HugeiconsIcon
-                        icon={Globe02Icon}
-                        size={17}
-                        strokeWidth={1.8}
-                        className="shrink-0"
-                      />
-                      casevia.io
-                    </Link>
-                  </li>
-
-                  <li className="inline-flex items-center gap-2">
-                    <HugeiconsIcon
-                      icon={Location01Icon}
-                      size={17}
-                      strokeWidth={1.8}
-                      className="shrink-0"
-                    />
-                    <span>Europe</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
+    <footer className="border-t border-border bg-[#100e11]">
+      <Container className="pt-10 pb-7 sm:pt-14 sm:pb-8">
+        <div className="grid items-start gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-[1.4fr_.8fr_1fr]">
+          <div className="sm:col-span-2 lg:col-span-1">
+            <Link href="/" className="flex w-fit items-center gap-3 font-heading text-xl font-bold tracking-tight" aria-label="Muiz Rexhepi home">
+              <Image src="/brand/mr-dark.svg" alt="" width={40} height={40} />
+              {site.name}
+            </Link>
+            <p className="mt-4 max-w-[29ch] text-sm leading-relaxed text-muted-foreground">
+              Independent software development for businesses in North Macedonia and internationally.
+            </p>
           </div>
 
-          <div className="mt-12 flex flex-col gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} Casevia. All rights reserved.</p>
+          <nav aria-label="Footer navigation">
+            <p className="text-sm font-semibold text-foreground">Explore</p>
+            <ul className="mt-3 grid grid-cols-2 gap-x-5 gap-y-3 text-sm text-muted-foreground sm:max-w-[15rem]">
+              {navigation.map(({ label, href }) => (
+                <li key={href}><Link href={href} className="hover:text-foreground">{label}</Link></li>
+              ))}
+            </ul>
+          </nav>
 
-            <div className="flex items-center gap-6">
-              <Link
-                href="/privacy"
-                className="transition-colors hover:text-primary"
-              >
-                Privacy Policy
-              </Link>
-
-              <Link
-                href="/terms"
-                className="transition-colors hover:text-primary"
-              >
-                Terms of Service
-              </Link>
-            </div>
+          <div className="min-w-0 lg:justify-self-end">
+            <p className="text-sm font-semibold text-foreground">Get in touch</p>
+            <a href={`mailto:${site.email}`} className="mt-3 inline-flex text-sm text-primary underline-offset-4 [overflow-wrap:anywhere] hover:underline">{site.email}</a>
+            <ul className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+              {socials.map(({ label, href, icon }) => (
+                <li key={href}>
+                  <a href={href} className="inline-flex items-center gap-1.5 hover:text-foreground">
+                    <HugeiconsIcon icon={icon} size={17} /> {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6 text-xs text-muted-foreground sm:mt-10">
+          <p>© {new Date().getFullYear()} {site.name}</p>
+          <div className="flex gap-5">
+            <Link href="/privacy" className="hover:text-foreground">Privacy</Link>
+            <Link href="/terms" className="hover:text-foreground">Terms</Link>
+          </div>
+        </div>
+      </Container>
     </footer>
-  );
-}
-
-function FooterColumn({
-  title,
-  links,
-}: {
-  title: string;
-  links: { label: string; href: string }[];
-}) {
-  return (
-    <div>
-      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-
-      <ul className="mt-5 space-y-3">
-        {links.map((link) => (
-          <li key={link.href}>
-            <Link
-              href={link.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-primary"
-            >
-              {link.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }

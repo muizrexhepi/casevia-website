@@ -2,373 +2,181 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { LinkSquare02Icon } from "@hugeicons/core-free-icons";
+import { ArrowLeft02Icon, ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
+import { FooterCta } from "@/components/footer-cta";
 import { Container } from "@/components/layout/container";
+import { Section } from "@/components/layout/section";
+import { buttonVariants } from "@/components/ui/button";
 import { Heading, Text } from "@/components/ui/typography";
 import { WorkProjectCard } from "@/components/work/work-project-card";
-import {
-  getNextProject,
-  getProject,
-  projects,
-  type Project,
-  type ProjectCaseSection,
-} from "@/lib/projects";
+import { getNextProject, getProject, projects, type Project } from "@/lib/projects";
+import { pageMetadata } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-type ProjectPageProps = {
-  params: Promise<{ slug: string }>;
-};
+type ProjectPageProps = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+  return projects.map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: ProjectPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
+  if (!project) notFound();
 
-  if (!project) return { title: "Project not found — Casevia" };
+  const image = project.heroImage ?? project.coverImage;
+  const share = project.socialImage
+    ? { url: project.socialImage, alt: `${project.name} case study by Muiz Rexhepi`, width: 1200, height: 630 }
+    : image ? { url: image, alt: project.heroAlt ?? project.coverAlt ?? project.name } : undefined;
 
-  return {
-    title: project.seoTitle ?? `${project.name} Case Study — Casevia`,
-    description: project.seoDescription ?? project.summary,
-    alternates: { canonical: `/work/${project.slug}` },
-  };
+  return pageMetadata(
+    `/work/${project.slug}`,
+    project.seoTitle ?? `${project.name} Case Study`,
+    project.seoDescription ?? project.summary,
+    share,
+  );
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
   const project = getProject(slug);
-
   if (!project) notFound();
 
-  const nextProject = getNextProject(project.slug);
-  const storySections = project.caseStudy.length
-    ? project.caseStudy
-    : [
-        {
-          title: "What the business needed to solve.",
-          body: project.challenge,
-        },
-        {
-          title: "How Casevia approached it.",
-          body: project.solution,
-        },
-      ];
+  const nextProject = getNextProject(slug);
 
   return (
-    <main className="overflow-hidden">
+    <>
       <ProjectHero project={project} />
       <ProjectDetails project={project} />
-      <ProjectImpact project={project} />
-      <ProjectStory project={project} sections={storySections} />
-      <ProjectCapabilities project={project} />
-      {nextProject ? <NextProject project={nextProject} /> : null}
-    </main>
+      <ProjectStory project={project} />
+      <FooterCta title={project.inquiry?.[0]} description={project.inquiry?.[1]} />
+      {nextProject && (
+        <Section className="bg-card">
+          <Container>
+            <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+              <Heading as="h2" variant="subsection">Next project</Heading>
+              <Link href="/work" className="text-sm font-semibold text-primary hover:underline">View all work</Link>
+            </div>
+            <WorkProjectCard project={nextProject} heading="h3" large />
+          </Container>
+        </Section>
+      )}
+    </>
   );
 }
 
 function ProjectHero({ project }: { project: Project }) {
   const image = project.heroImage ?? project.coverImage;
-
   return (
-    <section className="pb-14 pt-4 sm:pb-18 sm:pt-6 lg:pb-20 lg:pt-8">
-      {image ? (
-        <div className="mx-auto max-w-[96rem] sm:px-6 lg:px-8">
-          <div className="overflow-hidden bg-muted sm:rounded-3xl">
-            <Image
-              src={image}
-              alt={
-                project.heroAlt ??
-                project.coverAlt ??
-                `${project.name} project preview`
-              }
-              width={1920}
-              height={1080}
-              priority
-              sizes="(min-width: 1536px) 1536px, 100vw"
-              className={cn(
-                "h-auto max-h-[860px] w-full object-cover object-top",
-                project.coverImageClassName,
-              )}
-            />
+    <Section spacing="sm" className={cn("border-b border-border", `project-${project.visualTheme}`)}>
+      <Container>
+        <Link href="/work" className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
+          <HugeiconsIcon icon={ArrowLeft02Icon} size={17} />
+          All work
+        </Link>
+        <div className="mt-7 grid gap-6 md:grid-cols-[.44fr_.56fr] md:items-end">
+          <div>
+            <p className="mb-3 text-xs font-semibold tracking-[.1em] text-primary uppercase">{project.flag ?? project.industry}</p>
+            <Heading as="h1" variant="hero">{project.name}</Heading>
+          </div>
+          <div>
+            <Heading as="h2" variant="subsection">{project.headline}</Heading>
+            <Text className="mt-3 max-w-2xl">{project.subheadline}</Text>
+            {project.liveUrl && (
+              <Link href={project.liveUrl} target="_blank" rel="noreferrer" className={buttonVariants({ variant: "outline", size: "lg", className: "mt-5" })}>
+                {project.liveLabel ?? "Visit live project"}
+                <HugeiconsIcon icon={ArrowUpRight01Icon} size={17} />
+              </Link>
+            )}
           </div>
         </div>
-      ) : null}
-
-      <Container className="pt-10 sm:pt-14 lg:pt-16">
-        <div className="grid gap-7 lg:grid-cols-[0.35fr_0.65fr] lg:gap-16">
-          <div>
-            <Heading as="h1" variant="hero" className="lg:text-7xl">
-              {project.name}.
-            </Heading>
-            <p className="mt-5 text-sm font-medium text-muted-foreground">
-              {project.period}
-            </p>
+        {image && (
+          <div className="work-frame mt-8 rounded-2xl border border-[var(--ink)] p-3 sm:p-7 lg:p-9">
+            <div className="relative mx-auto aspect-video max-w-6xl overflow-hidden rounded-lg border-2 border-[var(--ink)] bg-[var(--paper)] shadow-[4px_5px_0_var(--ink)]">
+              <Image
+                src={image}
+                alt={project.heroAlt ?? project.coverAlt ?? `${project.name} interface`}
+                fill
+                preload
+                sizes="(min-width: 1280px) 1152px, 90vw"
+                className={cn("object-cover object-top", project.coverImageClassName)}
+              />
+            </div>
           </div>
-
-          <div>
-            <Heading as="h2" variant="section" className="max-w-4xl">
-              {project.headline}
-            </Heading>
-            <Text variant="lead" className="mt-6 max-w-3xl">
-              {project.subheadline}
-            </Text>
-          </div>
-        </div>
+        )}
       </Container>
-    </section>
+    </Section>
   );
 }
 
 function ProjectDetails({ project }: { project: Project }) {
+  const facts = [
+    ["My role", project.role],
+    ["Scope", project.deliverables.join(" · ")],
+    ["Technology", project.stack.join(" · ")],
+  ].filter(([, value]) => value);
+
   return (
-    <section className="border-y border-border py-10 sm:py-12">
+    <Section spacing="sm" className="border-b border-border bg-card">
       <Container>
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12">
-          <MetaList title="Services" items={project.services} />
-          <MetaList title="Deliverables" items={project.deliverables} />
-          <div className="space-y-8">
-            <MetaValue title="Client" value={project.clientType} />
-            <MetaValue title="Industry" value={project.industry} />
-          </div>
-          <div className="space-y-8">
-            <MetaValue title="Engagement" value={project.role} />
-            <MetaValue title="Status" value={project.status} />
-            {project.liveUrl ? (
-              <Link
-                href={project.liveUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-opacity hover:opacity-70"
-              >
-                {project.liveLabel ?? "View project"}
-                <HugeiconsIcon
-                  icon={LinkSquare02Icon}
-                  size={16}
-                  strokeWidth={1.8}
-                />
-              </Link>
-            ) : null}
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-function MetaList({ title, items }: { title: string; items: string[] }) {
-  return (
-    <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-        {title}
-      </p>
-      <ul className="mt-4 space-y-1.5">
-        {items.map((item) => (
-          <li key={item} className="text-sm leading-6 text-foreground/75">
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function MetaValue({ title, value }: { title: string; value: string }) {
-  return (
-    <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-        {title}
-      </p>
-      <p className="mt-3 text-sm leading-6 text-foreground/75">{value}</p>
-    </div>
-  );
-}
-
-function ProjectImpact({ project }: { project: Project }) {
-  return (
-    <section className="bg-muted/40 py-16 sm:py-20 lg:py-24">
-      <Container>
-        <div className="grid gap-14 lg:grid-cols-[0.5fr_0.5fr] lg:gap-20">
-          <div>
-            <Heading as="h2" variant="section" className="max-w-3xl">
-              {project.summary}
-            </Heading>
-            <Text variant="lead" className="mt-6 max-w-2xl">
-              {project.description}
-            </Text>
-          </div>
-
-          {project.metrics.length ? (
-            <div className="grid content-start gap-8 border-t border-foreground/15 pt-8 sm:grid-cols-3">
-              {project.metrics.map((metric) => (
-                <div key={metric.label}>
-                  <p className="font-heading text-3xl font-semibold tracking-[-0.04em] text-foreground sm:text-4xl">
-                    {metric.value}
-                  </p>
-                  <p className="mt-3 text-sm font-semibold text-foreground">
-                    {metric.label}
-                  </p>
-                  {metric.description ? (
-                    <p className="mt-2 max-w-xs text-sm leading-6 text-muted-foreground">
-                      {metric.description}
-                    </p>
-                  ) : null}
-                </div>
-              ))}
+        <div className="grid gap-5 md:grid-cols-3">
+          {facts.map(([label, value]) => (
+            <div key={label} className="rounded-xl border border-border bg-background p-5">
+              <p className="text-xs font-semibold tracking-[.1em] text-primary uppercase">{label}</p>
+              <p className="mt-2 break-words text-sm leading-6">{value}</p>
             </div>
-          ) : null}
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-function ProjectStory({
-  project,
-  sections,
-}: {
-  project: Project;
-  sections: ProjectCaseSection[];
-}) {
-  return (
-    <section className="py-16 sm:py-24 lg:py-28">
-      <Container>
-        <div className="space-y-20 sm:space-y-28 lg:space-y-36">
-          {sections.map((section, index) => (
-            <StorySection
-              key={`${section.title}-${index}`}
-              project={project}
-              section={section}
-              index={index}
-            />
           ))}
         </div>
-      </Container>
-    </section>
-  );
-}
-
-function StorySection({
-  project,
-  section,
-  index,
-}: {
-  project: Project;
-  section: ProjectCaseSection;
-  index: number;
-}) {
-  const galleryImage = project.galleryImages[index];
-  const image = section.image ?? galleryImage?.src;
-  const imageAlt =
-    section.imageAlt ?? galleryImage?.alt ?? `${project.name} project detail`;
-  const imageType = section.image ? undefined : galleryImage?.type;
-
-  return (
-    <article>
-      <div className="grid gap-6 lg:grid-cols-[0.18fr_0.82fr] lg:gap-16">
-        <p className="text-sm font-semibold text-primary">
-          {String(index + 1).padStart(2, "0")}
-        </p>
-
-        <div className="max-w-4xl">
-          <Heading as="h2" variant="section">
-            {section.title}
-          </Heading>
-          <Text variant="lead" className="mt-6 max-w-3xl">
-            {section.body}
-          </Text>
-
-          {section.quote ? (
-            <blockquote className="mt-10 max-w-3xl border-l-2 border-primary pl-6 sm:pl-8">
-              <p className="font-heading text-2xl font-semibold leading-snug tracking-tight text-foreground sm:text-3xl">
-                “{section.quote.text}”
-              </p>
-              {section.quote.author ? (
-                <footer className="mt-5 text-sm text-muted-foreground">
-                  {section.quote.author}
-                  {section.quote.role ? `, ${section.quote.role}` : ""}
-                </footer>
-              ) : null}
-            </blockquote>
-          ) : null}
-        </div>
-      </div>
-
-      {image ? (
-        <div
-          className={cn(
-            "mt-12 overflow-hidden rounded-2xl bg-muted sm:mt-16 sm:rounded-3xl",
-            imageType === "mobile" && "px-6 py-8 sm:px-12 sm:py-12 lg:px-16",
-          )}
-        >
-          <Image
-            src={image}
-            alt={imageAlt}
-            width={imageType === "mobile" ? 1206 : 1800}
-            height={imageType === "mobile" ? 2622 : 1125}
-            sizes="(min-width: 1280px) 1216px, 100vw"
-            className={cn(
-              "h-auto w-full object-cover object-top",
-              imageType === "mobile" &&
-                "mx-auto max-h-[980px] w-auto max-w-full rounded-xl object-contain shadow-[0_24px_80px_rgba(15,23,42,0.12)]",
-            )}
-          />
-        </div>
-      ) : null}
-    </article>
-  );
-}
-
-function ProjectCapabilities({ project }: { project: Project }) {
-  return (
-    <section className="pb-20 sm:pb-24 lg:pb-28">
-      <Container>
-        <div className="grid gap-8 border-y border-border py-10 sm:py-12 lg:grid-cols-[0.35fr_0.65fr] lg:items-start lg:gap-16">
-          <Heading as="h2" variant="subsection" className="max-w-sm">
-            What the work brought together.
-          </Heading>
-
-          <div className="flex flex-wrap content-start gap-x-6 gap-y-3">
-            {project.stack.map((item) => (
-              <span
-                key={item}
-                className="text-sm font-medium leading-7 text-foreground/70"
-              >
-                {item}
-              </span>
-            ))}
+        <div className="mt-10 grid gap-8 md:grid-cols-2 md:gap-12">
+          <div>
+            <Heading as="h2" variant="subsection">The challenge</Heading>
+            <Text className="mt-3">{project.challenge}</Text>
+          </div>
+          <div>
+            <Heading as="h2" variant="subsection">What I built</Heading>
+            <Text className="mt-3">{project.solution}</Text>
           </div>
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }
 
-function NextProject({ project }: { project: Project }) {
-  return (
-    <section className="bg-muted/40 py-16 sm:py-20 lg:py-24">
-      <Container>
-        <div className="mb-10 flex items-end justify-between gap-6">
-          <Heading as="h2" variant="section">
-            Next project.
-          </Heading>
-          <Link
-            href="/work"
-            className="hidden text-sm font-semibold text-primary sm:inline-flex"
-          >
-            View all projects
-          </Link>
-        </div>
+function ProjectStory({ project }: { project: Project }) {
+  if (!project.caseStudy.length) return null;
 
-        <div className="max-w-5xl">
-          <WorkProjectCard project={project} />
-        </div>
+  return (
+    <Section className={`project-${project.visualTheme}`}>
+      <Container className="grid gap-14 sm:gap-20">
+        {project.caseStudy.map((section, index) => {
+          const gallery = project.galleryImages[index];
+          const image = section.image ?? gallery?.src;
+          const isMobile = (section.imageType ?? (section.image ? undefined : gallery?.type)) === "mobile";
+
+          return (
+            <article key={section.title} className="border-t border-border pt-7">
+              <div className="grid gap-4 md:grid-cols-2 md:gap-12">
+                <Heading as="h2" variant="subsection" className="max-w-xl">{section.title}</Heading>
+                <Text className="max-w-2xl">{section.body}</Text>
+              </div>
+              {image && (
+                <div className="work-frame mt-7 rounded-xl border border-[var(--ink)] p-4 sm:p-7">
+                  <Image
+                    src={image}
+                    alt={section.imageAlt ?? gallery?.alt ?? `${project.name} project detail`}
+                    width={isMobile ? 430 : 1500}
+                    height={isMobile ? 932 : 900}
+                    sizes={isMobile ? "(min-width: 640px) 320px, 78vw" : "(min-width: 1280px) 1150px, 90vw"}
+                    className={cn("mx-auto h-auto w-full rounded-lg border-2 border-[var(--ink)] shadow-[4px_5px_0_var(--ink)]", isMobile && "max-w-[320px]")}
+                  />
+                </div>
+              )}
+            </article>
+          );
+        })}
       </Container>
-    </section>
+    </Section>
   );
 }

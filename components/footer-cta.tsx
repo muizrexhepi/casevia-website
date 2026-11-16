@@ -1,49 +1,34 @@
-"use client";
-
+import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
+import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-import { buttonVariants } from "@/components/ui/button";
-import { Heading, Text } from "@/components/ui/typography";
+import { Container } from "@/components/layout/container";
+import { Heading } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 
-export function FooterCta() {
-  const pathname = usePathname();
-
-  if (pathname === "/contact") return null;
-
+export function FooterCta({
+  title = "What are you building?",
+  description = "Tell me what you want to launch or how you’d like your business to work better.",
+  className,
+}: {
+  title?: string;
+  description?: string;
+  className?: string;
+}) {
   return (
-    <div className="border-b border-border pb-10 sm:pb-12">
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+    <section className={cn("overflow-hidden border-t border-[var(--ink)] bg-[var(--pink)] py-12 text-[var(--ink)] sm:py-16", className)}>
+      <Container className="flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-center">
         <div>
-          <Heading as="h2" variant="subsection" className="max-w-xl">
-            Ready to build something clearer?
-          </Heading>
-
-          <Text variant="body-sm" className="mt-3 max-w-xl">
-            Send the project details and we’ll help define the right scope,
-            direction, and next step.
-          </Text>
+          <Heading as="h2" variant="section" className="text-[var(--ink)]">{title}</Heading>
+          <p className="mt-4 max-w-xl text-base leading-relaxed sm:text-lg">{description}</p>
+          <Link href="/contact" className="mt-7 inline-flex h-12 items-center gap-3 rounded-lg border border-[var(--ink)] bg-[var(--ink)] px-5 text-sm font-semibold text-[var(--paper)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)]">
+            Start a Project
+            <HugeiconsIcon icon={ArrowUpRight01Icon} size={18} />
+          </Link>
         </div>
-
-        <Link
-          href="/contact"
-          className={cn(
-            buttonVariants({ size: "lg" }),
-            "h-11 w-full rounded-full px-5 font-semibold sm:w-auto",
-          )}
-        >
-          Book a discovery call
-          <HugeiconsIcon
-            icon={ArrowRight02Icon}
-            size={17}
-            strokeWidth={1.8}
-            className="ml-2"
-          />
-        </Link>
-      </div>
-    </div>
+        <Image src="/brand/mr-light.svg" width={168} height={168} alt="" className="hidden shrink-0 rotate-[12deg] rounded-[2rem] drop-shadow-[8px_9px_0_var(--ink)] md:block" />
+      </Container>
+    </section>
   );
 }

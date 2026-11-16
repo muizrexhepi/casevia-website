@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -11,7 +12,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { label: "Projects", href: "/work" },
+  { label: "Work", href: "/work" },
   { label: "Services", href: "/services" },
   { label: "Process", href: "/process" },
   { label: "About", href: "/about" },
@@ -19,8 +20,8 @@ const navItems = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const lastScrollY = useRef(0);
 
@@ -35,8 +36,6 @@ export function Navbar() {
 
       window.requestAnimationFrame(() => {
         const currentScrollY = window.scrollY;
-
-        setIsScrolled(currentScrollY > 8);
 
         if (currentScrollY < 96) {
           setIsHidden(false);
@@ -60,28 +59,26 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-[60] w-full bg-background/90 backdrop-blur-xl transition-all duration-300 ease-out",
-        isScrolled
-          ? "border-b border-border/70"
-          : "border-b border-transparent",
+        "sticky top-0 z-40 w-full border-b border-border bg-background transition-transform duration-300 ease-out focus-within:translate-y-0 motion-reduce:transition-none",
         isNavbarHidden ? "-translate-y-full" : "translate-y-0",
       )}
     >
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-5 sm:h-20 sm:px-6 lg:px-8">
-        <Link href="/" aria-label="Casevia home" className="flex items-center">
+      <div className="mx-auto flex h-16 w-full max-w-[100rem] items-center justify-between px-5 sm:h-[4.5rem] sm:px-6 lg:px-8">
+        <Link href="/" aria-label="Muiz Rexhepi home" className="flex items-center gap-2.5">
           <Image
-            src="/logo.svg"
-            alt="Casevia"
-            width={152}
-            height={40}
+            src="/brand/mr-light.svg"
+            alt=""
+            width={42}
+            height={42}
             priority
-            className="h-8 w-auto sm:h-9"
+            className="size-9 sm:size-10"
           />
+          <span className="font-heading text-lg font-extrabold tracking-[-.045em] sm:text-xl">Muiz Rexhepi</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex">
           {navItems.map((item) => (
-            <NavLink key={item.href} item={item} />
+            <NavLink key={item.href} item={item} pathname={pathname} />
           ))}
         </nav>
 
@@ -90,7 +87,7 @@ export function Navbar() {
             href="/contact"
             className={cn(buttonVariants({ size: "lg" }), "h-11 px-5")}
           >
-            Book a discovery call
+            Start a Project
             <HugeiconsIcon
               icon={ArrowRight02Icon}
               size={18}
@@ -114,20 +111,19 @@ export function Navbar() {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetContent
           side="top"
-          initialFocus={false}
-          showCloseButton={false}
-          className="w-full! max-w-none! border-none bg-background p-0"
+          initialFocus={true}
+          className="max-h-dvh w-full! max-w-none! overflow-y-auto border-none bg-background p-0"
         >
           <SheetTitle className="sr-only">Navigation menu</SheetTitle>
 
-          <div className="flex h-full flex-col px-6 pb-10 pt-24 sm:px-10">
-            <nav className="flex flex-1 flex-col justify-center">
+          <div className="flex h-full flex-col px-6 pb-8 pt-14 sm:px-10">
+            <nav aria-label="Mobile navigation" className="flex flex-1 flex-col justify-center">
               {navItems.map((item, index) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="group flex animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards items-center justify-between border-b border-border/60 py-5"
+                  className="group flex animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards items-center justify-between border-b border-border/60 py-4"
                   style={{
                     animationDelay: `${100 + index * 60}ms`,
                     animationDuration: "400ms",
@@ -158,7 +154,7 @@ export function Navbar() {
                   "h-12 w-full text-base",
                 )}
               >
-                Book a discovery call
+                Start a Project
                 <HugeiconsIcon
                   icon={ArrowRight02Icon}
                   size={18}
@@ -166,9 +162,6 @@ export function Navbar() {
                   className="ml-2"
                 />
               </Link>
-              <p className="text-center text-sm text-muted-foreground">
-                Skopje · working with clients across the EU
-              </p>
             </div>
           </div>
         </SheetContent>
@@ -177,11 +170,23 @@ export function Navbar() {
   );
 }
 
-function NavLink({ item }: { item: { label: string; href: string } }) {
+function NavLink({
+  item,
+  pathname,
+}: {
+  item: (typeof navItems)[number];
+  pathname: string;
+}) {
+  const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+
   return (
     <Link
       href={item.href}
-      className="py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+        active ? "bg-foreground text-background" : "text-foreground hover:bg-muted",
+      )}
     >
       {item.label}
     </Link>

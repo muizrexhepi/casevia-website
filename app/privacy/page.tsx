@@ -1,25 +1,17 @@
-import type { Metadata } from "next";
-
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Heading, Text } from "@/components/ui/typography";
+import { pageMetadata, site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy — Casevia",
-  description:
-    "Privacy Policy for Casevia, including what information we collect, how we use it, and how to contact us.",
-  alternates: {
-    canonical: "/privacy",
-  },
-};
+export const metadata = pageMetadata("/privacy", "Privacy Policy", "How Muiz Rexhepi handles the information you share through the website and project inquiry form.");
 
-const lastUpdated = "June 20, 2026";
+const lastUpdated = "November 16, 2026";
 
 export default function PrivacyPage() {
   return (
     <Section spacing="sm" className="pb-14 pt-10 sm:pb-20 sm:pt-14 lg:pt-16">
       <Container>
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-4xl rounded-2xl border border-border bg-card p-6 sm:p-12">
           <Heading as="h1" variant="section">
             Privacy Policy.
           </Heading>
@@ -31,9 +23,9 @@ export default function PrivacyPage() {
           <div className="mt-10 space-y-10">
             <LegalSection title="1. Introduction">
               <p>
-                Casevia operates the website casevia.io and provides software
+                {site.name} operates {site.domain} and provides software
                 design, development, and strategy services. This Privacy Policy
-                explains what information we collect, how we use it, and what
+                explains what information I collect, how I use it, and what
                 choices you have.
               </p>
 
@@ -43,9 +35,9 @@ export default function PrivacyPage() {
               </p>
             </LegalSection>
 
-            <LegalSection title="2. Information we collect">
+            <LegalSection title="2. Information I collect">
               <p>
-                When you contact us through the website, we may collect the
+                When you contact me through the website, I may collect the
                 information you choose to provide, including:
               </p>
 
@@ -59,14 +51,14 @@ export default function PrivacyPage() {
               </ul>
 
               <p>
-                We may also receive basic technical information automatically,
+                I may also receive basic technical information automatically,
                 such as your IP address, browser type, device information,
                 referring page, and general usage data.
               </p>
             </LegalSection>
 
-            <LegalSection title="3. How we use your information">
-              <p>We use the information we collect to:</p>
+            <LegalSection title="3. How I use your information">
+              <p>I use the information I collect to:</p>
 
               <ul>
                 <li>Respond to your project inquiry</li>
@@ -78,7 +70,7 @@ export default function PrivacyPage() {
               </ul>
 
               <p>
-                We do not sell your personal information to advertisers or data
+                I do not sell your personal information to advertisers or data
                 brokers.
               </p>
             </LegalSection>
@@ -87,8 +79,7 @@ export default function PrivacyPage() {
               <p>
                 When you submit the contact form, your message may be processed
                 through third-party email infrastructure, including Resend, so
-                that we can receive your inquiry and send you a confirmation
-                email.
+                I can receive and respond to your inquiry.
               </p>
 
               <p>
@@ -99,7 +90,7 @@ export default function PrivacyPage() {
 
             <LegalSection title="5. Service providers">
               <p>
-                We may use trusted third-party providers to operate the website,
+                I may use trusted third-party providers to operate the website,
                 host infrastructure, send emails, analyze website performance,
                 or maintain security.
               </p>
@@ -126,7 +117,7 @@ export default function PrivacyPage() {
 
             <LegalSection title="7. Data retention">
               <p>
-                We keep inquiry and communication records for as long as needed
+                I keep inquiry and communication records for as long as needed
                 to respond to you, manage potential or active projects, comply
                 with legal obligations, resolve disputes, and maintain business
                 records.
@@ -134,7 +125,7 @@ export default function PrivacyPage() {
 
               <p>
                 You may request deletion of your personal information by
-                contacting us, unless we are required to keep it for legitimate
+                contacting me, unless I am required to keep it for legitimate
                 business or legal reasons.
               </p>
             </LegalSection>
@@ -147,54 +138,54 @@ export default function PrivacyPage() {
               </p>
 
               <p>
-                To make a request, contact us at{" "}
-                <a href="mailto:hello@casevia.io">hello@casevia.io</a>. We may
+                To make a request, contact me at{" "}
+                <a href={`mailto:${site.email}`}>{site.email}</a>. I may
                 need to verify your identity before completing certain requests.
               </p>
             </LegalSection>
 
             <LegalSection title="9. Security">
               <p>
-                We use reasonable technical and organizational measures to
+                I use reasonable technical and organizational measures to
                 protect your information. However, no method of transmission or
-                storage is completely secure, and we cannot guarantee absolute
+                storage is completely secure, and I cannot guarantee absolute
                 security.
               </p>
             </LegalSection>
 
             <LegalSection title="10. International users">
               <p>
-                If you access the website from outside the country where we
+                If you access the website from outside the country where I
                 operate, your information may be processed in countries with
                 different data protection laws.
               </p>
 
               <p>
                 By using the website or submitting information, you understand
-                that your information may be processed where our service
+                that your information may be processed where my service
                 providers operate.
               </p>
             </LegalSection>
 
             <LegalSection title="11. Changes to this Privacy Policy">
               <p>
-                We may update this Privacy Policy from time to time. When we do,
-                we will update the “Last updated” date at the top of this page.
+                I may update this Privacy Policy from time to time. When I do,
+                I will update the “Last updated” date at the top of this page.
               </p>
             </LegalSection>
 
             <LegalSection title="12. Contact">
               <p>
                 For questions about this Privacy Policy or your personal
-                information, contact us at:
+                information, contact me at:
               </p>
 
               <p>
-                <strong>Casevia</strong>
+                <strong>{site.name}</strong>
                 <br />
-                Email: <a href="mailto:hello@casevia.io">hello@casevia.io</a>
+                Email: <a href={`mailto:${site.email}`}>{site.email}</a>
                 <br />
-                Website: <a href="https://casevia.io">https://casevia.io</a>
+                Website: <a href={site.url}>{site.domain}</a>
               </p>
             </LegalSection>
           </div>

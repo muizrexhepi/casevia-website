@@ -5,6 +5,7 @@ const serviceAnchors: Record<string, string> = {
   "web-apps-dashboards": "web-apps-dashboards",
   "ecommerce-websites": "ecommerce",
   ecommerce: "ecommerce",
+  "mobile-apps": "mobile-apps",
   "ai-automation": "ai-automation",
 };
 
@@ -18,7 +19,7 @@ export default async function LegacyServicePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const anchor = serviceAnchors[slug];
+  const anchor = Object.hasOwn(serviceAnchors, slug) ? serviceAnchors[slug] : undefined;
 
   if (!anchor) {
     notFound();

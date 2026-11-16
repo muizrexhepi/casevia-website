@@ -8,7 +8,7 @@ export const processSteps: ProcessStep[] = [
   {
     title: "Discover",
     description:
-      "We clarify the business goal, audience, current workflow, constraints, and what the project needs to achieve.",
+      "We’ll clarify the business goal, audience, current workflow, constraints, and what the project needs to achieve.",
     details: [
       "Business goals",
       "User needs",
@@ -19,7 +19,7 @@ export const processSteps: ProcessStep[] = [
   {
     title: "Structure",
     description:
-      "We define scope, information architecture, core features, content, and the technical direction before execution.",
+      "I’ll define scope, information architecture, core features, content, and the technical direction before execution.",
     details: [
       "Project scope",
       "Feature priorities",
@@ -30,7 +30,7 @@ export const processSteps: ProcessStep[] = [
   {
     title: "Design",
     description:
-      "We design clear, responsive interfaces that reduce friction and make the product easier to understand and use.",
+      "I’ll design clear, responsive interfaces that reduce friction and make the product easier to understand and use.",
     details: [
       "UX structure",
       "Interface design",
@@ -41,7 +41,7 @@ export const processSteps: ProcessStep[] = [
   {
     title: "Build",
     description:
-      "We develop the product with maintainable components, reliable integrations, and production-ready foundations.",
+      "I’ll develop the product with maintainable components, reliable integrations, and production-ready foundations.",
     details: [
       "Frontend development",
       "Backend integration",
@@ -52,13 +52,13 @@ export const processSteps: ProcessStep[] = [
   {
     title: "Launch",
     description:
-      "We test critical flows, handle deployment, connect required services, and prepare the product for real users.",
+      "I’ll test critical flows, handle deployment, connect required services, and prepare the product for real users.",
     details: ["Quality assurance", "Deployment", "Analytics", "Launch support"],
   },
   {
     title: "Improve",
     description:
-      "We continue improving the product around usage, feedback, operational needs, and new business priorities.",
+      "I can keep improving the product around usage, feedback, operational needs, and new business priorities.",
     details: [
       "Ongoing support",
       "Conversion improvements",

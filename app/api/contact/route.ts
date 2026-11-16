@@ -1,256 +1,177 @@
+import { createHash } from "node:crypto";
+import { isIP } from "node:net";
 import { Resend } from "resend";
-import { NextResponse } from "next/server";
 
-const BRAND_BLUE = "#2563EB";
-const ICON_URL = "https://casevia.io/icon.png";
-const SITE_URL = "https://casevia.io";
+import { budgetRanges, inquiryTypes, messageLimits } from "@/lib/contact";
+import { site } from "@/lib/site";
+
+const windowMs = 10 * 60 * 1000;
+const maxBodyBytes = 32_768;
+const attempts = new Map<string, { count: number; expires: number }>();
 
 export async function POST(request: Request) {
-    try {
-        const body = (await request.json()) as Record<string, unknown>;
-        const name = readSingleLineField(body.name, 120);
-        const email = readSingleLineField(body.email, 254).toLowerCase();
-        const company = readSingleLineField(body.company, 120);
-        const projectType = readSingleLineField(body.projectType, 120);
-        const budget = readSingleLineField(body.budget, 120);
-        const message = readField(body.message, 4000);
-        const website = readField(body.website, 200);
+  if (!isSameOrigin(request)) {
+    return error("Please send your inquiry from the contact page.", 403);
+  }
 
-        if (website) {
-            return NextResponse.json({ success: true });
-        }
+  if (request.headers.get("content-type")?.split(";")[0].trim() !== "application/json") {
+    return error("Send the form as JSON.", 415);
+  }
 
-        if (
-            !name ||
-            !isValidEmail(email) ||
-            message.length < 20 ||
-            !projectType
-        ) {
-            return NextResponse.json(
-                {
-                    error: "Please complete all required fields with valid details.",
-                },
-                { status: 400 },
-            );
-        }
+  const body = await readBody(request);
+  if (body === "too-large") return error("This inquiry is too long to send.", 413);
+  if (!body) return error("The inquiry could not be read.", 400);
 
-        const apiKey = process.env.RESEND_API_KEY;
+  if (typeof body.website === "string" && body.website.trim()) {
+    return Response.json({ success: true });
+  }
 
-        if (!apiKey) {
-            console.error("Contact form error: RESEND_API_KEY is not configured");
-            return NextResponse.json(
-                { error: "Message delivery is temporarily unavailable." },
-                { status: 503 },
-            );
-        }
+  const name = singleLine(body.name, 120);
+  const email = singleLine(body.email, 254).toLowerCase();
+  const company = singleLine(body.company, 120);
+  const projectType = singleLine(body.projectType, 120);
+  const budget = singleLine(body.budget, 120);
+  const message = typeof body.message === "string" ? body.message.trim() : "";
 
-        const resend = new Resend(apiKey);
+  if (!name || !/^[^\s@,<>;]+@[^\s@,<>;]+\.[^\s@,<>;]+$/.test(email)) {
+    return error("Enter your name and a valid email address.", 400);
+  }
+  if (!inquiryTypes.some((option) => option === projectType) ||
+      (budget && !budgetRanges.some((option) => option === budget))) {
+    return error("Select a project type and a valid budget range.", 400);
+  }
+  if (message.length < messageLimits.min || message.length > messageLimits.max) {
+    return error(`Enter a project description of ${messageLimits.min} to ${messageLimits.max} characters.`, 400);
+  }
 
-        const results = await Promise.all([
-            resend.emails.send({
-                from: "Casevia <hello@muizrexhepi.com>",
-                to: email,
-                subject: "Thanks for reaching out — Casevia",
-                html: confirmationEmail(escapeHtml(name)),
-            }),
-            resend.emails.send({
-                from: "Casevia <hello@muizrexhepi.com>",
-                to: "007lazi@gmail.com",
-                replyTo: email,
-                subject: `New inquiry from ${name}${company ? ` (${company})` : ""}`,
-                html: notificationEmail({
-                    name: escapeHtml(name),
-                    email: escapeHtml(email),
-                    company: escapeHtml(company),
-                    projectType: escapeHtml(projectType),
-                    budget: escapeHtml(budget),
-                    message: escapeHtml(message),
-                }),
-            }),
-        ]);
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  if (!apiKey) {
+    return error("The form is temporarily unavailable. Please email me directly.", 503);
+  }
 
-        const deliveryError = results.find((result) => result.error)?.error;
-
-        if (deliveryError) {
-            console.error("Contact form delivery error:", deliveryError);
-            return NextResponse.json(
-                { error: "Message delivery failed. Please try again." },
-                { status: 502 },
-            );
-        }
-
-        return NextResponse.json({ success: true });
-    } catch (error) {
-        console.error("Contact form error:", error);
-        return NextResponse.json(
-            { error: "Failed to send message" },
-            { status: 500 },
-        );
-    }
-}
-
-function readField(value: unknown, maxLength: number) {
-    return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
-}
-
-function readSingleLineField(value: unknown, maxLength: number) {
-    return readField(value, maxLength).replace(/[\r\n]+/g, " ");
-}
-
-function isValidEmail(value: string) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
-
-function escapeHtml(value: string) {
-    return value.replace(
-        /[&<>"']/g,
-        (character) =>
-            ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#039;",
-            })[character] ?? character,
+  if (!allowInquiry(request, email)) {
+    return Response.json(
+      { error: "Too many recent inquiries. Please wait a few minutes or email me directly." },
+      { status: 429, headers: { "Retry-After": String(windowMs / 1000) } },
     );
-}
+  }
 
-function emailShell(content: string) {
-    return `
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F1F3F6; padding: 48px 16px; font-family: -apple-system, BlinkMacSystemFont, 'Inter', Helvetica, Arial, sans-serif;">
-    <tr>
-      <td align="center">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 560px; background-color: #ffffff; border-radius: 20px; border: 1px solid #E5E7EB; overflow: hidden;">
-          <tr>
-            <td style="padding: 40px 40px 0 40px;">
-              <img src="${ICON_URL}" alt="Casevia" width="36" height="36" style="border-radius: 8px; display: block;" />
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 28px 40px 40px 40px;">
-              ${content}
-            </td>
-          </tr>
-        </table>
-
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 560px; margin-top: 24px;">
-          <tr>
-            <td align="center" style="padding: 0 24px;">
-              <p style="font-family: 'Manrope', -apple-system, sans-serif; font-size: 13px; font-weight: 600; color: #0F1115; margin: 0 0 6px;">
-                Casevia
-              </p>
-              <p style="font-size: 12px; line-height: 1.7; color: #9CA3AF; margin: 0 0 14px;">
-                Europe
-              </p>
-              <p style="font-size: 12px; color: #9CA3AF; margin: 0;">
-                <a href="${SITE_URL}" style="color: #9CA3AF; text-decoration: none;">casevia.io</a>
-                <span style="color: #D1D5DB; padding: 0 8px;">·</span>
-                <a href="${SITE_URL}/privacy" style="color: #9CA3AF; text-decoration: none;">Privacy Policy</a>
-                <span style="color: #D1D5DB; padding: 0 8px;">·</span>
-                <a href="${SITE_URL}/terms" style="color: #9CA3AF; text-decoration: none;">Terms of Service</a>
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-  `;
-}
-
-function confirmationEmail(name: string) {
-    const firstName = name.split(" ")[0];
-
-    const content = `
-    <h1 style="font-family: 'Manrope', -apple-system, sans-serif; font-size: 22px; font-weight: 700; color: #0F1115; margin: 0 0 18px; letter-spacing: -0.02em;">
-      Thanks for reaching out, ${firstName}
-    </h1>
-
-    <p style="font-size: 15px; line-height: 1.7; color: #4B5563; margin: 0 0 16px;">
-      We've received your message and our team is reviewing the details now. You can expect a reply within 24 hours, along with clear next steps for your project.
-    </p>
-
-    <p style="font-size: 15px; line-height: 1.7; color: #4B5563; margin: 0 0 32px;">
-      In the meantime, feel free to look through some recent work.
-    </p>
-
-    <table role="presentation" cellpadding="0" cellspacing="0">
-      <tr>
-        <td style="border-radius: 999px; background-color: ${BRAND_BLUE};">
-          <a href="${SITE_URL}/work" style="display: inline-block; padding: 13px 26px; font-size: 14px; font-weight: 600; color: #ffffff; text-decoration: none;">
-            View our work
-          </a>
-        </td>
-      </tr>
-    </table>
-
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 36px; padding-top: 24px; border-top: 1px solid #F1F3F6;">
-      <tr>
-        <td>
-          <p style="font-size: 14px; line-height: 1.6; color: #0F1115; margin: 0;">
-            Best,<br />
-            <strong>The Casevia Team</strong>
-          </p>
-        </td>
-      </tr>
-    </table>
-  `;
-
-    return emailShell(content);
-}
-
-function notificationEmail({
-    name,
-    email,
-    company,
-    projectType,
-    budget,
+  const from = process.env.CONTACT_FROM_EMAIL?.trim() || site.email;
+  const to = process.env.CONTACT_TO_EMAIL?.trim() || site.email;
+  const text = [
+    `Name: ${name}`,
+    `Email: ${email}`,
+    `Company: ${company || "Not provided"}`,
+    `Project type: ${projectType}`,
+    `Budget: ${budget || "Not provided"}`,
+    "",
     message,
-}: {
-    name: string;
-    email: string;
-    company?: string;
-    projectType?: string;
-    budget?: string;
-    message: string;
-}) {
-    const row = (label: string, value?: string) =>
-        value
-            ? `<tr>
-          <td style="padding: 9px 0; color: #9CA3AF; font-size: 13px; width: 110px; vertical-align: top;">${label}</td>
-          <td style="padding: 9px 0; color: #0F1115; font-size: 14px; font-weight: 500;">${value}</td>
-        </tr>`
-            : "";
+  ].join("\n");
+  const idempotencyKey = `portfolio-inquiry/${hash([from, to, text].join("\n"))}`;
 
-    const content = `
-    <h1 style="font-family: 'Manrope', -apple-system, sans-serif; font-size: 20px; font-weight: 700; color: #0F1115; margin: 0 0 20px; letter-spacing: -0.02em;">
-      New project inquiry
-    </h1>
+  try {
+    const { data, error: deliveryError } = await new Resend(apiKey).emails.send({
+      from: `${site.name} <${from}>`,
+      to,
+      replyTo: email,
+      subject: `New project inquiry · ${projectType}`,
+      text,
+    }, { idempotencyKey });
 
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 14px;">
-      <tr><td colspan="2" style="height: 4px;"></td></tr>
-      ${row("Name", name)}
-      ${row("Email", `<a href="mailto:${email}" style="color: ${BRAND_BLUE}; text-decoration: none;">${email}</a>`)}
-      ${row("Company", company)}
-      ${row("Project type", projectType)}
-      ${row("Budget", budget)}
-      <tr><td colspan="2" style="height: 4px;"></td></tr>
-    </table>
-    <style>td:first-child { padding-left: 20px; } td:last-child { padding-right: 20px; }</style>
+    if (!data?.id || deliveryError) {
+      console.error("Contact email rejected:", deliveryError?.name);
+      return error("Your inquiry could not be sent. Please try again or email me directly.", 502);
+    }
 
-    <p style="font-size: 13px; color: #9CA3AF; margin: 24px 0 8px;">Message</p>
-    <p style="font-size: 15px; line-height: 1.7; color: #0F1115; white-space: pre-wrap; margin: 0 0 32px;">${message}</p>
+    return Response.json({ success: true });
+  } catch {
+    console.error("Contact email request failed");
+    return error("Your inquiry could not be sent. Please try again or email me directly.", 502);
+  }
+}
 
-    <table role="presentation" cellpadding="0" cellspacing="0">
-      <tr>
-        <td style="border-radius: 999px; background-color: ${BRAND_BLUE};">
-          <a href="mailto:${email}" style="display: inline-block; padding: 12px 24px; font-size: 14px; font-weight: 600; color: #ffffff; text-decoration: none;">
-            Reply to ${name.split(" ")[0]}
-          </a>
-        </td>
-      </tr>
-    </table>
-  `;
+function isSameOrigin(request: Request) {
+  const fetchSite = request.headers.get("sec-fetch-site");
+  if (fetchSite === "cross-site") return false;
+  if (fetchSite === "same-origin") return true;
 
-    return emailShell(content);
+  const origin = request.headers.get("origin");
+  if (!origin) return true;
+
+  try {
+    const parsed = new URL(origin);
+    if (origin !== parsed.origin || !["http:", "https:"].includes(parsed.protocol)) return false;
+
+    return origin === site.url ||
+      origin === new URL(request.url).origin ||
+      parsed.host === request.headers.get("host");
+  } catch {
+    return false;
+  }
+}
+
+function error(message: string, status: number) {
+  return Response.json({ error: message }, { status });
+}
+
+function singleLine(value: unknown, maxLength: number) {
+  return typeof value === "string" ? value.trim().replace(/[\r\n]+/g, " ").slice(0, maxLength) : "";
+}
+
+function hash(value: string) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+function allowInquiry(request: Request, email: string) {
+  const now = Date.now();
+  for (const [key, attempt] of attempts) {
+    if (attempt.expires <= now) attempts.delete(key);
+  }
+
+  const ip = process.env.VERCEL === "1"
+    ? request.headers.get("x-vercel-forwarded-for")?.trim()
+    : undefined;
+  const limits = [
+    { key: "all", limit: 40 },
+    { key: `email:${hash(email)}`, limit: 4 },
+  ];
+  if (ip && isIP(ip)) limits.push({ key: `ip:${hash(ip)}`, limit: 10 });
+
+  if (limits.some(({ key, limit }) => (attempts.get(key)?.count ?? 0) >= limit)) return false;
+  for (const { key } of limits) {
+    const entry = attempts.get(key);
+    if (entry) entry.count += 1;
+    else attempts.set(key, { count: 1, expires: now + windowMs });
+  }
+  return true;
+}
+
+async function readBody(request: Request): Promise<Record<string, unknown> | "too-large" | null> {
+  if (Number(request.headers.get("content-length")) > maxBodyBytes) return "too-large";
+  const reader = request.body?.getReader();
+  if (!reader) return null;
+
+  const decoder = new TextDecoder();
+  let size = 0;
+  let text = "";
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > maxBodyBytes) {
+        await reader.cancel().catch(() => undefined);
+        return "too-large";
+      }
+      text += decoder.decode(value, { stream: true });
+    }
+    const value: unknown = JSON.parse(text + decoder.decode());
+    return value && typeof value === "object" && !Array.isArray(value)
+      ? value as Record<string, unknown>
+      : null;
+  } catch {
+    return null;
+  } finally {
+    reader.releaseLock();
+  }
 }

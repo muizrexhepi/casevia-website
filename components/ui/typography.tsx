@@ -2,18 +2,30 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-type HeadingVariant = "hero" | "section" | "subsection" | "card" | "small";
+const headingStyles = {
+  hero: "type-display",
+  section: "type-section",
+  subsection: "type-subsection",
+  card: "type-card",
+  small: "type-small",
+};
 
-type TextVariant = "lead" | "body" | "body-sm" | "caption" | "muted";
+const textStyles = {
+  lead: "type-lead",
+  body: "type-body",
+  "body-sm": "type-body-small",
+  caption: "type-caption",
+  muted: "type-body-small",
+};
 
 type HeadingProps = React.HTMLAttributes<HTMLHeadingElement> & {
   as?: "h1" | "h2" | "h3" | "h4";
-  variant?: HeadingVariant;
+  variant?: keyof typeof headingStyles;
 };
 
 type TextProps = React.HTMLAttributes<HTMLElement> & {
   as?: "p" | "span" | "div";
-  variant?: TextVariant;
+  variant?: keyof typeof textStyles;
 };
 
 function Heading({
@@ -24,18 +36,7 @@ function Heading({
 }: HeadingProps) {
   return (
     <Comp
-      className={cn(
-        "font-heading font-semibold text-foreground",
-        {
-          hero: "text-[2.55rem] leading-[1.02] tracking-[-0.04em] sm:text-5xl sm:leading-[1] sm:tracking-[-0.045em] lg:text-6xl",
-          section:
-            "text-[2rem] leading-[1.08] tracking-[-0.035em] sm:text-4xl lg:text-5xl",
-          subsection: "text-2xl leading-[1.15] tracking-[-0.025em] sm:text-3xl",
-          card: "text-xl leading-[1.2] tracking-[-0.018em]",
-          small: "text-lg leading-[1.25] tracking-[-0.015em]",
-        }[variant],
-        className,
-      )}
+      className={cn("font-heading text-foreground", headingStyles[variant], className)}
       {...props}
     />
   );
@@ -49,16 +50,7 @@ function Text({
 }: TextProps) {
   return (
     <Comp
-      className={cn(
-        {
-          lead: "text-[15px] leading-7 text-muted-foreground sm:text-base sm:leading-8",
-          body: "text-[15px] leading-7 text-muted-foreground sm:text-base",
-          "body-sm": "text-sm leading-6 text-muted-foreground",
-          caption: "text-xs font-medium leading-5 text-muted-foreground",
-          muted: "text-sm leading-6 text-muted-foreground",
-        }[variant],
-        className,
-      )}
+      className={cn("text-muted-foreground", textStyles[variant], className)}
       {...props}
     />
   );

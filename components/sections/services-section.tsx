@@ -4,88 +4,26 @@ import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { Heading, Text } from "@/components/ui/typography";
-
-const services = [
-  {
-    id: "business-websites",
-    title: "Business websites",
-    description:
-      "Make the offer easy to understand, the business easy to trust, and the next step easy to take.",
-    outcome: "Positioning · Content · Design · Development",
-  },
-  {
-    id: "web-apps-dashboards",
-    title: "Web apps & platforms",
-    description:
-      "Turn manual workflows, scattered tools, or a product idea into software built around the real operation.",
-    outcome: "Product strategy · UX · Full-stack engineering",
-  },
-  {
-    id: "ecommerce",
-    title: "E-commerce",
-    description:
-      "Give products the presentation they deserve while keeping discovery, decision-making, and buying direct.",
-    outcome: "Storefronts · Marketplaces · Conversion UX",
-  },
-  {
-    id: "ai-automation",
-    title: "AI & automation",
-    description:
-      "Use AI where it removes real work or unlocks a useful product capability—not where it only adds a label.",
-    outcome: "Workflow design · Integrations · AI products",
-  },
-];
+import { Heading } from "@/components/ui/typography";
+import { services } from "@/lib/services";
 
 export function ServicesSection() {
   return (
-    <Section className="bg-muted/40">
+    <Section id="services" className="border-y border-border bg-card">
       <Container>
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl">
-            <Heading as="h2" variant="section">
-              One partner from first decision to production.
-            </Heading>
-          </div>
-
-          <Text variant="body" className="max-w-lg lg:text-right">
-            Bring us the commercial problem, the messy workflow, or the product
-            idea. We shape the right thing, then design and build it.
-          </Text>
-        </div>
-
-        <div className="mt-12 border-t border-foreground/15">
-          {services.map((service, index) => (
+        <Heading as="h2" variant="section">What I can build for you.</Heading>
+        <div className="mt-9 grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+          {services.map((service) => (
             <Link
               key={service.id}
               href={`/services#${service.id}`}
-              className="group grid gap-5 border-b border-foreground/15 py-7 transition-colors hover:bg-background/75 sm:px-5 sm:py-9 lg:grid-cols-[0.1fr_0.34fr_0.46fr_0.1fr] lg:items-start"
+              className="service-tile group flex min-h-48 flex-col justify-between gap-6 rounded-2xl border-2 border-[var(--ink)] p-5 text-[var(--ink)] transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-[4px_5px_0_var(--paper)] motion-reduce:transform-none sm:p-6 lg:col-span-2 lg:nth-last-[-n+2]:col-span-3"
             >
-              <span className="font-heading text-sm font-semibold text-primary">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-
-              <Heading as="h3" variant="card" className="lg:pr-8">
-                {service.title}
-              </Heading>
-
-              <div>
-                <Text variant="body-sm" className="max-w-xl">
-                  {service.description}
-                </Text>
-                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-foreground/55">
-                  {service.outcome}
-                </p>
+              <div className="flex items-start justify-between gap-3">
+                <Heading as="h3" variant="subsection" className="max-w-64 text-[var(--ink)]">{service.title}</Heading>
+                <HugeiconsIcon icon={ArrowUpRight01Icon} size={22} className="shrink-0" />
               </div>
-
-              <div className="flex justify-end">
-                <HugeiconsIcon
-                  icon={ArrowUpRight01Icon}
-                  size={21}
-                  strokeWidth={1.7}
-                  className="text-muted-foreground transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary"
-                />
-              </div>
+              <p className="max-w-lg text-sm leading-relaxed sm:text-base">{service.description}</p>
             </Link>
           ))}
         </div>

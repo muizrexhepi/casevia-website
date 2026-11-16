@@ -1,58 +1,31 @@
 import Link from "next/link";
-import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
+import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { WorkProjectCard } from "@/components/work/work-project-card";
-import { Heading, Text } from "@/components/ui/typography";
+import { Heading } from "@/components/ui/typography";
 import { getHomepageProjects } from "@/lib/projects";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "../ui/button";
 
 export function SelectedWorkSection() {
-  const projects = getHomepageProjects();
+  const [flagship, ...projects] = getHomepageProjects();
 
   return (
-    <Section>
+    <Section id="selected-work" className="scroll-mt-5">
       <Container>
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-3xl">
-            <Heading as="h2" variant="section">
-              Products that had to work beyond the launch.
-            </Heading>
-
-            <Text variant="body" className="mt-4 max-w-2xl">
-              Booking platforms, operational software, commerce, and mobile
-              products shaped around the business behind the interface.
-            </Text>
-          </div>
-
-          <Link
-            href="/work"
-            className={cn(
-              buttonVariants({ size: "lg", variant: "secondary" }),
-              "h-11 w-full rounded-full px-5 font-semibold sm:w-auto hidden sm:flex",
-            )}
-          >
-            View all projects
-            <HugeiconsIcon
-              icon={ArrowRight02Icon}
-              size={17}
-              strokeWidth={1.8}
-              className="ml-2"
-            />
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <Heading as="h2" variant="section">Selected work.</Heading>
+          <Link href="/work" className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+            View all work
+            <HugeiconsIcon icon={ArrowUpRight01Icon} size={17} />
           </Link>
         </div>
-
-        <div className="mt-12 grid gap-x-6 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, index) => (
-            <WorkProjectCard
-              key={project.slug}
-              project={project}
-              priority={index === 0}
-            />
-          ))}
+        <div className="mt-9 grid gap-6">
+          {flagship && <WorkProjectCard project={flagship} large heading="h3" />}
+          <div className="grid gap-6 md:grid-cols-2">
+            {projects.map((project) => <WorkProjectCard key={project.slug} project={project} heading="h3" />)}
+          </div>
         </div>
       </Container>
     </Section>

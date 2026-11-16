@@ -35,8 +35,8 @@ export function WorkPageClient({
     <Section spacing="sm" className="pt-10 sm:pt-14 lg:pt-16">
       <Container>
         <PageIntro
-          title="Work shaped by the business behind it."
-          description="Websites, platforms, marketplaces, and mobile products built for real customers, internal teams, and day-to-day operations."
+          title="Built for real businesses."
+          description="Explore the software I’ve built for restaurant service, passenger booking, hospitality, and more."
         />
 
         <div className="mt-8 flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -64,11 +64,13 @@ export function WorkPageClient({
 
         <div className="mt-10 grid gap-x-6 gap-y-14 md:grid-cols-2">
           {filteredProjects.map((project, index) => (
-            <WorkProjectCard
-              key={project.slug}
-              project={project}
-              priority={index < 3}
-            />
+            <div key={project.slug} className={cn(index === 0 && activeCategory === "All" && "md:col-span-2")}>
+              <WorkProjectCard
+                project={project}
+                priority={index === 0}
+                large={index === 0 && activeCategory === "All"}
+              />
+            </div>
           ))}
         </div>
 
