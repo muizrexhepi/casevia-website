@@ -1,5 +1,4 @@
 import { featuredProjects } from "@/lib/featured-projects";
-
 export type ProjectCategory =
   | "Custom Software"
   | "Hospitality"
@@ -14,13 +13,11 @@ export type ProjectCategory =
   | "Business Website"
   | "CMS"
   | "Client Work";
-
 export type ProjectMetric = {
   label: string;
   value: string;
   description?: string;
 };
-
 export type ProjectImage = {
   src: string;
   alt: string;
@@ -28,7 +25,6 @@ export type ProjectImage = {
   description?: string;
   type?: "desktop" | "mobile" | "dashboard" | "flow" | "brand" | "detail";
 };
-
 export type ProjectCaseSection = {
   eyebrow?: string;
   title: string;
@@ -42,7 +38,6 @@ export type ProjectCaseSection = {
     role?: string;
   };
 };
-
 export type ProjectVisualTheme =
   | "rendo-pos"
   | "ido-tours"
@@ -56,7 +51,6 @@ export type ProjectVisualTheme =
   | "nextloop"
   | "doros"
   | "am";
-
 export type Project = {
   slug: string;
   name: string;
@@ -99,9 +93,89 @@ export type Project = {
   seoDescription?: string;
   socialImage?: string;
 };
-
 export const projects: Project[] = [
   ...featuredProjects,
+  {
+    slug: "ulliri-garden",
+    name: "Ulliri Restaurant & Garden",
+    role: "Restaurant website, digital menu, and ordering workflow development",
+    period: "Client project",
+    status: "Live restaurant implementation",
+    clientType: "Restaurant in Tetovo, North Macedonia",
+    industry: "Hospitality / Restaurant Technology",
+    featured: true,
+    headline: "From the guest's phone to the people preparing the order.",
+    subheadline:
+      "A restaurant website and Garden ordering experience that connects QR menus, guest orders, cashier confirmation, and kitchen/bar preparation.",
+    summary: "QR ordering connected to real restaurant operations.",
+    description:
+      "Ulliri Garden gives guests a mobile ordering experience while keeping staff in control of fulfillment. Orders are submitted from the menu, confirmed at the cashier, and routed to the appropriate preparation station.",
+    liveUrl: "https://restaurantulliri.com/garden/order",
+    liveLabel: "Explore Garden ordering",
+    initials: "UG",
+    // Reuse the existing green-friendly theme; no changes needed to theme maps elsewhere.
+    visualTheme: "villa-noar",
+    coverImage: "/work/ulliri-garden.svg",
+    coverAlt: "Illustrated Ulliri Garden QR ordering, cashier, and preparation workflow",
+    heroImage: "/work/ulliri-garden.svg",
+    heroAlt: "Ulliri Garden ordering workflow diagram; not an application screenshot",
+    galleryImages: [],
+    services: ["Website development", "Multilingual digital menu", "QR ordering", "Restaurant workflow integration"],
+    deliverables: [
+      "Restaurant digital experience",
+      "Mobile ordering and cart",
+      "Cashier-side order confirmation",
+      "Kitchen and bar order routing",
+      "Order status workflow",
+    ],
+    categories: ["Hospitality", "Custom Software", "Operations", "Business Website", "Client Work"],
+    proof: [
+      "Deployed restaurant ordering flow",
+      "Guests can submit orders from their phones",
+      "Staff confirm and route orders to preparation stations",
+    ],
+    // Feature proof, not invented business-performance statistics.
+    // Replace with verified operational metrics after the client's approval.
+    metrics: [
+      { value: "Live", label: "Deployment", description: "Ordering experience used at Ulliri Garden" },
+      { value: "QR → POS", label: "Guest ordering", description: "From guest cart to cashier confirmation" },
+      { value: "Kitchen + bar", label: "Routing", description: "Orders reach the appropriate station" },
+    ],
+    stack: ["Next.js", "Convex", "QR ordering", "Restaurant operations"],
+    challenge:
+      "Enable customers to browse and request items on their phones without bypassing the restaurant's cashier and preparation workflows.",
+    solution:
+      "A mobile-first Garden menu and ordering flow, connected to cashier approval and kitchen/bar routing through the restaurant's ordering system.",
+    caseStudy: [
+      {
+        eyebrow: "The brief",
+        title: "Ordering needs to work for guests and staff.",
+        body:
+          "A mobile menu is only one part of the experience. Ulliri Garden also needed incoming guest orders to fit into the restaurant's existing service flow, with staff able to confirm requests before preparation.",
+      },
+      {
+        eyebrow: "Guest experience",
+        title: "Browse, add to cart, and submit from the table.",
+        body:
+          "Guests scan a QR code, browse the Garden menu on their phones, add drinks or food to a cart, and submit an order without needing a separate app.",
+      },
+      {
+        eyebrow: "Restaurant operations",
+        title: "The right order reaches the right team.",
+        body:
+          "Staff review and confirm incoming orders at the cashier. Confirmed items are directed to the kitchen or bar workflow, connecting the customer interface to preparation.",
+      },
+      {
+        eyebrow: "Delivered",
+        title: "A live end-to-end ordering flow.",
+        body:
+          "The deployed system demonstrates a connected journey from phone-based ordering to cashier confirmation and preparation. Order volume, time savings, and other operational outcomes should be added only after measurement and client approval.",
+      },
+    ],
+    seoTitle: "Ulliri Garden Case Study | QR Ordering and Restaurant Operations",
+    seoDescription:
+      "A live restaurant ordering experience for Ulliri Garden, connecting customer QR ordering, cashier confirmation, and kitchen/bar routing.",
+  },
   {
     slug: "asknoel",
     name: "AskNoel",
@@ -114,7 +188,7 @@ export const projects: Project[] = [
     headline: "Turning a high-growth crypto product into one connected intelligence platform.",
     subheadline:
       "A multi-surface product spanning real-time market data, editorial intelligence, an AI chatbot, and mobile access for a global crypto audience.",
-    summary: "Crypto intelligence, built as one product.",
+    summary: "Market data, crypto news, and AI assistance in one place.",
     description:
       "AskNoel needed more than a market dashboard. Muiz Rexhepi helped shape and build the platform across web, conversational AI, and mobile, creating a cohesive experience across those surfaces.",
     liveUrl: "https://app.asknoel.ai/",
@@ -238,7 +312,7 @@ export const projects: Project[] = [
     headline: "One travel business, connected from discovery to daily operations.",
     subheadline:
       "A long-term partnership spanning the public brand, travel discovery, bookings, and the internal system coordinating agencies, reservations, hotels, and tours.",
-    summary: "Travel discovery and operations, connected.",
+    summary: "Travel discovery, bookings, and agency operations together.",
     description:
       "The work began with the customer experience and grew with the business. Muiz Rexhepi connected Agim Tours’ public brand to the operational system behind it, creating one clearer foundation for travel products, bookings, and coordination across agencies.",
     liveUrl: "https://agimtours.com",
@@ -342,7 +416,7 @@ export const projects: Project[] = [
     headline: "A transport platform built for passengers and the operation behind them.",
     subheadline:
       "Web booking, mobile access, internal dashboards, and operator workflows designed as one connected ticketing service for a regional bus company.",
-    summary: "Ticketing and transport operations, connected.",
+    summary: "Passenger bookings connected to transport operations.",
     description:
       "For Hakbus, booking could not stop at a confirmation screen. Muiz Rexhepi worked across the passenger journey and the operational tools behind each trip, connecting web, mobile, and dashboards for transport operators.",
     liveUrl: "https://hakbus.org",
@@ -436,7 +510,7 @@ export const projects: Project[] = [
     headline: "Bringing a Swiss coffee brand into a new market with confidence.",
     subheadline:
       "A market-specific storefront for Macedonia, translating Doros Premium’s product quality into clear discovery, credible presentation, and a direct path to purchase.",
-    summary: "Premium coffee, introduced to a new market.",
+    summary: "An online storefront for a Swiss coffee brand entering Macedonia.",
     description:
       "Entering Macedonia meant earning trust with customers who did not yet know the brand. Muiz Rexhepi adapted the Swiss positioning into a focused local storefront where the coffee range, product detail, and buying journey stay clear on every screen.",
     liveUrl: "https://dorospremium.com.mk",
@@ -507,7 +581,7 @@ export const projects: Project[] = [
     headline: "Nutrition tracking without the repetitive data entry.",
     subheadline:
       "A production iOS app that turns natural-language meal descriptions into structured nutrition data, goals, and useful weekly insights.",
-    summary: "AI nutrition tracking without the friction.",
+    summary: "Log meals in plain language, not endless manual forms.",
     description:
       "Logly explores a faster model for everyday food tracking. Users describe a meal naturally; the product structures the information into calories and macros while maintaining the goals, insights, and account systems expected from a production health app.",
     liveUrl: "https://uselogly.app",
@@ -578,7 +652,7 @@ export const projects: Project[] = [
     headline: "Making bus travel between the Balkans and Europe easier to book.",
     subheadline:
       "A focused booking marketplace where destination discovery, cross-border routes, payments, operator workflows, and traveler communication work as one system.",
-    summary: "Cross-border bus travel, easier to book.",
+    summary: "Find cross-border bus routes and book online.",
     description:
       "GoBusly was created around a regional reality: cross-border routes are in demand, but the journey from finding a bus to holding a valid booking is often fragmented. Muiz Rexhepi brought discovery, payments, operators, and customer communication into one production platform.",
     liveUrl: "https://gobusly.com",
@@ -665,7 +739,7 @@ export const projects: Project[] = [
     headline: "A Swiss luxury marketplace where presentation and bidding carry equal weight.",
     subheadline:
       "An editorial commerce experience that gives high-value objects room to feel considered while keeping auction status, pricing, timing, and bidding unmistakably clear.",
-    summary: "Luxury commerce with auction clarity.",
+    summary: "Luxury product listings with clear auction and bidding flows.",
     description:
       "Nextloop sits between two demanding experiences: a luxury storefront and a live marketplace. Muiz Rexhepi designed the responsive frontend so product provenance and imagery build desire while auction mechanics build confidence.",
     liveUrl: "https://nextloop.ch",
@@ -736,7 +810,7 @@ export const projects: Project[] = [
     headline: "Practice difficult conversations with feedback that helps.",
     subheadline:
       "An AI speaking coach combining voice recording, transcription, structured feedback, scoring, and repeatable practice scenarios.",
-    summary: "Practice difficult conversations with AI feedback.",
+    summary: "Practice speaking and get structured feedback from AI.",
     description:
       "SpeakSure gives users a private practice loop before high-pressure conversations. The product records and transcribes an answer, then returns structured feedback and a clearer rewritten response.",
     liveUrl: "https://speaksure.app",
@@ -807,7 +881,7 @@ export const projects: Project[] = [
     headline: "Turning a Hamburg cleaning company’s services into a clearer sales journey.",
     subheadline:
       "A responsive, CMS-backed website that organizes the company’s commercial cleaning offer around customer intent and makes inquiry the natural next step.",
-    summary: "A clearer digital front door for commercial cleaning.",
+    summary: "A service website that helps customers find information and request quotes.",
     description:
       "For AM Gebäudereinigung, credibility depended on being specific: what gets cleaned, who the service is for, and how to request an offer. Muiz Rexhepi rebuilt that journey and paired it with a headless CMS the company could maintain without developer support.",
     liveUrl: "https://www.amgebaeudereinigung.hamburg/",
@@ -867,7 +941,6 @@ export const projects: Project[] = [
       "Case study for a CMS-backed service website created for AM Gebäudereinigung in Hamburg.",
   },
 ];
-
 export const projectCategories: ProjectCategory[] = [
   "Custom Software",
   "Hospitality",
@@ -881,28 +954,51 @@ export const projectCategories: ProjectCategory[] = [
   "Mobile App",
   "Business Website",
 ];
-
 export function getProject(slug: string) {
   return projects.find((project) => project.slug === slug);
 }
-
 export function getFeaturedProjects() {
   return projects.filter((project) => project.featured);
 }
+/** Homepage highlights are editorially chosen and ordered, independent of Work page filters. */
+const HOMEPAGE_PROJECT_SLUGS = ["rendo-pos", "doros-premium", "logly"] as const;
 
-export function getHomepageProjects() {
-  return projects.filter((project) => project.homepageFeatured);
+export function getHomepageProjects(): Project[] {
+  return HOMEPAGE_PROJECT_SLUGS
+    .map((slug) => getProject(slug))
+    .filter((project): project is Project => project !== undefined);
 }
 
+/** All portfolio work, with the most convincing projects appearing first. */
+const WORK_PRIORITY_SLUGS = [
+  "rendo-pos",
+  "ulliri-garden",
+  "doros-premium",
+  "logly",
+  "ido-tours",
+  "villa-noar",
+  "nextloop",
+  "hakbus",
+  "agim-tours",
+] as const;
+
+export function getWorkProjects(): Project[] {
+  const order = new Map<string, number>(
+    WORK_PRIORITY_SLUGS.map((slug, index) => [slug, index]),
+  );
+
+  return [...projects].sort(
+    (a, b) =>
+      (order.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
+      (order.get(b.slug) ?? Number.MAX_SAFE_INTEGER),
+  );
+}
 export function getProjectsByCategory(category: ProjectCategory) {
   return projects.filter((project) => project.categories.includes(category));
 }
-
 export function getRelatedProjects(slug: string, limit = 2) {
   const currentProject = getProject(slug);
-
   if (!currentProject) return [];
-
   return projects
     .filter((project) => project.slug !== slug)
     .filter((project) =>
@@ -912,14 +1008,11 @@ export function getRelatedProjects(slug: string, limit = 2) {
     )
     .slice(0, limit);
 }
-
 export function getNextProject(slug: string) {
   const featuredProjects = getFeaturedProjects();
   const currentIndex = featuredProjects.findIndex(
     (project) => project.slug === slug,
   );
-
   if (currentIndex === -1 || featuredProjects.length < 2) return null;
-
   return featuredProjects[(currentIndex + 1) % featuredProjects.length];
 }
