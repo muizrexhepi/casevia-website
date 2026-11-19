@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { createHash, createHmac } from "node:crypto";
 import { isIP } from "node:net";
 import { Resend } from "resend";
 
@@ -70,6 +70,19 @@ export async function POST(request: Request) {
   const idempotencyKey = `portfolio-inquiry/${hash([from, to, text].join("\n"))}`;
 
   try {
+    const captureUrl = process.env.NEXT_PUBLIC_CONVEX_SITE_URL;
+    const captureSecret = process.env.CRM_CAPTURE_SECRET;
+    if (captureUrl && captureSecret) {
+      const payload = JSON.stringify({ key: idempotencyKey, name, email, company, projectType, budget, message });
+      const timestamp = String(Date.now());
+      const capture = await fetch(`${captureUrl}/inquiry`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-crm-timestamp": timestamp, "x-crm-signature": createHmac("sha256", captureSecret).update(`${timestamp}.${payload}`).digest("hex") },
+        body: payload,
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!capture.ok) return error("Your inquiry could not be saved. Please try again or email me directly.", 503);
+    }
     const { data, error: deliveryError } = await new Resend(apiKey).emails.send({
       from: `${site.name} <${from}>`,
       to,

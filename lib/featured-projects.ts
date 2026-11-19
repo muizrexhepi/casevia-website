@@ -1,5 +1,5 @@
-import type { Project } from "@/lib/projects";
-import { ulliriProject } from "@/lib/ulliri-project";
+import type { Project } from "./projects";
+import { ulliriProject } from "./ulliri-project";
 
 export const featuredProjects = [
   ulliriProject,
