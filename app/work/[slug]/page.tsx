@@ -129,16 +129,18 @@ function ProjectDetails({ project }: { project: Project }) {
             </div>
           ))}
         </div>
-        <div className="mt-10 grid gap-8 md:grid-cols-2 md:gap-12">
-          <div>
-            <Heading as="h2" variant="subsection">The challenge</Heading>
-            <Text className="mt-3">{project.challenge}</Text>
+        {!project.overviewInStory && (
+          <div className="mt-10 grid gap-8 md:grid-cols-2 md:gap-12">
+            <div>
+              <Heading as="h2" variant="subsection">The challenge</Heading>
+              <Text className="mt-3">{project.challenge}</Text>
+            </div>
+            <div>
+              <Heading as="h2" variant="subsection">What I built</Heading>
+              <Text className="mt-3">{project.solution}</Text>
+            </div>
           </div>
-          <div>
-            <Heading as="h2" variant="subsection">What I built</Heading>
-            <Text className="mt-3">{project.solution}</Text>
-          </div>
-        </div>
+        )}
       </Container>
     </Section>
   );
@@ -158,19 +160,69 @@ function ProjectStory({ project }: { project: Project }) {
           return (
             <article key={section.title} className="border-t border-border pt-7">
               <div className="grid gap-4 md:grid-cols-2 md:gap-12">
-                <Heading as="h2" variant="subsection" className="max-w-xl">{section.title}</Heading>
-                <Text className="max-w-2xl">{section.body}</Text>
+                <div>
+                  {section.eyebrow && <p className="mb-3 text-xs font-semibold tracking-[.1em] text-primary uppercase">{section.eyebrow}</p>}
+                  <Heading as="h2" variant="subsection" className="max-w-xl">{section.title}</Heading>
+                </div>
+                <div>
+                  <Text className="max-w-2xl">{section.body}</Text>
+                  {section.links && (
+                    <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+                      {section.links.map(({ label, href }) => (
+                        <Link key={href} href={href} {...(href.startsWith("https://") ? { target: "_blank", rel: "noreferrer" } : {})} className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary underline-offset-4 hover:underline">
+                          {label}<HugeiconsIcon icon={ArrowUpRight01Icon} size={16} aria-hidden="true" />
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
+              {section.steps && (
+                <ol className="mt-7 grid gap-3 min-[360px]:grid-cols-2 lg:grid-cols-4">
+                  {section.steps.map((step, stepIndex) => (
+                    <li key={step.title} className="rounded-xl border border-border bg-card p-5">
+                      <span className="font-heading text-sm font-semibold text-primary" aria-hidden="true">{String(stepIndex + 1).padStart(2, "0")}</span>
+                      <Heading as="h3" variant="small" className="mt-4">{step.title}</Heading>
+                      <Text variant="body-sm" className="mt-2">{step.body}</Text>
+                    </li>
+                  ))}
+                </ol>
+              )}
               {image && (
-                <div className="work-frame mt-7 rounded-xl border border-[var(--ink)] p-4 sm:p-7">
-                  <Image
-                    src={image}
-                    alt={section.imageAlt ?? gallery?.alt ?? `${project.name} project detail`}
-                    width={isMobile ? 430 : 1500}
-                    height={isMobile ? 932 : 900}
-                    sizes={isMobile ? "(min-width: 640px) 320px, 78vw" : "(min-width: 1280px) 1150px, 90vw"}
-                    className={cn("mx-auto h-auto w-full rounded-lg border-2 border-[var(--ink)] shadow-[4px_5px_0_var(--ink)]", isMobile && "max-w-[320px]")}
-                  />
+                <figure className="mt-7">
+                  <div className="work-frame rounded-xl border border-[var(--ink)] p-3 sm:p-7">
+                    <Image
+                      src={image}
+                      alt={section.imageAlt ?? gallery?.alt ?? `${project.name} project detail`}
+                      width={isMobile ? 430 : 1500}
+                      height={isMobile ? 932 : 900}
+                      sizes={isMobile ? "(min-width: 640px) 320px, 78vw" : "(min-width: 1280px) 1150px, 90vw"}
+                      className={cn("mx-auto h-auto w-full rounded-lg border-2 border-[var(--ink)] shadow-[4px_5px_0_var(--ink)]", isMobile && "max-w-[320px]")}
+                    />
+                  </div>
+                  {section.imageCaption && <figcaption className="mt-3 text-sm leading-6 text-muted-foreground">{section.imageCaption}</figcaption>}
+                </figure>
+              )}
+              {section.screens && (
+                <div
+                  role="region"
+                  aria-label="Customer ordering screenshots"
+                  tabIndex={0}
+                  className="work-frame mt-7 flex snap-x snap-mandatory gap-5 overflow-x-auto rounded-xl border border-[var(--ink)] p-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:grid sm:grid-cols-3 sm:gap-7 sm:p-7"
+                >
+                  {section.screens.map((screen) => (
+                    <figure key={screen.src} className="min-w-0 basis-[85%] shrink-0 snap-center sm:basis-auto">
+                      <Image
+                        src={screen.src}
+                        alt={screen.alt}
+                        width={430}
+                        height={932}
+                        sizes="(min-width: 1280px) 320px, (min-width: 640px) 28vw, 75vw"
+                        className="mx-auto h-auto w-full max-w-[320px] rounded-xl border-2 border-[var(--ink)] shadow-[4px_5px_0_var(--ink)]"
+                      />
+                      <figcaption className="mt-4 text-center text-sm font-semibold text-[var(--ink)]">{screen.label}</figcaption>
+                    </figure>
+                  ))}
                 </div>
               )}
             </article>

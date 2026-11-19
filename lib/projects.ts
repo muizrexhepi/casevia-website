@@ -32,6 +32,10 @@ export type ProjectCaseSection = {
   image?: string;
   imageAlt?: string;
   imageType?: ProjectImage["type"];
+  imageCaption?: string;
+  screens?: ProjectImage[];
+  steps?: { title: string; body: string }[];
+  links?: { label: string; href: string }[];
   quote?: {
     text: string;
     author?: string;
@@ -39,6 +43,7 @@ export type ProjectCaseSection = {
   };
 };
 export type ProjectVisualTheme =
+  | "ulliri-garden"
   | "rendo-pos"
   | "ido-tours"
   | "villa-noar"
@@ -81,6 +86,7 @@ export type Project = {
   heroAlt?: string;
   galleryImages: ProjectImage[];
   caseStudy: ProjectCaseSection[];
+  overviewInStory?: boolean;
   services: string[];
   deliverables: string[];
   categories: ProjectCategory[];
@@ -95,87 +101,6 @@ export type Project = {
 };
 export const projects: Project[] = [
   ...featuredProjects,
-  {
-    slug: "ulliri-garden",
-    name: "Ulliri Restaurant & Garden",
-    role: "Restaurant website, digital menu, and ordering workflow development",
-    period: "Client project",
-    status: "Live restaurant implementation",
-    clientType: "Restaurant in Tetovo, North Macedonia",
-    industry: "Hospitality / Restaurant Technology",
-    featured: true,
-    headline: "From the guest's phone to the people preparing the order.",
-    subheadline:
-      "A restaurant website and Garden ordering experience that connects QR menus, guest orders, cashier confirmation, and kitchen/bar preparation.",
-    summary: "QR ordering connected to real restaurant operations.",
-    description:
-      "Ulliri Garden gives guests a mobile ordering experience while keeping staff in control of fulfillment. Orders are submitted from the menu, confirmed at the cashier, and routed to the appropriate preparation station.",
-    liveUrl: "https://restaurantulliri.com/garden/order",
-    liveLabel: "Explore Garden ordering",
-    initials: "UG",
-    // Reuse the existing green-friendly theme; no changes needed to theme maps elsewhere.
-    visualTheme: "villa-noar",
-    coverImage: "/work/ulliri-garden.svg",
-    coverAlt: "Illustrated Ulliri Garden QR ordering, cashier, and preparation workflow",
-    heroImage: "/work/ulliri-garden.svg",
-    heroAlt: "Ulliri Garden ordering workflow diagram; not an application screenshot",
-    galleryImages: [],
-    services: ["Website development", "Multilingual digital menu", "QR ordering", "Restaurant workflow integration"],
-    deliverables: [
-      "Restaurant digital experience",
-      "Mobile ordering and cart",
-      "Cashier-side order confirmation",
-      "Kitchen and bar order routing",
-      "Order status workflow",
-    ],
-    categories: ["Hospitality", "Custom Software", "Operations", "Business Website", "Client Work"],
-    proof: [
-      "Deployed restaurant ordering flow",
-      "Guests can submit orders from their phones",
-      "Staff confirm and route orders to preparation stations",
-    ],
-    // Feature proof, not invented business-performance statistics.
-    // Replace with verified operational metrics after the client's approval.
-    metrics: [
-      { value: "Live", label: "Deployment", description: "Ordering experience used at Ulliri Garden" },
-      { value: "QR → POS", label: "Guest ordering", description: "From guest cart to cashier confirmation" },
-      { value: "Kitchen + bar", label: "Routing", description: "Orders reach the appropriate station" },
-    ],
-    stack: ["Next.js", "Convex", "QR ordering", "Restaurant operations"],
-    challenge:
-      "Enable customers to browse and request items on their phones without bypassing the restaurant's cashier and preparation workflows.",
-    solution:
-      "A mobile-first Garden menu and ordering flow, connected to cashier approval and kitchen/bar routing through the restaurant's ordering system.",
-    caseStudy: [
-      {
-        eyebrow: "The brief",
-        title: "Ordering needs to work for guests and staff.",
-        body:
-          "A mobile menu is only one part of the experience. Ulliri Garden also needed incoming guest orders to fit into the restaurant's existing service flow, with staff able to confirm requests before preparation.",
-      },
-      {
-        eyebrow: "Guest experience",
-        title: "Browse, add to cart, and submit from the table.",
-        body:
-          "Guests scan a QR code, browse the Garden menu on their phones, add drinks or food to a cart, and submit an order without needing a separate app.",
-      },
-      {
-        eyebrow: "Restaurant operations",
-        title: "The right order reaches the right team.",
-        body:
-          "Staff review and confirm incoming orders at the cashier. Confirmed items are directed to the kitchen or bar workflow, connecting the customer interface to preparation.",
-      },
-      {
-        eyebrow: "Delivered",
-        title: "A live end-to-end ordering flow.",
-        body:
-          "The deployed system demonstrates a connected journey from phone-based ordering to cashier confirmation and preparation. Order volume, time savings, and other operational outcomes should be added only after measurement and client approval.",
-      },
-    ],
-    seoTitle: "Ulliri Garden Case Study | QR Ordering and Restaurant Operations",
-    seoDescription:
-      "A live restaurant ordering experience for Ulliri Garden, connecting customer QR ordering, cashier confirmation, and kitchen/bar routing.",
-  },
   {
     slug: "asknoel",
     name: "AskNoel",
@@ -961,7 +886,7 @@ export function getFeaturedProjects() {
   return projects.filter((project) => project.featured);
 }
 /** Homepage highlights are editorially chosen and ordered, independent of Work page filters. */
-const HOMEPAGE_PROJECT_SLUGS = ["rendo-pos", "doros-premium", "logly"] as const;
+const HOMEPAGE_PROJECT_SLUGS = ["ulliri-garden", "rendo-pos", "ido-tours", "villa-noar"] as const;
 
 export function getHomepageProjects(): Project[] {
   return HOMEPAGE_PROJECT_SLUGS
@@ -971,12 +896,12 @@ export function getHomepageProjects(): Project[] {
 
 /** All portfolio work, with the most convincing projects appearing first. */
 const WORK_PRIORITY_SLUGS = [
-  "rendo-pos",
   "ulliri-garden",
-  "doros-premium",
-  "logly",
+  "rendo-pos",
   "ido-tours",
   "villa-noar",
+  "doros-premium",
+  "logly",
   "nextloop",
   "hakbus",
   "agim-tours",

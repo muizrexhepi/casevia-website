@@ -1,6 +1,8 @@
 import type { Project } from "@/lib/projects";
+import { ulliriProject } from "@/lib/ulliri-project";
 
 export const featuredProjects = [
+  ulliriProject,
   {
     slug: "rendo-pos",
     socialImage: "/work/rendo-pos/share.png",
@@ -16,7 +18,7 @@ export const featuredProjects = [
     industry: "Hospitality technology",
     status: "Hospitality operations platform",
     headline: "One order, from the guest to the kitchen.",
-    subheadline: "A restaurant operating system that connects self-service ordering, a Windows cashier app, kitchen and bar stations, and the tools managers use after service.",
+    subheadline: "A reusable restaurant platform connecting self-service ordering, a Windows cashier app, kitchen and bar stations, and the tools managers use after service.",
     summary: "Ordering, point of sale, and back-office operations in one hospitality platform.",
     description: "I built Rendo around the handoff between the person placing an order and the people preparing, serving, and reconciling it. The platform gives each part of a venue an interface for its own work while connecting them through a shared order workflow.",
     liveUrl: "https://www.rendopos.com/en",
@@ -34,6 +36,12 @@ export const featuredProjects = [
     challenge: "Venues need a reliable handoff from guest or cashier to preparation and settlement. Staff also need to manage menus, shifts, stock, and access without piecing together separate records.",
     solution: "I built a shared platform with separate views for guests, cashiers, preparation teams, and managers. The Windows POS adds a local hardware bridge for configured terminals and printers.",
     caseStudy: [
+      {
+        eyebrow: "Platform and client implementation",
+        title: "The platform behind the venue workflow.",
+        body: "Rendo is the reusable hospitality software platform. Ulliri Restaurant & Garden is a commercial client implementation, with its own restaurant website, menus, and Garden ordering experience. That separate case study shows how the customer journey connects to day-to-day restaurant operations.",
+        links: [{ label: "Explore the Ulliri implementation", href: "/work/ulliri-garden" }],
+      },
       {
         title: "Different ways to order. One shared workflow.",
         body: "Staff can take counter orders and send rounds from open tables. Guests can browse the menu and place orders using a venue QR code or a self-service kiosk. Guest QR orders are paid at the cashier. Staff-managed tables can send a round for preparation while the bill stays open.",

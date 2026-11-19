@@ -23,15 +23,12 @@ export function WorkPageClient({
           project.categories.includes(activeCategory),
         );
 
-  // Highlight Rendo on the full Work page, but keep it in every applicable
-  // category filter rather than separating it into a non-filterable section.
-  const flagship =
+  const flagships =
     activeCategory === "All"
-      ? filteredProjects.find((project) => project.slug === "rendo-pos")
-      : undefined;
-  const gridProjects = flagship
-    ? filteredProjects.filter((project) => project.slug !== flagship.slug)
-    : filteredProjects;
+      ? filteredProjects.filter((project) => project.flag === "Flagship project")
+      : [];
+  const flagshipSlugs = new Set(flagships.map((project) => project.slug));
+  const gridProjects = filteredProjects.filter((project) => !flagshipSlugs.has(project.slug));
 
   return (
     <div className="mt-8 sm:mt-10">
@@ -82,15 +79,11 @@ export function WorkPageClient({
         </div>
       </div>
 
-      {flagship && (
-        <div className="mb-5 sm:mb-6">
-          <WorkProjectCard
-            project={flagship}
-            large
-            edgeToEdge
-            priority
-            heading="h2"
-          />
+      {flagships.length > 0 && (
+        <div className="mb-5 grid gap-5 sm:mb-6 sm:gap-6">
+          {flagships.map((project, index) => (
+            <WorkProjectCard key={project.slug} project={project} large edgeToEdge priority={index === 0} heading="h2" />
+          ))}
         </div>
       )}
 

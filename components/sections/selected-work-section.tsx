@@ -9,7 +9,9 @@ import { Heading } from "@/components/ui/typography";
 import { getHomepageProjects } from "@/lib/projects";
 
 export function SelectedWorkSection() {
-  const [flagship, ...projects] = getHomepageProjects();
+  const highlights = getHomepageProjects();
+  const flagships = highlights.filter((project) => project.flag === "Flagship project");
+  const projects = highlights.filter((project) => project.flag !== "Flagship project");
 
   return (
     <Section id="selected-work" className="scroll-mt-5">
@@ -22,7 +24,7 @@ export function SelectedWorkSection() {
           </Link>
         </div>
         <div className="mt-9 grid gap-6">
-          {flagship && <WorkProjectCard project={flagship} large edgeToEdge heading="h3" />}
+          {flagships.map((project) => <WorkProjectCard key={project.slug} project={project} large edgeToEdge heading="h3" />)}
           <div className="grid gap-6 md:grid-cols-2">
             {projects.map((project) => <WorkProjectCard key={project.slug} project={project} heading="h3" />)}
           </div>
