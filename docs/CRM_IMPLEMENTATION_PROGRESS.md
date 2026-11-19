@@ -12,7 +12,7 @@ Automatic discovery/research/drafting start off, outbound starts paused, and pro
 
 OpenAI showed $99.85 grant remaining, expiring 2026-12-18, with no payment method configured. API key expires 2026-12-19. The existing Convex team already exceeds included storage across projects; do not represent the whole account as free. No paid upgrade or prospecting subscription was purchased.
 
-Source remains on `feat/private-sales-crm`. Automatic approval review rejected directly pushing this release to main because that repository mutation was not explicitly authorized. A reviewable PR is the source-promotion path. Do not bypass that gate. The authorized production deployment works independently; merge the CRM source before future main-branch website releases so they retain the CRM.
+The owner explicitly approved merging [PR #1](https://github.com/muizrexhepi/casevia-website/pull/1) into `main` on 2026-11-19 while retaining `feat/private-sales-crm`. The earlier source-promotion approval gate is resolved. PR #1 is the release record; future main-branch deployments include the CRM once merged.
 
 The chronological checkpoints below record implementation decisions and earlier states.
 
