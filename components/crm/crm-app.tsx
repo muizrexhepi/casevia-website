@@ -2776,7 +2776,7 @@ function SettingsView({ data, run }: { data: Snapshot; run: Run }) {
             />
             <Toggle
               title="Prepare eligible follow-up drafts"
-              body="Only requested or opted-in conversations. Review and approval remain required."
+              body="Eligible conversations use their permitted channel. Review and approval remain required."
               value={s.autoEligibleFollowups}
               onChange={(v) => change("autoEligibleFollowups", v)}
             />

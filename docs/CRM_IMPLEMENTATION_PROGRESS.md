@@ -6,23 +6,26 @@
 
 Production has no test leads. All five workspace views were checked at 390 px without page-level horizontal overflow. The manifest, icons and safe service worker support phone installation; physical phone notification permission/delivery remains a device action.
 
-38 focused tests, type check, lint and the production build pass, including after incorporating the latest existing portfolio commits from upstream main. The release preserves those changes. Signed Resend sent/delivered events, controlled owner delivery, real OpenAI discovery/research/drafts, preview contact capture/deduplication/notification, and matched Zoho reply import are verified. Zoho completed healthy sweeps in both environments after server-only token reuse was added.
+39 focused tests, type check, lint and the production build pass, including the higher-volume backlog fix. The release preserves the latest existing portfolio commits from upstream main. Signed Resend sent/delivered events, controlled owner delivery, real OpenAI discovery/research/drafts, preview contact capture/deduplication/notification, and matched Zoho reply import are verified. Zoho completed healthy sweeps in both environments after server-only token reuse was added.
 
-Automatic discovery/research/drafting start off, outbound starts paused, and prospecting remains disconnected. To activate, review Settings targets/knowledge/budgets, enable the desired switches under Settings → Automation, and Save settings. Default limits: $5/day, $30/month, 5 accepted/pending AI jobs/day. Exact saved revisions still require approval.
+Production activation is saved and reloaded: GPT-6 Luna, North Macedonia and Switzerland, $5/day, $75/month, and 20 accepted/pending AI jobs/day. Scheduled discovery, automatic research, qualified drafts, eligible follow-up drafts, and queueing exact owner-approved messages are enabled. Outbound is enabled but every message still requires approval and all eligibility/provider/hour checks. Prospecting remains disconnected. Discovery runs after 09:00 Europe/Skopje, with a five-minute server sweep. Production run history confirms completed automatic Luna discovery and research; total estimated CRM spend at that observation was $0.091, with no send intents.
 
 OpenAI showed $99.85 grant remaining, expiring 2026-12-18, with no payment method configured. API key expires 2026-12-19. The existing Convex team already exceeds included storage across projects; do not represent the whole account as free. No paid upgrade or prospecting subscription was purchased.
 
 The owner explicitly approved merging [PR #1](https://github.com/muizrexhepi/casevia-website/pull/1) into `main` on 2026-11-19 while retaining `feat/private-sales-crm`. The earlier source-promotion approval gate is resolved. PR #1 is the release record; future main-branch deployments include the CRM once merged.
 
-The chronological checkpoints below record implementation decisions and earlier states.
+[PR #2](https://github.com/muizrexhepi/casevia-website/pull/2) merged the economical model and approval-gated automation update. The source branch is `feat/crm-efficient-automation`. New deployments retain safe off/paused defaults until the owner activates them; production's persisted settings above are active.
 
+The chronological checkpoints below record implementation decisions and earlier states.
 
 Branch: `feat/private-sales-crm`. Source: existing Next.js 16 / React 19 / npm portfolio.
 
 ## Repository assessment
+
 The public website uses App Router, local Inter/Manrope fonts, Base UI primitives, and a Resend contact route. There was no persistent backend or authentication. Public pages and their existing notifications must remain functional.
 
 ## Implementation sequence
+
 1. Dedicated Convex development project, maintained owner authentication, private routing, schema, contact capture.
 2. Lead management, evidence-based research, qualification, drafts, and pipeline.
 3. Provider eligibility, immutable approvals, durable send intents, Zoho replies, cancellation.
@@ -30,12 +33,14 @@ The public website uses App Router, local Inter/Manrope fonts, Base UI primitive
 5. PWA, proposals, funnel metrics, production preparation and verification.
 
 ## Account verification (2026-11-19)
+
 - Created **only** `mickamuiz/muiz-sales-crm`, development deployment `exciting-scorpion-834`.
 - OpenAI signed-in billing page: organization **Personal**, ID `org-40APOTJxuKpbOGVE6XtalXzi`; remaining credit **$100**, displayed expiration **2026-12-18**. This is a point-in-time observation, not a live balance integration.
 - No purchases or billing changes were made. Production rollout and the CRM subdomain were subsequently explicitly authorized. Live prospecting remains disabled.
 - Current stable Convex Auth is v2, component-based. Following current official docs rather than older v1 examples.
 
 ## Verification / blockers
+
 Implementation in progress. Secrets and OAuth configuration are tracked in CRM_SETUP.md. Live AI requests remain disabled until credentials and application spending controls are configured.
 
 ## Working checkpoint (2026-11-19, active implementation)
@@ -79,10 +84,12 @@ Remaining: verify live OpenAI research/discovery/drafts and spending; configure 
 
 Owner requested automatic discovery, research and drafting for North Macedonia and Switzerland within existing limits, with approval required before sending. Added Luna as the economical default and retained Sol as an explicit stronger option. Astra is removed from choices and blocked for new settings/jobs. Reserved model is now pinned per job, preventing a queued Luna reservation from later executing with a more expensive model after a settings change.
 
-38 tests, type check, lint and production build pass. Live Luna discovery and draft generation pass with token/search costs settled. Production rollout and requested setting activation follow verification. Preserve outbound pause, automatic sending off, $5/day, $30/month and 5 AI jobs/day.
+At the initial economical-model checkpoint, 38 tests, type check, lint and production build passed. Live Luna discovery and draft generation passed with token/search costs settled. The later owner instructions below supersede the initial $30/month, five-job and paused-outbound settings.
 
 ### Latest owner instructions — 2026-11-19
 
 Requested activation now includes scheduled discovery, new-lead research, qualified draft preparation, eligible follow-up drafts, and automatic queueing of each exact owner-approved message within sending hours. No unapproved message may send. Prospecting remains disconnected and requires an appropriate configured provider plus recipient eligibility. Requested limits: $5/day, **$75/month**, and **20 AI jobs/day**. These are ceilings, not spending targets or guaranteed lead counts. One lead can consume multiple jobs. The subscription benefit renews on eligible billing cycles and unused credit expires; current official terms are at https://developers.openai.com/api/docs/guides/chatgpt-api-credits.
 
 Follow-up drafting now works while outbound is paused and prepares prospecting-channel drafts for eligible prospects, without allowing them through Resend or bypassing approval. Automatic queueing tests prove unapproved drafts remain untouched and repeated sweeps do not create duplicate send intents. Defaults remain approval-first with automation off until activated in owner settings.
+
+Activation is verified in production settings and run history. Higher-volume backlog handling now moves scheduled research out of New, and clears legacy New rows with prior research so a bounded page cannot permanently hide newer leads. Discovery requires a live web search and supplies the latest 250 known domains to seek fresh businesses; server-side deduplication remains authoritative. The 39th regression test covers a full legacy backlog followed by a fresh lead.
