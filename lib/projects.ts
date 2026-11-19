@@ -1,4 +1,4 @@
-import { featuredProjects } from "@/lib/featured-projects";
+import { featuredProjects } from "./featured-projects";
 export type ProjectCategory =
   | "Custom Software"
   | "Hospitality"

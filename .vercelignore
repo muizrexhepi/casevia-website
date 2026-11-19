@@ -1,0 +1,7 @@
+.env*
+.git
+artifacts
+tests
+docs
+scripts
+*.tsbuildinfo
