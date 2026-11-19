@@ -1,5 +1,20 @@
 import { z } from "zod";
+const targetEvidence = z.object({
+  businessType: z.enum([
+    "independent_small_business",
+    "enterprise_or_chain",
+    "agency_competitor",
+    "directory_or_public_body",
+    "unknown",
+  ]),
+  reason: z.string().max(600),
+  evidenceUrl: z.union([z.string().url(), z.literal("")]),
+  sizeQuote: z.string().max(500),
+  opportunityQuote: z.string().max(500),
+});
 export const researchSchema = z.object({
+  target: targetEvidence,
+  opportunityScore: z.number().min(0).max(35),
   observations: z
     .array(
       z.object({
@@ -24,6 +39,7 @@ export const discoverySchema = z.object({
         location: z.string().max(200),
         industry: z.string().max(120),
         sourceUrl: z.string().url(),
+        target: targetEvidence,
       }),
     )
     .max(10),

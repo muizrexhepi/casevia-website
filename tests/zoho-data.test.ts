@@ -14,6 +14,13 @@ describe("integration boundaries", () => {
   });
   it("allows an uncited research hypothesis while requiring valid nonempty source URLs", () => {
     const result = {
+      target: {
+        businessType: "unknown",
+        reason: "Not yet assessed",
+        evidenceUrl: "",
+        sizeQuote: "",
+        opportunityQuote: "",
+      },
       observations: [
         {
           text: "Could a booking flow help?",
@@ -23,6 +30,7 @@ describe("integration boundaries", () => {
         },
       ],
       score: 20,
+      opportunityScore: 0,
       reasons: ["Unverified opportunity"],
       service: "Web development",
       nextAction: "Review original source",

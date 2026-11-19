@@ -4,6 +4,8 @@ import { settings, notify, audit } from "./helpers";
 import { scheduleJob } from "./jobs";
 import { queueApproved } from "./outbound";
 import { followupText } from "../lib/crm/followup";
+import { excludeEnterprise } from "./targeting";
+import { coldProspect } from "../lib/crm/targeting";
 export const tick = internalMutation({
   args: {},
   returns: v.null(),
@@ -71,10 +73,19 @@ export const tick = internalMutation({
       const stage = s.autoResearch ? "new" : "qualified";
       const leads = await ctx.db
         .query("leads")
-        .withIndex("by_stage", (q) => q.eq("stage", stage))
+        .withIndex("by_stage_and_excluded", (q) =>
+          q.eq("stage", stage).lt("excluded", true),
+        )
         .take(20);
       for (const lead of leads) {
         if (lead.suppressed) continue;
+        if (await excludeEnterprise(ctx, lead)) continue;
+        if (
+          stage === "qualified" &&
+          coldProspect(lead) &&
+          lead.targetFit?.status !== "matched"
+        )
+          continue;
         const jobs = await ctx.db
           .query("jobs")
           .withIndex("by_leadId", (q) => q.eq("leadId", lead._id))
@@ -100,10 +111,15 @@ export const tick = internalMutation({
       if (s.autoResearch && s.autoDraft) {
         const qualified = await ctx.db
           .query("leads")
-          .withIndex("by_stage", (q) => q.eq("stage", "qualified"))
+          .withIndex("by_stage_and_excluded", (q) =>
+            q.eq("stage", "qualified").lt("excluded", true),
+          )
           .take(10);
         for (const lead of qualified) {
           if (lead.suppressed) continue;
+          if (await excludeEnterprise(ctx, lead)) continue;
+          if (coldProspect(lead) && lead.targetFit?.status !== "matched")
+            continue;
           const drafts = await ctx.db
             .query("drafts")
             .withIndex("by_leadId", (q) => q.eq("leadId", lead._id))
@@ -135,6 +151,7 @@ export const tick = internalMutation({
         task.kind === "followup" &&
         (lead.repliedAt ||
           lead.suppressed ||
+          (coldProspect(lead) && lead.excluded) ||
           ["won", "lost"].includes(lead.stage))
       ) {
         await ctx.db.patch(task._id, { done: true, cancelled: true });

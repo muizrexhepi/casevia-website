@@ -58,6 +58,7 @@ import { api } from "@/convex/_generated/api";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
 import type { FunctionReturnType } from "convex/server";
 import { stages, stageLabels, languages, type Stage } from "@/lib/crm/policy";
+import { defaultTargetProfile } from "@/lib/crm/targeting";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 type Snapshot = FunctionReturnType<typeof api.crm.snapshot>;
@@ -1063,10 +1064,11 @@ function Leads({
   run: Run;
 }) {
   const [search, setSearch] = useState(""),
-    [stage, setStage] = useState("");
+    [stage, setStage] = useState(""),
+    [includeExcluded, setIncludeExcluded] = useState(false);
   const { results, status, loadMore } = usePaginatedQuery(
     api.crm.listLeads,
-    { search, ...(stage ? { stage } : {}) },
+    { search, includeExcluded, ...(stage ? { stage } : {}) },
     { initialNumItems: 30 },
   );
   return (
@@ -1082,6 +1084,14 @@ function Leads({
           />
         </label>
         <div>
+          <select
+            aria-label="Lead view"
+            value={includeExcluded ? "all" : "active"}
+            onChange={(e) => setIncludeExcluded(e.target.value === "all")}
+          >
+            <option value="active">Active prospects</option>
+            <option value="all">Include held / excluded</option>
+          </select>
           <select
             aria-label="Filter by stage"
             value={stage}
@@ -1146,6 +1156,17 @@ function Leads({
                           <small>
                             {l.domain || l.email || "No website yet"}
                           </small>
+                          {l.targetFit && (
+                            <small>
+                              {l.targetFit.status === "matched"
+                                ? "Small-business fit checked"
+                                : l.targetFit.status === "excluded"
+                                  ? "Excluded from outreach"
+                                  : l.targetFit.sizeQuote && !l.researchAt
+                                    ? "Small-business scale checked; research pending"
+                                    : "Fit needs review"}
+                            </small>
+                          )}
                         </div>
                       </Link>
                     </td>
@@ -1527,6 +1548,43 @@ function LeadDetail({
           </span>
         )}
       </div>
+      {lead.targetFit && (
+        <div className="crm-info">
+          <strong>
+            {lead.targetFit.status === "matched"
+              ? "Small-business fit checked"
+              : lead.targetFit.status === "excluded"
+                ? "Outside your target profile"
+                : "Target fit needs review"}
+          </strong>
+          <p>{lead.targetFit.reason}</p>
+          {lead.targetFit.sizeQuote && (
+            <p>Scale evidence: “{lead.targetFit.sizeQuote}”</p>
+          )}
+          {lead.targetFit.opportunityQuote && (
+            <p>Opportunity evidence: “{lead.targetFit.opportunityQuote}”</p>
+          )}
+          {lead.targetFit.evidenceUrl && (
+            <a
+              href={lead.targetFit.evidenceUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Original business source <ExternalLink size={12} />
+            </a>
+          )}
+          {lead.targetFit.opportunityUrl &&
+            lead.targetFit.opportunityUrl !== lead.targetFit.evidenceUrl && (
+              <a
+                href={lead.targetFit.opportunityUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Opportunity source <ExternalLink size={12} />
+              </a>
+            )}
+        </div>
+      )}
       <div className="crm-detail-actions">
         <Button
           className="crm-secondary"
@@ -2354,8 +2412,9 @@ function Automation({
         <Stat
           label="Jobs needing attention"
           value={String(
-            data.jobs.filter((j) => ["failed", "uncertain"].includes(j.state))
-              .length,
+            data.jobs.filter(
+              (j) => ["failed", "uncertain"].includes(j.state) && !j.resolvedAt,
+            ).length,
           )}
           icon={AlertCircle}
           foot="Uncertain charges retain their reservation"
@@ -2447,25 +2506,36 @@ function Automation({
                     <td>
                       <Badge
                         tone={
-                          j.state === "complete"
-                            ? "green"
-                            : j.state === "failed"
-                              ? "red"
-                              : "amber"
+                          j.resolvedAt
+                            ? "neutral"
+                            : j.state === "complete"
+                              ? "green"
+                              : j.state === "failed"
+                                ? "red"
+                                : "amber"
                         }
                       >
-                        {j.state}
+                        {j.resolvedAt
+                          ? j.retriedByJobId
+                            ? "Retried"
+                            : "Closed"
+                          : j.state}
                       </Badge>
                     </td>
                     <td>${j.reservation.toFixed(2)}</td>
                     <td className="crm-job-error">
-                      {j.error ||
-                        (j.state === "complete"
-                          ? "Complete"
-                          : "Waiting for worker")}
+                      {(j.resolvedAt
+                        ? j.retriedByJobId
+                          ? "Replacement attempt tracked separately. "
+                          : "Closed by target screening. "
+                        : "") +
+                        (j.error ||
+                          (j.state === "complete"
+                            ? "Complete"
+                            : "Waiting for worker"))}
                     </td>
                     <td>
-                      {j.state === "failed" && (
+                      {j.state === "failed" && !j.resolvedAt && (
                         <Button
                           className="crm-secondary"
                           onClick={() =>
@@ -2611,6 +2681,14 @@ function SettingsView({ data, run }: { data: Snapshot; run: Run }) {
                   onChange={(e) =>
                     change("industries", e.target.value.split("\n"))
                   }
+                />
+              </Field>
+              <Field label="Ideal customer profile and exclusions">
+                <textarea
+                  rows={7}
+                  maxLength={3000}
+                  value={s.targetProfile ?? defaultTargetProfile}
+                  onChange={(e) => change("targetProfile", e.target.value)}
                 />
               </Field>
               <Field label="Qualification threshold (0–100)">
