@@ -525,6 +525,57 @@ describe("atomic spending accounting", () => {
   });
 });
 describe("approval-first automation", () => {
+  it("moves past a full page of legacy research rows and excludes known domains from discovery", async () => {
+    const { t, owner } = await setup();
+    await owner.mutation(api.crm.saveSettings, {
+      settings: { ...defaultSettings, autoResearch: true, paused: true },
+    });
+    for (let i = 0; i < 20; i++) {
+      const { id } = await owner.mutation(api.crm.createLead, {
+        ...input,
+        name: `Legacy ${i}`,
+        website: `https://legacy${i}.example.com`,
+        email: `legacy${i}@example.com`,
+      });
+      await t.run((ctx) =>
+        ctx.db.insert("jobs", {
+          kind: "research",
+          leadId: id,
+          state: "complete",
+          error: "",
+          attempt: 1,
+          query: "",
+          reservation: 0,
+          createdAt: Date.now(),
+          finishedAt: Date.now(),
+        }),
+      );
+    }
+    const fresh = await owner.mutation(api.crm.createLead, {
+      ...input,
+      website: "https://fresh.example.org",
+      email: "fresh@example.org",
+    });
+    await t.mutation(internal.automation.tick, {});
+    await t.mutation(internal.automation.tick, {});
+    expect((await t.run((ctx) => ctx.db.get(fresh.id)))?.stage).toBe(
+      "researching",
+    );
+    expect(
+      await t.run((ctx) =>
+        ctx.db
+          .query("jobs")
+          .withIndex("by_leadId", (q) => q.eq("leadId", fresh.id))
+          .take(5),
+      ),
+    ).toHaveLength(1);
+    const discovery = await owner.mutation(api.jobs.enqueue, {
+      kind: "discovery",
+    });
+    const context = await t.query(internal.jobs.context, { jobId: discovery });
+    expect(context.existingDomains).toContain("fresh.example.org");
+    expect(context.existingDomains).toHaveLength(21);
+  });
   it("prepares eligible prospecting follow-ups without requiring or enabling outbound delivery", async () => {
     const { t, owner } = await setup();
     await owner.mutation(api.crm.saveSettings, {

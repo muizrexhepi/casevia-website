@@ -128,6 +128,11 @@ export async function scheduleJob(
       await ctx.db.patch(bucket._id, { reserved: bucket.reserved + reserved });
     else await ctx.db.insert("budgets", { period, spent: 0, reserved });
   }
+  if (args.kind === "research" && args.leadId) {
+    const lead = await ctx.db.get(args.leadId);
+    if (lead?.stage === "new")
+      await ctx.db.patch(lead._id, { stage: "researching", updatedAt: now });
+  }
   const id = await ctx.db.insert("jobs", {
     kind: args.kind,
     ...(args.leadId ? { leadId: args.leadId } : {}),
@@ -203,6 +208,7 @@ export const context = internalQuery({
     job: jobDoc,
     lead: v.union(leadDoc, v.null()),
     settings: v.object(settingsFields),
+    existingDomains: v.array(v.string()),
     messages: v.array(
       v.object({
         body: v.string(),
@@ -232,6 +238,12 @@ export const context = internalQuery({
       job,
       lead: job.leadId ? await ctx.db.get(job.leadId) : null,
       settings: { ...clean, model: reservedModel as CrmModel },
+      existingDomains:
+        job.kind === "discovery"
+          ? (await ctx.db.query("leads").order("desc").take(250))
+              .map((lead) => lead.domain)
+              .filter(Boolean)
+          : [],
       messages: job.leadId
         ? (
             await ctx.db

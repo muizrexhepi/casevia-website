@@ -80,7 +80,16 @@ export const tick = internalMutation({
           .withIndex("by_leadId", (q) => q.eq("leadId", lead._id))
           .take(30);
         const kind = stage === "new" ? "research" : "draft";
-        if (jobs.some((job) => job.kind === kind)) continue;
+        if (jobs.some((job) => job.kind === kind)) {
+          // Clear legacy rows that stayed "new" after an earlier research job,
+          // so the bounded new-lead page cannot permanently hide newer leads.
+          if (stage === "new")
+            await ctx.db.patch(lead._id, {
+              stage: "researching",
+              updatedAt: now,
+            });
+          continue;
+        }
         try {
           await scheduleJob(ctx, { kind, leadId: lead._id });
         } catch {

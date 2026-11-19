@@ -20,10 +20,8 @@ export const run = internalAction({
   returns: v.null(),
   handler: async (ctx, { jobId }): Promise<null> => {
     if (!(await ctx.runMutation(internal.jobs.start, { jobId }))) return null;
-    const { job, lead, settings, messages } = await ctx.runQuery(
-      internal.jobs.context,
-      { jobId },
-    );
+    const { job, lead, settings, messages, existingDomains } =
+      await ctx.runQuery(internal.jobs.context, { jobId });
     let submitted = false,
       accounted = false;
     try {
@@ -75,7 +73,7 @@ export const run = internalAction({
               : draftSchema;
       const prompt =
         job.kind === "discovery"
-          ? `Find up to ${Math.min(10, settings.dailyVolume)} real businesses matching these markets and industries. Include original business websites and evidence URLs. Return only businesses supported by search results. Do not collect or infer contact details. ${job.query}`
+          ? `Find up to ${Math.min(10, settings.dailyVolume)} real businesses matching these markets and industries. Use live web search. Exclude businesses whose website domains are in existingDomains, so this run finds fresh leads. Include original business websites and evidence URLs. Return only businesses supported by search results. Do not collect or infer contact details. ${job.query}`
           : isResearch
             ? "Research this business and identify plausible opportunities matching Muiz's actual services. Every verified observation must cite a fetched original source and include a verbatim supporting quote from that source. For hypotheses use an empty quote and an empty sourceUrl when no source exists. Score 0–100 with explicit reasons; score unknown facts conservatively. Do not mistake lack of evidence for a missing feature."
             : job.kind === "classify"
@@ -90,6 +88,7 @@ export const run = internalAction({
         lead,
         original,
         messages,
+        existingDomains,
       }).slice(0, 70000);
       if (Buffer.byteLength(data, "utf8") > 80000)
         throw new Error(
@@ -115,6 +114,10 @@ export const run = internalAction({
         ...(search
           ? {
               max_tool_calls: 3,
+              tool_choice:
+                job.kind === "discovery"
+                  ? ("required" as const)
+                  : ("auto" as const),
               tools: [
                 {
                   type: "web_search" as const,

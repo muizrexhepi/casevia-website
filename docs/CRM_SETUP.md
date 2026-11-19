@@ -34,11 +34,11 @@ Uses **Responses API**, supported `gpt-6-luna` by default, with `gpt-6.2-sol` av
 
 Configure on Convex:
 
-| Variable | Purpose |
-|---|---|
-| OPENAI_API_KEY | CRM-specific project API key, server only |
-| OPENAI_ORG_ID | Verified organization; currently `org-40APOTJxuKpbOGVE6XtalXzi` |
-| OPENAI_PROJECT_ID | Optional explicit project selection; must match the key |
+| Variable          | Purpose                                                         |
+| ----------------- | --------------------------------------------------------------- |
+| OPENAI_API_KEY    | CRM-specific project API key, server only                       |
+| OPENAI_ORG_ID     | Verified organization; currently `org-40APOTJxuKpbOGVE6XtalXzi` |
+| OPENAI_PROJECT_ID | Optional explicit project selection; must match the key         |
 
 The signed-in **Personal** organization's billing page showed **$100** remaining on **2026-11-19**, with the displayed grant expiring **2026-12-18**. This observation is not an ongoing live balance integration. No assumption is made about any larger promotional allowance. The dedicated Responses-only key expires **2026-12-19**. Live controlled research and draft generation are verified; renew the key securely before expiry.
 
@@ -165,10 +165,16 @@ GPT-6 Luna is the default for routine discovery, research and drafts; GPT-6.2 So
 
 Live controlled Luna discovery completed with two search requests and settled at $0.0218833; a draft completed at $0.0004402. Type check, lint, production build and 38 tests passed, including concurrent Luna reservations, model changes between queue and execution, disabled Astra scheduling, and approval-only automation.
 
-The owner requested automatic discovery, research and qualified drafts for North Macedonia and Switzerland. Keep $5/day, $30/month and 5 AI jobs/day; discovery at 09:00 Europe/Skopje with a five-minute server sweep. Global outbound pause remains on and automatically queueing approved messages remains off. Activation is verified through persisted production settings and the run history; no new prospecting provider is authorized.
+The initial automation request covered discovery, research and qualified drafts for North Macedonia and Switzerland. The later instructions below supersede the original $30/month, five-job and paused-outbound settings.
 
 ### Latest owner instructions — 2026-11-19
 
 Requested activation now includes scheduled discovery, new-lead research, qualified draft preparation, eligible follow-up drafts, and automatic queueing of each exact owner-approved message within sending hours. No unapproved message may send. Prospecting remains disconnected and requires an appropriate configured provider plus recipient eligibility. Requested limits: $5/day, **$75/month**, and **20 AI jobs/day**. These are ceilings, not spending targets or guaranteed lead counts. One lead can consume multiple jobs. The subscription benefit renews on eligible billing cycles and unused credit expires; current official terms are at https://developers.openai.com/api/docs/guides/chatgpt-api-credits.
 
 Follow-up drafting now works while outbound is paused and prepares prospecting-channel drafts for eligible prospects, without allowing them through Resend or bypassing approval. Automatic queueing tests prove unapproved drafts remain untouched and repeated sweeps do not create duplicate send intents. Defaults remain approval-first with automation off until activated in owner settings.
+
+### Verified production activation
+
+Saved settings were reloaded and verified: Luna, North Macedonia and Switzerland, $5/day, $75/month, 20 AI jobs/day, all five automation switches enabled, outbound unpaused. Every message still requires its saved revision's owner approval. Production run history confirms completed automatic Luna discovery and research, with approximately $0.091 total CRM usage at the observation and no send intents. Prospecting remains disconnected, so no cold message can send.
+
+Research scheduling moves New leads to Researching and clears legacy New rows with prior research jobs, preventing old entries from blocking the bounded automatic queue. Discovery requires live web search and excludes the latest 250 known domains in its prompt, with server-side deduplication retained. A regression test covers a full page of old research rows followed by a fresh lead. Monthly app accounting uses calendar months; subscription credits renew and expire on the subscription billing cycle. Limits are maximums, not targets, and other applications can share the organization's credit balance.
