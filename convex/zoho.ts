@@ -14,9 +14,9 @@ const regions: Record<string, { accounts: string; mail: string }> = {
   },
 };
 export const sync = internalAction({
-  args: {},
+  args: { force: v.optional(v.boolean()) },
   returns: v.null(),
-  handler: async (ctx): Promise<null> => {
+  handler: async (ctx, { force }): Promise<null> => {
     const {
       ZOHO_CLIENT_ID: id,
       ZOHO_CLIENT_SECRET: secret,
@@ -30,6 +30,7 @@ export const sync = internalAction({
     if (
       !(await ctx.runMutation(internal.integrations.acquireZoho, {
         token: leaseToken,
+        force: !!force,
       }))
     )
       return null;
@@ -37,24 +38,43 @@ export const sync = internalAction({
       key: "zoho",
     });
     const start = zohoPage(state?.cursor);
+    const tokenKey = `zoho:${id}:${account}`;
     try {
-      const tokenResponse = await fetch(`${region.accounts}/oauth/v2/token`, {
-        method: "POST",
-        body: new URLSearchParams({
-          grant_type: "refresh_token",
-          client_id: id,
-          client_secret: secret,
-          refresh_token: refresh,
-        }),
-        signal: AbortSignal.timeout(15000),
+      const cached = await ctx.runQuery(internal.integrations.cachedToken, {
+        key: tokenKey,
+        now: Date.now(),
       });
-      const token = (await tokenResponse.json()) as { access_token?: string };
-      if (!tokenResponse.ok || !token.access_token)
-        throw new Error(
-          "Zoho OAuth refresh failed; check region, scopes and credentials",
-        );
+      let accessToken = cached?.value;
+      if (!accessToken) {
+        const tokenResponse = await fetch(`${region.accounts}/oauth/v2/token`, {
+          method: "POST",
+          body: new URLSearchParams({
+            grant_type: "refresh_token",
+            client_id: id,
+            client_secret: secret,
+            refresh_token: refresh,
+          }),
+          signal: AbortSignal.timeout(15000),
+        });
+        const token = (await tokenResponse.json()) as {
+          access_token?: string;
+          expires_in?: number;
+          error?: string;
+        };
+        if (!tokenResponse.ok || !token.access_token)
+          throw new Error(
+            `Zoho OAuth refresh failed (${tokenResponse.status}${token.error === "Access Denied" ? " Access Denied" : ""}); check region, scopes and credentials`,
+          );
+        accessToken = token.access_token;
+        await ctx.runMutation(internal.integrations.cacheToken, {
+          key: tokenKey,
+          value: accessToken,
+          expiresAt:
+            Date.now() + Math.min(3600, token.expires_in ?? 3600) * 1000,
+        });
+      }
       const headers = {
-        Authorization: `Zoho-oauthtoken ${token.access_token}`,
+        Authorization: `Zoho-oauthtoken ${accessToken}`,
       };
       // Poll inbox with a deliberate overlap. Every message is deduplicated by Zoho ID.
       const url = new URL(
@@ -82,14 +102,21 @@ export const sync = internalAction({
           summary?: string;
         }>;
       };
+      if (response.status === 401)
+        await ctx.runMutation(internal.integrations.cacheToken, {
+          key: tokenKey,
+          value: "",
+          expiresAt: 0,
+        });
       if (!response.ok || !Array.isArray(data.data))
-        throw new Error("Zoho messages request failed");
+        throw new Error(`Zoho messages request failed (${response.status})`);
       let reachedPrevious = false;
+      const watermark = state?.lastSuccess ?? Date.now() - 30 * 86400000;
       for (const message of data.data) {
         const timestamp = Number(
           message.receivedTime ?? message.receivedtime ?? Date.now(),
         );
-        if (state?.lastSuccess && timestamp < state.lastSuccess - 86400000) {
+        if (timestamp < watermark - 86400000) {
           reachedPrevious = true;
           break;
         }
@@ -105,7 +132,9 @@ export const sync = internalAction({
           { headers, signal: AbortSignal.timeout(10000) },
         );
         if (!contentResponse.ok)
-          throw new Error("Zoho message content fetch failed; cursor retained");
+          throw new Error(
+            `Zoho message content fetch failed (${contentResponse.status}); cursor retained`,
+          );
         const content = (await contentResponse.json()) as {
           data?: { content?: string };
         };
@@ -134,14 +163,13 @@ export const sync = internalAction({
         leaseToken,
       });
       if (next > 1) await ctx.scheduler.runAfter(15000, internal.zoho.sync, {});
-    } catch {
+    } catch (error) {
       await ctx.runMutation(internal.integrations.checkpoint, {
         key: "zoho",
         cursor: String(start),
         completed: false,
         leaseToken,
-        error:
-          "Zoho sync failed; verify OAuth scope, region, account and message access. No mailbox settings were changed.",
+        error: `${error instanceof Error && error.message.startsWith("Zoho ") ? error.message : "Zoho network or persistence failure"}. No mailbox settings were changed.`,
       });
     }
     return null;
@@ -152,7 +180,7 @@ export const syncNow = action({
   returns: v.null(),
   handler: async (ctx): Promise<null> => {
     await ctx.runQuery(api.crm.owner, {});
-    await ctx.runAction(internal.zoho.sync, {});
+    await ctx.runAction(internal.zoho.sync, { force: true });
     return null;
   },
 });

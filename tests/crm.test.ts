@@ -71,6 +71,107 @@ afterEach(() => {
   vi.unstubAllEnvs();
   vi.useRealTimers();
 });
+describe("Zoho synchronization recovery", () => {
+  it("reuses valid provider tokens internally without exposing them through status", async () => {
+    const { t, owner } = await setup();
+    await t.mutation(internal.integrations.cacheToken, {
+      key: "zoho:test",
+      value: "private-test-token",
+      expiresAt: Date.now() + 3600000,
+    });
+    expect(
+      await t.query(internal.integrations.cachedToken, {
+        key: "zoho:test",
+        now: Date.now(),
+      }),
+    ).toEqual({ value: "private-test-token" });
+    expect(
+      JSON.stringify(await owner.query(api.integrations.status, {})),
+    ).not.toContain("private-test-token");
+    expect(
+      await t.query(internal.integrations.cachedToken, {
+        key: "zoho:test",
+        now: Date.now() + 3600000,
+      }),
+    ).toBeNull();
+  });
+  it("keeps its completed watermark across pages and rejects overlapping or stale workers", async () => {
+    const { t } = testBackend();
+    await t.mutation(internal.integrations.checkpoint, {
+      key: "zoho",
+      cursor: "1",
+      error: "",
+    });
+    const before = await t.query(internal.integrations.cursor, { key: "zoho" });
+    expect(
+      await t.mutation(internal.integrations.acquireZoho, { token: "first" }),
+    ).toBe(true);
+    expect(
+      await t.mutation(internal.integrations.acquireZoho, { token: "second" }),
+    ).toBe(false);
+    await t.mutation(internal.integrations.checkpoint, {
+      key: "zoho",
+      cursor: "126",
+      error: "",
+      completed: false,
+      leaseToken: "stale",
+    });
+    expect(
+      (await t.query(internal.integrations.cursor, { key: "zoho" }))?.cursor,
+    ).toBe("1");
+    vi.advanceTimersByTime(60000);
+    await t.mutation(internal.integrations.checkpoint, {
+      key: "zoho",
+      cursor: "26",
+      error: "",
+      completed: false,
+      leaseToken: "first",
+    });
+    const after = await t.query(internal.integrations.cursor, { key: "zoho" });
+    expect(after?.cursor).toBe("26");
+    expect(after?.lastSuccess).toBe(before?.lastSuccess);
+    expect(
+      await t.mutation(internal.integrations.acquireZoho, { token: "next" }),
+    ).toBe(true);
+  });
+  it("bounds automatic mailbox retries and allows explicit recovery", async () => {
+    const { t } = testBackend();
+    for (let i = 0; i < 5; i++) {
+      expect(
+        await t.mutation(internal.integrations.acquireZoho, {
+          token: String(i),
+        }),
+      ).toBe(true);
+      await t.mutation(internal.integrations.checkpoint, {
+        key: "zoho",
+        cursor: "51",
+        error: "Read failed",
+        completed: false,
+        leaseToken: String(i),
+      });
+      expect(
+        await t.mutation(internal.integrations.acquireZoho, {
+          token: "too-soon",
+        }),
+      ).toBe(false);
+      vi.advanceTimersByTime(3600001);
+    }
+    expect(
+      await t.mutation(internal.integrations.acquireZoho, {
+        token: "automatic",
+      }),
+    ).toBe(false);
+    expect(
+      await t.mutation(internal.integrations.acquireZoho, {
+        token: "owner-retry",
+        force: true,
+      }),
+    ).toBe(true);
+    expect(
+      (await t.query(internal.integrations.cursor, { key: "zoho" }))?.cursor,
+    ).toBe("51");
+  });
+});
 describe("owner authorization", () => {
   it("rejects anonymous reads and writes", async () => {
     const { t } = testBackend();
@@ -599,6 +700,29 @@ describe("complete persisted sales workflow with controlled provider results", (
     ).rejects.toThrow("approval");
   });
 });
-describe("delivery ordering and approval recovery",()=>{
- it("applies a delivery event that arrives before send completion is persisted",async()=>{const {t,owner,id,draft}=await approvedFixture();await owner.mutation(api.outbound.decide,{id:draft,approve:true});const intent=await owner.mutation(api.outbound.queueSend,{id:draft});await t.mutation(internal.outbound.claim,{intentId:intent});await t.mutation(internal.integrations.deliveryEvent,{eventId:"early-bounce",type:"email.bounced",messageId:"early-provider-id",timestamp:Date.now()});await t.mutation(internal.outbound.result,{intentId:intent,state:"sent",providerId:"early-provider-id",error:""});const detail=await owner.query(api.crm.detail,{id});expect(detail.lead.suppressed).toBe(true);expect(detail.messages[0].delivery).toBe("email.bounced");expect(detail.tasks.filter(t=>!t.done&&t.kind==="followup")).toHaveLength(0);});
+describe("delivery ordering and approval recovery", () => {
+  it("applies a delivery event that arrives before send completion is persisted", async () => {
+    const { t, owner, id, draft } = await approvedFixture();
+    await owner.mutation(api.outbound.decide, { id: draft, approve: true });
+    const intent = await owner.mutation(api.outbound.queueSend, { id: draft });
+    await t.mutation(internal.outbound.claim, { intentId: intent });
+    await t.mutation(internal.integrations.deliveryEvent, {
+      eventId: "early-bounce",
+      type: "email.bounced",
+      messageId: "early-provider-id",
+      timestamp: Date.now(),
+    });
+    await t.mutation(internal.outbound.result, {
+      intentId: intent,
+      state: "sent",
+      providerId: "early-provider-id",
+      error: "",
+    });
+    const detail = await owner.query(api.crm.detail, { id });
+    expect(detail.lead.suppressed).toBe(true);
+    expect(detail.messages[0].delivery).toBe("email.bounced");
+    expect(
+      detail.tasks.filter((t) => !t.done && t.kind === "followup"),
+    ).toHaveLength(0);
+  });
 });

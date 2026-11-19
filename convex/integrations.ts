@@ -24,6 +24,30 @@ export const status = query({
     );
   },
 });
+export const cachedToken = internalQuery({
+  args: { key: v.string(), now: v.number() },
+  returns: v.union(v.object({ value: v.string() }), v.null()),
+  handler: async (ctx, { key, now }) => {
+    const row = await ctx.db
+      .query("integrationTokens")
+      .withIndex("by_key", (q) => q.eq("key", key))
+      .unique();
+    return row && row.expiresAt > now + 60000 ? { value: row.value } : null;
+  },
+});
+export const cacheToken = internalMutation({
+  args: { key: v.string(), value: v.string(), expiresAt: v.number() },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const row = await ctx.db
+      .query("integrationTokens")
+      .withIndex("by_key", (q) => q.eq("key", args.key))
+      .unique();
+    if (row) await ctx.db.patch(row._id, args);
+    else await ctx.db.insert("integrationTokens", args);
+    return null;
+  },
+});
 export const cursor = internalQuery({
   args: { key: v.string() },
   returns: v.union(
@@ -61,12 +85,31 @@ export const checkpoint = internalMutation({
     const values = {
       key: args.key,
       cursor: args.cursor,
-      error: args.error,
+      error:
+        args.key === "zoho" && args.error && (prior?.retryCount ?? 0) >= 4
+          ? `${args.error} Automatic retries paused after five failures; use Sync Zoho now after fixing the connection.`
+          : args.error,
       ...(args.leaseToken
         ? { leaseToken: undefined, leaseUntil: undefined }
         : {}),
       ...(!args.error && args.completed !== false
         ? { lastSuccess: Date.now() }
+        : {}),
+      ...(args.key === "zoho"
+        ? args.error
+          ? {
+              retryCount: (prior?.retryCount ?? 0) + 1,
+              retryAfter:
+                Date.now() +
+                Math.min(
+                  3600000,
+                  Math.max(
+                    args.error.includes("Access Denied") ? 600000 : 0,
+                    60000 * 2 ** (prior?.retryCount ?? 0),
+                  ),
+                ),
+            }
+          : { retryCount: 0, retryAfter: undefined }
         : {}),
     };
     if (prior) await ctx.db.patch(prior._id, values);
@@ -75,15 +118,24 @@ export const checkpoint = internalMutation({
   },
 });
 export const acquireZoho = internalMutation({
-  args: { token: v.string() },
+  args: { token: v.string(), force: v.optional(v.boolean()) },
   returns: v.boolean(),
-  handler: async (ctx, { token }) => {
+  handler: async (ctx, { token, force }) => {
     const prior = await ctx.db
       .query("integrationState")
       .withIndex("by_key", (q) => q.eq("key", "zoho"))
       .unique();
     if (prior?.leaseUntil && prior.leaseUntil > Date.now()) return false;
-    const lease = { leaseToken: token, leaseUntil: Date.now() + 9 * 60000 };
+    if (
+      !force &&
+      ((prior?.retryCount ?? 0) >= 5 || (prior?.retryAfter ?? 0) > Date.now())
+    )
+      return false;
+    const lease = {
+      leaseToken: token,
+      leaseUntil: Date.now() + 9 * 60000,
+      ...(force ? { retryCount: 0, retryAfter: undefined } : {}),
+    };
     if (prior) await ctx.db.patch(prior._id, lease);
     else
       await ctx.db.insert("integrationState", {

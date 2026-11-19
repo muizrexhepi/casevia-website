@@ -555,7 +555,9 @@ export async function recordReply(
     nextAction:
       classification === "opt_out"
         ? "Do not contact"
-        : `Review ${classification} reply`,
+        : classification === "reply"
+          ? "Review reply"
+          : `Review ${classification} reply`,
     updatedAt: Date.now(),
   });
   await cancelFollowups(ctx, lead._id);

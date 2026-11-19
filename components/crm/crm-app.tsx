@@ -1459,6 +1459,7 @@ function LeadDetail({
   run: Run;
   close: () => void;
 }) {
+  const router = useRouter();
   const detail = useQuery(api.crm.detail, { id }),
     update = useMutation(api.crm.updateLead),
     editBusiness = useMutation(api.crm.editBusiness),
@@ -1569,16 +1570,15 @@ function LeadDetail({
         <Button
           className="crm-secondary"
           onClick={() =>
-            void run(
-              () =>
-                createDraft({
-                  leadId: id,
-                  kind: "reply",
-                  subject: `Re: ${lead.name}`,
-                  body: "",
-                }),
-              "Blank draft created in Inbox & approvals",
-            )
+            void run(async () => {
+              const draftId = await createDraft({
+                leadId: id,
+                kind: "reply",
+                subject: `Re: ${lead.name}`,
+                body: "",
+              });
+              router.push(`/crm/inbox?draft=${draftId}`);
+            }, "Draft ready to write")
           }
         >
           <Mail size={15} />
@@ -2093,6 +2093,7 @@ function DraftEditor({
     decide = useMutation(api.outbound.decide),
     send = useMutation(api.outbound.queueSend);
   const editable = ["draft", "approved", "rejected"].includes(d.status);
+  const [dirty, setDirty] = useState(false);
   return (
     <>
       <div className="crm-card-heading">
@@ -2107,6 +2108,7 @@ function DraftEditor({
         </Badge>
       </div>
       <form
+        onChange={() => setDirty(true)}
         onSubmit={(e) => {
           e.preventDefault();
           const f = new FormData(e.currentTarget),
@@ -2231,6 +2233,11 @@ function DraftEditor({
           </p>
         </div>
         <div className="crm-form-actions">
+          {dirty && (
+            <p className="crm-muted">
+              Save your changes before approving or sending.
+            </p>
+          )}
           {editable && (
             <Button type="submit" className="crm-secondary">
               Save changes
@@ -2240,6 +2247,7 @@ function DraftEditor({
             <Button
               type="button"
               className="crm-primary"
+              disabled={dirty}
               onClick={() =>
                 void run(
                   () => decide({ id: d._id, approve: true }),
@@ -2276,6 +2284,7 @@ function DraftEditor({
             <Button
               className="crm-primary"
               type="button"
+              disabled={dirty}
               onClick={() =>
                 void run(
                   () => send({ id: d._id }),

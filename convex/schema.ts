@@ -109,6 +109,15 @@ export default defineSchema({
     lastSuccess: v.optional(v.number()),
     leaseToken: v.optional(v.string()),
     leaseUntil: v.optional(v.number()),
+    retryCount: v.optional(v.number()),
+    retryAfter: v.optional(v.number()),
     error: v.string(),
+  }).index("by_key", ["key"]),
+  // Short-lived provider credentials. Accessible only through internal functions;
+  // never included in the owner snapshot, status API, frontend or audit log.
+  integrationTokens: defineTable({
+    key: v.string(),
+    value: v.string(),
+    expiresAt: v.number(),
   }).index("by_key", ["key"]),
 });
