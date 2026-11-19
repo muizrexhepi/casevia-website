@@ -85,10 +85,12 @@ Authorize a read-only Zoho Mail integration in the correct data center:
 - Scopes: `ZohoMail.messages.READ`; use `ZohoMail.accounts.READ` / `ZohoMail.folders.READ` only if needed to discover account/folder IDs.
 - Obtain an offline refresh token via Zoho's supported OAuth flow and store it only in Convex.
 - Configure **ZOHO_CLIENT_ID**, **ZOHO_CLIENT_SECRET**, **ZOHO_REFRESH_TOKEN**, **ZOHO_ACCOUNT_ID**, **ZOHO_REGION** (`com`, `eu`, `in`, or `com.au`), and preferably **ZOHO_INBOX_FOLDER_ID**.
-- The five-minute server sweep refreshes access tokens, polls the inbox with overlap, deduplicates by Zoho message ID, and matches known CRM contacts. It does not change MX, move mail, mark messages read, or send through Zoho.
+- The five-minute server sweep reuses short-lived access tokens in a server-only cache, polls the Inbox with overlap, deduplicates by Zoho message ID, and matches known CRM contacts. It does not change MX, move mail, mark messages read, or send through Zoho.
 - Review synchronization errors under Settings → Integrations. `Sync Zoho now` runs a controlled manual synchronization.
 
 Source documentation: [OAuth](https://www.zoho.com/mail/help/api/using-oauth-2.html), [message listing](https://www.zoho.com/mail/help/api/get-emails-list.html), [message content](https://www.zoho.com/mail/help/api/get-email-content.html).
+
+The read-only EU connection is configured in both server environments. Live account/Inbox discovery and matched reply import are verified. A provider refresh throttle during initial backfill led to persisted token reuse and bounded retries. Credentials never reach the frontend.
 
 ## Notifications and phone installation
 
@@ -105,7 +107,7 @@ Manifest: `/crm/manifest.webmanifest`; service worker: `/crm-sw.js`; PNG icons: 
 - Never blindly retry an uncertain send. Inspect the provider's delivery history and reconcile the result, using its message ID if sent.
 - Replies, opt-outs, bounce/complaint, suppression and cancellation stop pending follow-ups.
 - Explicit `won` requires outcome evidence. Proposal values are estimates; collected revenue is a separate owner-entered amount.
-- Workpool concurrency: two AI jobs, one email job. Provider side effects have automatic retries disabled to avoid duplicate sends/charges. Sweeps recover interrupted jobs into an uncertain state. Read-only mailbox sweeps retain their cursor on failure and retry on subsequent scheduled runs. Pagination keeps the previous completed watermark until all pages finish; a persisted lease prevents concurrent sweeps. Only known-contact bodies are fetched. Numeric Zoho IDs retain full precision.
+- Workpool concurrency: two AI jobs, one email job. Provider side effects have automatic retries disabled to avoid duplicate sends/charges. Sweeps recover interrupted jobs into an uncertain state. Read-only mailbox sweeps retain their cursor on failure with exponential backoff, pause after five failures, and support explicit owner recovery. OAuth throttling waits at least ten minutes. Pagination keeps the previous completed watermark until all pages finish; a persisted lease prevents concurrent sweeps. Only known-contact bodies are fetched. Initial history is bounded to the last 30 days plus one day of overlap. Numeric Zoho IDs retain full precision.
 - Scheduled discovery runs once/day; new-lead research and qualified-lead drafting follow configured toggles and limits. Eligible follow-up preparation remains in owner approval mode.
 - Overview/pipeline use the latest 250 records and label that boundary. Leads use search/stage filters and cursor pagination. History panels and individual lead histories are bounded; this is a private single-owner CRM, not multi-tenant SaaS.
 
@@ -139,3 +141,18 @@ npx convex dev --once
 The automated suite uses isolated in-memory Convex data and test-only auth component seeding. No test auth function is shipped to Convex, and tests never call live AI/email providers. A successful suite/build does not establish live email delivery, OAuth authorization or phone push acceptance.
 
 Official references: [Convex Auth v2](https://docs.convex.dev/auth/convex-auth), [GitHub OAuth setup](https://docs.convex.dev/auth/convex-auth/methods/oauth), [OpenAI web search](https://developers.openai.com/api/docs/guides/tools-web-search), [OpenAI pricing](https://developers.openai.com/api/docs/pricing).
+
+## Starting your sales workflow
+
+1. Sign in at `https://crm.muizrexhepi.com` with the configured GitHub owner account.
+2. In Leads, run Discover leads with a specific industry and location, or add/import leads. Open a lead to review evidence and Generate draft.
+3. In Settings, enable automatic discovery, research and drafting after reviewing markets, services, timing, daily volume and spending limits. These use OpenAI credits automatically and continue on the server when devices are off.
+4. Review drafts in Inbox & approvals. Save edits before approval; unsaved changes block approval and sending. Approval binds to one saved revision.
+5. Prospecting remains disconnected. Requested/opted-in messages can use Resend with explicit permission evidence and owner approval. Resume outbound only when ready.
+6. Review synchronized replies and next actions, prepare meetings/proposals, and record won/lost outcomes explicitly.
+
+## Verified costs and account limits (2026-11-19)
+
+OpenAI billing showed **$99.85 credit remaining**, expiring 2026-12-18, with no payment method configured. This is a point-in-time observation. The CRM uses direct Responses API billing, including web search; its ledger is an estimate based on returned usage.
+
+Vercel usage was below its displayed included allowances. The Convex team is on its existing Starter plan: across all projects, database storage was approximately **151.2 MB above the included 512 MB**. CRM-filtered usage was 244 calls and 686.68 KB database I/O at that snapshot; analytics can lag. Do not represent the whole account as free. No paid upgrade or new prospecting subscription was purchased. Resend remaining account quota was not verified because its billing dashboard was signed out. Preserve existing team/project plans and unrelated data.

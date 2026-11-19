@@ -272,7 +272,7 @@ function Login() {
               Your inbox and correspondence stay private.
             </span>
           </div>
-          <Link className="crm-back-site" href="/">
+          <Link className="crm-back-site" href="https://www.muizrexhepi.com">
             Visit public website <ArrowUpRight size={14} />
           </Link>
         </div>
@@ -654,8 +654,7 @@ function Workspace({ section }: { section: string }) {
               Connected to your private workspace
             </span>
             <span>
-              Muiz Rexhepi · CRM{" "}
-              <span className="crm-dev-badge">Development</span>
+              Muiz Rexhepi · Private CRM
             </span>
           </footer>
         </main>

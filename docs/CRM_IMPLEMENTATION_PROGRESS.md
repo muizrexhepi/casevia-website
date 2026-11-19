@@ -47,3 +47,13 @@ Remaining: verify live OpenAI research/discovery/drafts and spending; configure 
 - Signed Resend webhooks are configured separately in development and production using the existing approved key.
 - 30 focused tests, type check, lint, and Node 24 production build pass.
 - Zoho read-only client authorization approved by owner; setup in progress. Vercel branch preview and final frontend rollout remain in progress.
+
+## Live verification and final promotion
+
+- Live OpenAI discovery, research and draft jobs completed; original-source retrieval and usage/search accounting verified. Billing subsequently showed $99.85 remaining promotional credit.
+- Hosted Vercel preview `https://casevia-kfio8fen6-knuckleclots-projects.vercel.app` passed real owner sign-in. The public contact form saved/deduplicated a development inquiry and delivered its existing owner notification.
+- One exact approved test revision was delivered through Resend to the owner-controlled business Inbox. Signed `email.sent` and `email.delivered` events were persisted. Outbound was paused again afterward.
+- Zoho read-only account/Inbox access and matched reply import verified. Initial backfill exposed refresh throttling; fixed with a server-only access-token cache, persisted leases, bounded exponential backoff, and explicit recovery.
+- 33 tests, type check, lint and production build pass. Source checkpoint pushed on development branch.
+- Production Convex is deployed. Final Vercel frontend promotion and live domain/mobile verification are in progress.
+- Cost caveat reported: existing Convex team storage already exceeds the included allowance across projects. CRM usage is small; no plan upgrade or billing change was made.

@@ -2298,6 +2298,10 @@
     height: 175px;
     gap: 9px;
     padding: 7px 18px 15px;
+    overflow-x: auto;
+  }
+  .crm-pipeline-bar-col {
+    flex: 1 0 48px;
   }
   .crm-pipeline-bar-col > span:last-child {
     font-size: 8px;
