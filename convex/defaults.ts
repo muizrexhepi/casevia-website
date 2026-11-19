@@ -11,7 +11,7 @@ export const defaultSettings: Omit<Doc<"settings">, "_id" | "_creationTime"> = {
   autoDraft: false,
   autoEligibleFollowups: false,
   autoSendApproved: false,
-  dailyVolume: 5,
+  dailyVolume: 20,
   discoveryHour: 9,
   markets: ["North Macedonia", "Switzerland"],
   industries: ["Hospitality", "Travel", "Professional services"],
@@ -35,7 +35,7 @@ export const defaultSettings: Omit<Doc<"settings">, "_id" | "_creationTime"> = {
   timezone: "Europe/Skopje",
   model: "gpt-6-luna",
   dailyLimit: 5,
-  monthlyLimit: 30,
+  monthlyLimit: 75,
   creditNote:
     "OpenAI Personal organization: $100 observed 2026-11-19, displayed expiry 2026-12-18. This is not a live credit balance.",
   notifyPush: false,

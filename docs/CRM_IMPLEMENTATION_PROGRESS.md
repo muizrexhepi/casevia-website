@@ -6,7 +6,7 @@
 
 Production has no test leads. All five workspace views were checked at 390 px without page-level horizontal overflow. The manifest, icons and safe service worker support phone installation; physical phone notification permission/delivery remains a device action.
 
-36 focused tests, type check, lint and the production build pass, including after incorporating the latest existing portfolio commits from upstream main. The release preserves those changes. Signed Resend sent/delivered events, controlled owner delivery, real OpenAI discovery/research/drafts, preview contact capture/deduplication/notification, and matched Zoho reply import are verified. Zoho completed healthy sweeps in both environments after server-only token reuse was added.
+38 focused tests, type check, lint and the production build pass, including after incorporating the latest existing portfolio commits from upstream main. The release preserves those changes. Signed Resend sent/delivered events, controlled owner delivery, real OpenAI discovery/research/drafts, preview contact capture/deduplication/notification, and matched Zoho reply import are verified. Zoho completed healthy sweeps in both environments after server-only token reuse was added.
 
 Automatic discovery/research/drafting start off, outbound starts paused, and prospecting remains disconnected. To activate, review Settings targets/knowledge/budgets, enable the desired switches under Settings → Automation, and Save settings. Default limits: $5/day, $30/month, 5 accepted/pending AI jobs/day. Exact saved revisions still require approval.
 
@@ -79,4 +79,10 @@ Remaining: verify live OpenAI research/discovery/drafts and spending; configure 
 
 Owner requested automatic discovery, research and drafting for North Macedonia and Switzerland within existing limits, with approval required before sending. Added Luna as the economical default and retained Sol as an explicit stronger option. Astra is removed from choices and blocked for new settings/jobs. Reserved model is now pinned per job, preventing a queued Luna reservation from later executing with a more expensive model after a settings change.
 
-36 tests, type check, lint and production build pass. Live Luna discovery and draft generation pass with token/search costs settled. Production rollout and requested setting activation follow verification. Preserve outbound pause, automatic sending off, $5/day, $30/month and 5 AI jobs/day.
+38 tests, type check, lint and production build pass. Live Luna discovery and draft generation pass with token/search costs settled. Production rollout and requested setting activation follow verification. Preserve outbound pause, automatic sending off, $5/day, $30/month and 5 AI jobs/day.
+
+### Latest owner instructions — 2026-11-19
+
+Requested activation now includes scheduled discovery, new-lead research, qualified draft preparation, eligible follow-up drafts, and automatic queueing of each exact owner-approved message within sending hours. No unapproved message may send. Prospecting remains disconnected and requires an appropriate configured provider plus recipient eligibility. Requested limits: $5/day, **$75/month**, and **20 AI jobs/day**. These are ceilings, not spending targets or guaranteed lead counts. One lead can consume multiple jobs. The subscription benefit renews on eligible billing cycles and unused credit expires; current official terms are at https://developers.openai.com/api/docs/guides/chatgpt-api-credits.
+
+Follow-up drafting now works while outbound is paused and prepares prospecting-channel drafts for eligible prospects, without allowing them through Resend or bypassing approval. Automatic queueing tests prove unapproved drafts remain untouched and repeated sweeps do not create duplicate send intents. Defaults remain approval-first with automation off until activated in owner settings.

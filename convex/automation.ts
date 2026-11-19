@@ -142,8 +142,9 @@ export const tick = internalMutation({
       if (
         task.kind === "followup" &&
         s.autoEligibleFollowups &&
-        !s.paused &&
-        ["requested", "opted_in"].includes(lead.eligibility) &&
+        ["requested", "opted_in", "prospecting_eligible"].includes(
+          lead.eligibility,
+        ) &&
         task.attempt <= s.maxFollowups
       ) {
         await ctx.db.insert("drafts", {
@@ -151,7 +152,10 @@ export const tick = internalMutation({
           kind: "followup",
           ...followupText(lead.language, lead.contactName || lead.name),
           language: lead.language,
-          provider: "resend",
+          provider:
+            lead.eligibility === "prospecting_eligible"
+              ? "prospecting"
+              : "resend",
           revision: 1,
           status: "draft",
           price: 0,

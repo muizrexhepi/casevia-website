@@ -525,6 +525,61 @@ describe("atomic spending accounting", () => {
   });
 });
 describe("approval-first automation", () => {
+  it("prepares eligible prospecting follow-ups without requiring or enabling outbound delivery", async () => {
+    const { t, owner } = await setup();
+    await owner.mutation(api.crm.saveSettings, {
+      settings: {
+        ...defaultSettings,
+        autoEligibleFollowups: true,
+        paused: true,
+      },
+    });
+    const { id } = await owner.mutation(api.crm.createLead, input);
+    await owner.mutation(api.crm.updateLead, {
+      id,
+      eligibility: "prospecting_eligible",
+      permissionEvidence:
+        "Controlled fixture with explicit eligibility evidence",
+    });
+    await owner.mutation(api.crm.saveTask, {
+      leadId: id,
+      title: "Follow up",
+      kind: "followup",
+      dueAt: Date.now() - 1000,
+    });
+    await t.mutation(internal.automation.tick, {});
+    const drafts = await t.run((ctx) => ctx.db.query("drafts").take(5));
+    expect(drafts).toHaveLength(1);
+    expect(drafts[0]).toMatchObject({
+      kind: "followup",
+      provider: "prospecting",
+      status: "draft",
+    });
+    expect(
+      await t.run((ctx) => ctx.db.query("sendIntents").take(5)),
+    ).toHaveLength(0);
+  });
+  it("automatically queues only the exact approved messages and does not queue duplicates", async () => {
+    const { t, owner, id, draft } = await approvedFixture();
+    const unapproved = await owner.mutation(api.outbound.createDraft, {
+      leadId: id,
+      kind: "reply",
+      subject: "Needs review",
+      body: "Unapproved controlled fixture",
+    });
+    await owner.mutation(api.outbound.decide, { id: draft, approve: true });
+    await owner.mutation(api.crm.saveSettings, {
+      settings: { ...defaultSettings, paused: false, autoSendApproved: true },
+    });
+    await t.mutation(internal.automation.tick, {});
+    await t.mutation(internal.automation.tick, {});
+    const intents = await t.run((ctx) => ctx.db.query("sendIntents").take(5));
+    expect(intents).toHaveLength(1);
+    expect(intents[0].draftId).toBe(draft);
+    expect((await t.run((ctx) => ctx.db.get(unapproved)))?.status).toBe(
+      "draft",
+    );
+  });
   it("queues discovery, research and qualified drafts with limits while sending stays paused", async () => {
     const { t, owner } = await setup();
     await owner.mutation(api.crm.saveSettings, {
