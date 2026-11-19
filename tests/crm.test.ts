@@ -385,10 +385,80 @@ describe("approval and duplicate-send prevention", () => {
   });
 });
 describe("atomic spending accounting", () => {
+  it("reserves Luna search costs atomically and pins queued jobs to their reserved model", async () => {
+    const { t, owner } = await setup();
+    await owner.mutation(api.crm.saveSettings, {
+      settings: {
+        ...defaultSettings,
+        model: "gpt-6-luna",
+        dailyLimit: 0.3,
+        monthlyLimit: 30,
+      },
+    });
+    const attempts = await Promise.allSettled([
+      owner.mutation(api.jobs.enqueue, {
+        kind: "discovery",
+        query: "First controlled fixture",
+      }),
+      owner.mutation(api.jobs.enqueue, {
+        kind: "discovery",
+        query: "Second controlled fixture",
+      }),
+    ]);
+    expect(attempts.filter((a) => a.status === "fulfilled")).toHaveLength(1);
+    const jobs = await t.run((ctx) => ctx.db.query("jobs").take(5));
+    expect(jobs).toHaveLength(1);
+    expect(jobs[0].reservation).toBe(0.25);
+    await owner.mutation(api.crm.saveSettings, {
+      settings: {
+        ...defaultSettings,
+        model: "gpt-6.2-sol",
+        dailyLimit: 5,
+        monthlyLimit: 30,
+      },
+    });
+    expect(
+      (await t.query(internal.jobs.context, { jobId: jobs[0]._id })).settings
+        .model,
+    ).toBe("gpt-6-luna");
+    expect(
+      (
+        await owner.query(api.jobs.budget, {
+          day: "2026-11-19",
+          month: "2026-11",
+        })
+      ).dailyReserved,
+    ).toBe(0.25);
+    expect(usageUsd("gpt-6-luna", 1000, 500, 2)).toBeCloseTo(0.02035);
+  });
+  it("rejects new Astra configuration and legacy Astra job scheduling before reserving money", async () => {
+    const { t, owner } = await setup();
+    const settings = { ...defaultSettings, model: "gpt-6.2-astra" as const };
+    await expect(
+      owner.mutation(api.crm.saveSettings, { settings }),
+    ).rejects.toThrow("Astra is disabled");
+    await t.run((ctx) => ctx.db.insert("settings", settings));
+    await expect(
+      owner.mutation(api.jobs.enqueue, { kind: "discovery" }),
+    ).rejects.toThrow("Astra is disabled");
+    expect(
+      (
+        await owner.query(api.jobs.budget, {
+          day: "2026-11-19",
+          month: "2026-11",
+        })
+      ).dailyReserved,
+    ).toBe(0);
+  });
   it("reserves model and search costs before enqueue, including concurrent jobs", async () => {
     const { t, owner } = await setup();
     await owner.mutation(api.crm.saveSettings, {
-      settings: { ...defaultSettings, dailyLimit: 5, monthlyLimit: 30 },
+      settings: {
+        ...defaultSettings,
+        model: "gpt-6.2-sol",
+        dailyLimit: 5,
+        monthlyLimit: 30,
+      },
     });
     const first = await owner.mutation(api.jobs.enqueue, {
       kind: "discovery",
@@ -452,6 +522,106 @@ describe("atomic spending accounting", () => {
         })
       ).dailyReserved,
     ).toBe(0);
+  });
+});
+describe("approval-first automation", () => {
+  it("prepares eligible prospecting follow-ups without requiring or enabling outbound delivery", async () => {
+    const { t, owner } = await setup();
+    await owner.mutation(api.crm.saveSettings, {
+      settings: {
+        ...defaultSettings,
+        autoEligibleFollowups: true,
+        paused: true,
+      },
+    });
+    const { id } = await owner.mutation(api.crm.createLead, input);
+    await owner.mutation(api.crm.updateLead, {
+      id,
+      eligibility: "prospecting_eligible",
+      permissionEvidence:
+        "Controlled fixture with explicit eligibility evidence",
+    });
+    await owner.mutation(api.crm.saveTask, {
+      leadId: id,
+      title: "Follow up",
+      kind: "followup",
+      dueAt: Date.now() - 1000,
+    });
+    await t.mutation(internal.automation.tick, {});
+    const drafts = await t.run((ctx) => ctx.db.query("drafts").take(5));
+    expect(drafts).toHaveLength(1);
+    expect(drafts[0]).toMatchObject({
+      kind: "followup",
+      provider: "prospecting",
+      status: "draft",
+    });
+    expect(
+      await t.run((ctx) => ctx.db.query("sendIntents").take(5)),
+    ).toHaveLength(0);
+  });
+  it("automatically queues only the exact approved messages and does not queue duplicates", async () => {
+    const { t, owner, id, draft } = await approvedFixture();
+    const unapproved = await owner.mutation(api.outbound.createDraft, {
+      leadId: id,
+      kind: "reply",
+      subject: "Needs review",
+      body: "Unapproved controlled fixture",
+    });
+    await owner.mutation(api.outbound.decide, { id: draft, approve: true });
+    await owner.mutation(api.crm.saveSettings, {
+      settings: { ...defaultSettings, paused: false, autoSendApproved: true },
+    });
+    await t.mutation(internal.automation.tick, {});
+    await t.mutation(internal.automation.tick, {});
+    const intents = await t.run((ctx) => ctx.db.query("sendIntents").take(5));
+    expect(intents).toHaveLength(1);
+    expect(intents[0].draftId).toBe(draft);
+    expect((await t.run((ctx) => ctx.db.get(unapproved)))?.status).toBe(
+      "draft",
+    );
+  });
+  it("queues discovery, research and qualified drafts with limits while sending stays paused", async () => {
+    const { t, owner } = await setup();
+    await owner.mutation(api.crm.saveSettings, {
+      settings: {
+        ...defaultSettings,
+        autoDiscovery: true,
+        autoResearch: true,
+        autoDraft: true,
+        paused: true,
+        autoSendApproved: false,
+        markets: ["North Macedonia", "Switzerland"],
+      },
+    });
+    await owner.mutation(api.crm.createLead, input);
+    const qualified = await owner.mutation(api.crm.createLead, {
+      ...input,
+      name: "Second controlled fixture",
+      email: "second@example.org",
+      website: "https://example.org",
+    });
+    await t.run((ctx) => ctx.db.patch(qualified.id, { stage: "qualified" }));
+    await t.mutation(internal.automation.tick, {});
+    const jobs = await t.run((ctx) => ctx.db.query("jobs").take(10));
+    expect(jobs.map((j) => j.kind).sort()).toEqual([
+      "discovery",
+      "draft",
+      "research",
+    ]);
+    expect(jobs.find((j) => j.kind === "discovery")?.query).toContain(
+      "North Macedonia, Switzerland",
+    );
+    expect(
+      await t.run((ctx) => ctx.db.query("sendIntents").take(5)),
+    ).toHaveLength(0);
+    const config = await t.run((ctx) => ctx.db.query("settings").first());
+    expect(config?.paused).toBe(true);
+    expect(config?.autoSendApproved).toBe(false);
+    const budget = await owner.query(api.jobs.budget, {
+      day: "2026-11-19",
+      month: "2026-11",
+    });
+    expect(budget.dailyReserved).toBeCloseTo(0.52);
   });
 });
 describe("signed webhook processing", () => {

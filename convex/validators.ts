@@ -171,7 +171,11 @@ export const settingsFields = {
   sendStart: v.number(),
   sendEnd: v.number(),
   timezone: v.string(),
-  model: v.union(v.literal("gpt-6.2-sol"), v.literal("gpt-6.2-astra")),
+  model: v.union(
+    v.literal("gpt-6-luna"),
+    v.literal("gpt-6.2-sol"),
+    v.literal("gpt-6.2-astra"),
+  ),
   dailyLimit: v.number(),
   monthlyLimit: v.number(),
   manualCredit: v.optional(v.number()),

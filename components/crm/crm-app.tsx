@@ -653,9 +653,7 @@ function Workspace({ section }: { section: string }) {
               <span className="crm-status-light" />
               Connected to your private workspace
             </span>
-            <span>
-              Muiz Rexhepi · Private CRM
-            </span>
+            <span>Muiz Rexhepi · Private CRM</span>
           </footer>
         </main>
       </div>
@@ -2633,8 +2631,10 @@ function SettingsView({ data, run }: { data: Snapshot; run: Run }) {
                     change("model", e.target.value as CrmSettings["model"])
                   }
                 >
-                  <option>gpt-6.2-sol</option>
-                  <option>gpt-6.2-astra</option>
+                  <option value="gpt-6-luna">GPT-6 Luna · economical</option>
+                  <option value="gpt-6.2-sol">
+                    GPT-6.2 Sol · more capable
+                  </option>
                 </select>
               </Field>
               <Field label="Daily AI spending limit (USD)">

@@ -87,7 +87,9 @@ export function canReserve(
   );
 }
 export const modelRates = {
+  "gpt-6-luna": { input: 0.1, output: 0.5, context: 1_050_000 },
   "gpt-6.2-sol": { input: 2, output: 10, context: 1_050_000 },
+  // Historical ledger entries remain readable; new Astra jobs are disabled.
   "gpt-6.2-astra": { input: 8, output: 40, context: 1_050_000 },
 } as const;
 export type CrmModel = keyof typeof modelRates;
