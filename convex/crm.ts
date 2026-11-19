@@ -60,7 +60,11 @@ export const snapshot = query({
   handler: async (ctx, { month }) => {
     await requireOwner(ctx);
     return {
-      leads: await ctx.db.query("leads").order("desc").take(250),
+      leads: await ctx.db
+        .query("leads")
+        .withIndex("by_excluded", (q) => q.lt("excluded", true))
+        .order("desc")
+        .take(250),
       drafts: await ctx.db.query("drafts").order("desc").take(150),
       messages: await ctx.db.query("messages").order("desc").take(150),
       jobs: await ctx.db.query("jobs").order("desc").take(100),
@@ -100,6 +104,7 @@ export const listLeads = query({
     paginationOpts: paginationOptsValidator,
     search: v.optional(v.string()),
     stage: v.optional(stage),
+    includeExcluded: v.optional(v.boolean()),
   },
   returns: v.object({
     page: v.array(leadDoc),
@@ -119,21 +124,30 @@ export const listLeads = query({
     if (args.search?.trim())
       return ctx.db
         .query("leads")
-        .withSearchIndex("search_name", (q) =>
-          args.stage
-            ? q
-                .search("name", args.search!.slice(0, 100))
-                .eq("stage", args.stage)
-            : q.search("name", args.search!.slice(0, 100)),
-        )
+        .withSearchIndex("search_name", (q) => {
+          let search = q.search("name", args.search!.slice(0, 100));
+          if (args.stage) search = search.eq("stage", args.stage);
+          if (!args.includeExcluded) search = search.eq("excluded", undefined);
+          return search;
+        })
         .paginate(args.paginationOpts);
     if (args.stage)
       return ctx.db
         .query("leads")
-        .withIndex("by_stage", (q) => q.eq("stage", args.stage!))
+        .withIndex("by_stage_and_excluded", (q) =>
+          args.includeExcluded
+            ? q.eq("stage", args.stage!)
+            : q.eq("stage", args.stage!).lt("excluded", true),
+        )
         .order("desc")
         .paginate(args.paginationOpts);
-    return ctx.db.query("leads").order("desc").paginate(args.paginationOpts);
+    if (args.includeExcluded)
+      return ctx.db.query("leads").order("desc").paginate(args.paginationOpts);
+    return ctx.db
+      .query("leads")
+      .withIndex("by_excluded", (q) => q.lt("excluded", true))
+      .order("desc")
+      .paginate(args.paginationOpts);
   },
 });
 export const detail = query({
@@ -357,7 +371,13 @@ export const updateLead = mutation({
     const clean = Object.fromEntries(
       Object.entries(patch).filter(([, v]) => v !== undefined),
     );
-    await ctx.db.patch(id, { ...clean, updatedAt: Date.now() });
+    await ctx.db.patch(id, {
+      ...clean,
+      ...(["requested", "opted_in"].includes(patch.eligibility ?? "")
+        ? { excluded: undefined }
+        : {}),
+      updatedAt: Date.now(),
+    });
     await audit(ctx, "lead.updated", Object.keys(clean).join(", "), id);
     return null;
   },
@@ -432,6 +452,8 @@ export const saveSettings = mutation({
     }
     if (s.services.length + s.projects.length + s.pricing.length > 20000)
       throw new ConvexError("Sales knowledge is too long");
+    if ((s.targetProfile?.length ?? 0) > 3000)
+      throw new ConvexError("Target profile must be at most 3000 characters");
     const current = await ctx.db
       .query("settings")
       .withIndex("by_key", (q) => q.eq("key", "owner"))
@@ -664,6 +686,7 @@ export const captureInquiry = internalMutation({
     if (lead && !lead.suppressed)
       await ctx.db.patch(result.id, {
         eligibility: "requested",
+        excluded: undefined,
         permissionEvidence:
           "Project inquiry submitted through the portfolio contact form. Permission applies to this project conversation.",
       });
@@ -744,6 +767,17 @@ export const editBusiness = mutation({
       language: input.language,
       notes: input.notes.slice(0, 12000),
       businessKey: businessKey(input.name, input.location),
+      ...(domain !== lead.domain || input.name.trim() !== lead.name
+        ? {
+            targetFit: undefined,
+            excluded: undefined,
+            researchHash: undefined,
+            researchAt: undefined,
+            ...(["new", "researching", "qualified"].includes(lead.stage)
+              ? { stage: "new" as const }
+              : {}),
+          }
+        : {}),
       suppressed,
       ...(changed
         ? {

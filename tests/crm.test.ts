@@ -525,6 +525,322 @@ describe("atomic spending accounting", () => {
   });
 });
 describe("approval-first automation", () => {
+  it("holds high-scoring small businesses when the service opportunity is only a weak hypothesis", async () => {
+    const { t, owner } = await setup();
+    const { id } = await owner.mutation(api.crm.createLead, {
+      ...input,
+      website: "https://small.test/",
+    });
+    await t.run((ctx) =>
+      ctx.db.patch(id, { origin: "discovery", stage: "qualified" }),
+    );
+    const research = {
+      leadId: id,
+      hash: "fixture",
+      contacts: [],
+      sources: [],
+      observations: [],
+      score: 95,
+      reasons: ["A model gave a high overall score"],
+      service: "Website",
+      nextAction: "Review evidence",
+      targetFit: {
+        status: "matched" as const,
+        reason: "Small business",
+        evidenceUrl: "https://small.test/",
+        sizeQuote: "Our family-run guesthouse has eight rooms.",
+        opportunityQuote: "We offer tours and accommodation.",
+      },
+    };
+    const oldDraft = await owner.mutation(api.outbound.createDraft, {
+      leadId: id,
+      kind: "outreach",
+      subject: "Old broad targeting",
+      body: "Controlled legacy draft",
+    });
+    await t.mutation(internal.jobs.saveResearch, {
+      ...research,
+      opportunityScore: 10,
+    });
+    expect((await t.run((ctx) => ctx.db.get(oldDraft)))?.status).toBe(
+      "cancelled",
+    );
+    expect(await t.run((ctx) => ctx.db.get(id))).toMatchObject({
+      stage: "researching",
+      excluded: true,
+      score: 60,
+      opportunityScore: 10,
+      targetFit: { status: "review" },
+    });
+    await expect(
+      owner.mutation(api.jobs.enqueue, { kind: "draft", leadId: id }),
+    ).rejects.toThrow("Verify small-business fit");
+    await t.mutation(internal.jobs.saveResearch, {
+      ...research,
+      opportunityScore: 25,
+    });
+    expect(await t.run((ctx) => ctx.db.get(id))).toMatchObject({
+      stage: "qualified",
+      opportunityScore: 25,
+      targetFit: { status: "matched" },
+    });
+    await expect(
+      owner.mutation(api.jobs.enqueue, { kind: "draft", leadId: id }),
+    ).resolves.toBeTruthy();
+  });
+  it("researches verified small businesses automatically while still blocking drafts until service fit is established", async () => {
+    const { t, owner } = await setup();
+    await owner.mutation(api.crm.saveSettings, {
+      settings: { ...defaultSettings, autoResearch: true, autoDraft: true },
+    });
+    await t.mutation(internal.jobs.saveDiscovered, {
+      rows: [
+        {
+          name: "Tiny Guesthouse",
+          website: "https://tiny.test/",
+          location: "Skopje",
+          industry: "Guesthouse",
+          sourceUrl: "https://tiny.test/",
+          targetFit: {
+            status: "review",
+            reason: "Small scale verified; research the service opportunity",
+            evidenceUrl: "https://tiny.test/",
+            sizeQuote: "Our family-run guesthouse has eight rooms.",
+            opportunityQuote: "",
+          },
+        },
+      ],
+    });
+    const [lead] = (await owner.query(api.crm.snapshot, { month: "2026-11" }))
+      .leads;
+    expect(lead.excluded).toBeUndefined();
+    await t.mutation(internal.automation.tick, {});
+    const jobs = await t.run((ctx) => ctx.db.query("jobs").take(5));
+    expect(jobs.map((j) => j.kind)).toEqual(["research"]);
+    await expect(
+      owner.mutation(api.jobs.enqueue, { kind: "draft", leadId: lead._id }),
+    ).rejects.toThrow("Verify small-business fit");
+  });
+  it("screens enterprise discoveries before spending and continues beyond a full excluded page", async () => {
+    const { t, owner } = await setup();
+    await owner.mutation(api.crm.saveSettings, {
+      settings: { ...defaultSettings, autoResearch: true },
+    });
+    for (let i = 0; i < 21; i++) {
+      const { id } = await owner.mutation(api.crm.createLead, {
+        ...input,
+        name: `KPMG office ${i}`,
+        website: `https://office${i}.kpmg.com`,
+        email: "",
+      });
+      await t.run((ctx) => ctx.db.patch(id, { origin: "discovery" }));
+    }
+    const fresh = await owner.mutation(api.crm.createLead, {
+      ...input,
+      name: "Small Guesthouse",
+      website: "https://guesthouse.test",
+      email: "",
+    });
+    await t.mutation(internal.automation.tick, {});
+    await t.mutation(internal.automation.tick, {});
+    const jobs = await t.run((ctx) => ctx.db.query("jobs").take(30));
+    expect(jobs).toHaveLength(1);
+    expect(jobs[0].leadId).toBe(fresh.id);
+    const snapshot = await owner.query(api.crm.snapshot, { month: "2026-11" });
+    expect(snapshot.leads).toHaveLength(1);
+    const archive = await owner.query(api.crm.listLeads, {
+      includeExcluded: true,
+      paginationOpts: { numItems: 50, cursor: null },
+    });
+    expect(archive.page).toHaveLength(22);
+    const active = await owner.query(api.crm.listLeads, {
+      paginationOpts: { numItems: 50, cursor: null },
+    });
+    expect(active.page).toHaveLength(1);
+    expect(
+      (
+        await owner.query(api.jobs.budget, {
+          day: "2026-11-19",
+          month: "2026-11",
+        })
+      ).dailyReserved,
+    ).toBe(0.25);
+  });
+  it("keeps evidence-supported prospects active, holds uncertain candidates and refuses enterprise ingestion", async () => {
+    const { t, owner } = await setup();
+    const targetFit = {
+      status: "matched" as const,
+      reason: "Verified small independent guesthouse and enquiry flow",
+      evidenceUrl: "https://guesthouse.test/about",
+      sizeQuote: "Our family-run guesthouse has eight rooms.",
+      opportunityQuote: "Call or email us for booking enquiries.",
+    };
+    const row = {
+      name: "Local Guesthouse",
+      website: "https://guesthouse.test",
+      location: "Skopje, North Macedonia",
+      industry: "Guesthouse",
+      sourceUrl: "https://guesthouse.test/about",
+      targetFit,
+    };
+    expect(
+      await t.mutation(internal.jobs.saveDiscovered, {
+        rows: [
+          row,
+          { ...row, name: "KPMG Switzerland", website: "https://kpmg.com" },
+          {
+            ...row,
+            name: "Uncertain Lodge",
+            website: "https://uncertain.test",
+            targetFit: { ...targetFit, status: "review", sizeQuote: "" },
+          },
+        ],
+      }),
+    ).toBe(2);
+    expect(
+      (await owner.query(api.crm.snapshot, { month: "2026-11" })).leads.map(
+        (l) => l.name,
+      ),
+    ).toEqual(["Local Guesthouse"]);
+    const all = await owner.query(api.crm.listLeads, {
+      includeExcluded: true,
+      paginationOpts: { numItems: 50, cursor: null },
+    });
+    const uncertain = all.page.find((l) => l.name === "Uncertain Lodge")!;
+    await expect(
+      owner.mutation(api.jobs.enqueue, {
+        kind: "draft",
+        leadId: uncertain._id,
+      }),
+    ).rejects.toThrow("Verify small-business fit");
+    expect(
+      await t.run((ctx) => ctx.db.query("sendIntents").take(5)),
+    ).toHaveLength(0);
+  });
+  it("prevents high model scores from qualifying enterprises and preserves requested conversations", async () => {
+    const { t, owner } = await setup();
+    const { id } = await owner.mutation(api.crm.createLead, {
+      ...input,
+      name: "EY Switzerland",
+      website: "https://ey.com",
+      email: "",
+    });
+    await t.run((ctx) => ctx.db.patch(id, { origin: "discovery" }));
+    await expect(
+      owner.mutation(api.jobs.enqueue, { kind: "research", leadId: id }),
+    ).rejects.toThrow("outside your target profile");
+    await t.mutation(internal.jobs.saveResearch, {
+      leadId: id,
+      hash: "test",
+      contacts: [],
+      sources: [],
+      observations: [],
+      score: 99,
+      reasons: ["Model claims fit"],
+      service: "Website",
+      nextAction: "Review",
+      targetFit: {
+        status: "matched",
+        reason: "Incorrect model label",
+        evidenceUrl: "https://ey.com",
+        sizeQuote: "",
+        opportunityQuote: "",
+      },
+    });
+    const lead = await t.run((ctx) => ctx.db.get(id));
+    expect(lead).toMatchObject({
+      excluded: true,
+      score: 45,
+      targetFit: { status: "excluded" },
+    });
+    await owner.mutation(api.crm.updateLead, {
+      id,
+      eligibility: "requested",
+      permissionEvidence: "Controlled requested project conversation",
+    });
+    expect(
+      (await owner.query(api.crm.snapshot, { month: "2026-11" })).leads,
+    ).toHaveLength(1);
+    await expect(
+      owner.mutation(api.jobs.enqueue, { kind: "research", leadId: id }),
+    ).resolves.toBeTruthy();
+  });
+  it("recovers definite oversized-source failures once within budget and never retries uncertain work", async () => {
+    const { t, owner } = await setup();
+    const { id } = await owner.mutation(api.crm.createLead, input);
+    const failed = await t.run((ctx) =>
+      ctx.db.insert("jobs", {
+        kind: "research",
+        leadId: id,
+        state: "failed",
+        error: "Original source is too large",
+        attempt: 1,
+        query: "",
+        reservation: 0,
+        createdAt: Date.now(),
+      }),
+    );
+    await t.run((ctx) =>
+      ctx.db.insert("jobs", {
+        kind: "discovery",
+        state: "uncertain",
+        error: "Original source is too large",
+        attempt: 1,
+        query: "",
+        reservation: 0,
+        createdAt: Date.now(),
+      }),
+    );
+    expect(await t.mutation(internal.jobs.retryOversizedSources, {})).toEqual({
+      queued: 1,
+      excluded: 0,
+    });
+    expect(await t.mutation(internal.jobs.retryOversizedSources, {})).toEqual({
+      queued: 0,
+      excluded: 0,
+    });
+    expect(
+      (await t.run((ctx) => ctx.db.get(failed)))?.retriedByJobId,
+    ).toBeTruthy();
+    expect(
+      await t.run((ctx) =>
+        ctx.db
+          .query("jobs")
+          .withIndex("by_state", (q) => q.eq("state", "uncertain"))
+          .take(5),
+      ),
+    ).toHaveLength(1);
+  });
+  it("restores an excluded discovery when the business requests a project conversation", async () => {
+    const { t, owner } = await setup();
+    const { id } = await owner.mutation(api.crm.createLead, {
+      ...input,
+      name: "KPMG Switzerland",
+      website: "https://kpmg.com",
+    });
+    await t.run((ctx) => ctx.db.patch(id, { origin: "discovery" }));
+    await t.mutation(internal.targeting.screenExisting, {
+      paginationOpts: { numItems: 50, cursor: null },
+    });
+    expect(
+      (await owner.query(api.crm.snapshot, { month: "2026-11" })).leads,
+    ).toHaveLength(0);
+    await t.mutation(internal.crm.captureInquiry, {
+      key: "enterprise-inquiry",
+      name: "Controlled owner",
+      email: input.email,
+      company: "KPMG Switzerland",
+      projectType: "Website",
+      budget: "Not approved",
+      message: "Please discuss this requested project.",
+    });
+    const lead = await t.run((ctx) => ctx.db.get(id));
+    expect(lead?.eligibility).toBe("requested");
+    expect(lead?.excluded).toBeUndefined();
+    expect(
+      (await owner.query(api.crm.snapshot, { month: "2026-11" })).leads,
+    ).toHaveLength(1);
+  });
   it("moves past a full page of legacy research rows and excludes known domains from discovery", async () => {
     const { t, owner } = await setup();
     await owner.mutation(api.crm.saveSettings, {

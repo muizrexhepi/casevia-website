@@ -24,6 +24,7 @@ import type * as notifications from "../notifications.js";
 import type * as outbound from "../outbound.js";
 import type * as publicConfig from "../publicConfig.js";
 import type * as push from "../push.js";
+import type * as targeting from "../targeting.js";
 import type * as users from "../users.js";
 import type * as validators from "../validators.js";
 import type * as webhooks from "../webhooks.js";
@@ -52,6 +53,7 @@ declare const fullApi: ApiFromModules<{
   outbound: typeof outbound;
   publicConfig: typeof publicConfig;
   push: typeof push;
+  targeting: typeof targeting;
   users: typeof users;
   validators: typeof validators;
   webhooks: typeof webhooks;

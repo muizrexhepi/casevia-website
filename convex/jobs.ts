@@ -24,8 +24,11 @@ import {
   draftFields,
   source,
   observation,
+  fitAssessment,
 } from "./validators";
 import { upsertLead } from "./crm";
+import { coldProspect, knownEnterprise } from "../lib/crm/targeting";
+import { cancelFollowups } from "./helpers";
 export const aiPool = new Workpool(components.aiPool, {
   maxParallelism: 2,
   retryActionsByDefault: false,
@@ -61,6 +64,29 @@ export async function scheduleJob(
   if (args.leadId && !(await ctx.db.get(args.leadId)))
     throw new ConvexError("Lead not found");
   if (args.leadId) {
+    const lead = await ctx.db.get(args.leadId);
+    if (
+      lead &&
+      coldProspect(lead) &&
+      ["research", "draft"].includes(args.kind)
+    ) {
+      if (
+        knownEnterprise(lead.name, lead.website) ||
+        lead.targetFit?.status === "excluded"
+      )
+        throw new ConvexError(
+          "This enterprise or excluded prospect is outside your target profile",
+        );
+      if (
+        args.kind === "draft" &&
+        (lead.excluded ||
+          lead.targetFit?.status !== "matched" ||
+          (lead.opportunityScore ?? 0) < 20)
+      )
+        throw new ConvexError(
+          "Verify small-business fit and the service opportunity before drafting outreach",
+        );
+    }
     const active = await ctx.db
       .query("jobs")
       .withIndex("by_leadId", (q) => q.eq("leadId", args.leadId))
@@ -195,11 +221,64 @@ export const retry = mutation({
       throw new ConvexError(
         "Only confirmed failed work can be retried. Reconcile uncertain requests first.",
       );
-    return scheduleJob(ctx, {
+    const replacement = await scheduleJob(ctx, {
       kind: job.kind,
       leadId: job.leadId,
       query: job.query,
     });
+    await ctx.db.patch(job._id, {
+      resolvedAt: Date.now(),
+      retriedByJobId: replacement,
+    });
+    return replacement;
+  },
+});
+// One controlled recovery pass for the old 200 KB fetch limit. No uncertain
+// request is retried, and each new attempt uses normal atomic budget controls.
+export const retryOversizedSources = internalMutation({
+  args: {},
+  returns: v.object({ queued: v.number(), excluded: v.number() }),
+  handler: async (ctx) => {
+    let queued = 0,
+      excluded = 0;
+    const failed = await ctx.db
+      .query("jobs")
+      .withIndex("by_state", (q) => q.eq("state", "failed"))
+      .take(50);
+    for (const job of failed) {
+      if (
+        job.kind !== "research" ||
+        job.error !== "Original source is too large" ||
+        job.resolvedAt ||
+        !job.leadId
+      )
+        continue;
+      const lead = await ctx.db.get(job.leadId);
+      if (!lead) continue;
+      if (
+        coldProspect(lead) &&
+        (lead.excluded || knownEnterprise(lead.name, lead.website))
+      ) {
+        await ctx.db.patch(job._id, { resolvedAt: Date.now() });
+        excluded++;
+        continue;
+      }
+      try {
+        const replacement = await scheduleJob(ctx, {
+          kind: "research",
+          leadId: job.leadId,
+          query: job.query,
+        });
+        await ctx.db.patch(job._id, {
+          resolvedAt: Date.now(),
+          retriedByJobId: replacement,
+        });
+        queued++;
+      } catch {
+        /* Active work or budgets remain authoritative; no unbounded retries. */
+      }
+    }
+    return { queued, excluded };
   },
 });
 export const context = internalQuery({
@@ -379,10 +458,12 @@ export const saveResearch = internalMutation({
   args: {
     leadId: v.id("leads"),
     hash: v.string(),
-    contacts: v.array(v.string()),
+    contacts: v.array(v.object({ email: v.string(), sourceUrl: v.string() })),
+    targetFit: v.optional(fitAssessment),
     sources: v.array(source),
     observations: v.array(observation),
     score: v.number(),
+    opportunityScore: v.optional(v.number()),
     reasons: v.array(v.string()),
     service: v.string(),
     nextAction: v.string(),
@@ -391,7 +472,9 @@ export const saveResearch = internalMutation({
   handler: async (ctx, args) => {
     const lead = await ctx.db.get(args.leadId);
     if (!lead) return null;
-    for (const email of args.contacts.slice(0, 8)) {
+    for (const { email, sourceUrl } of args.contacts.slice(0, 8)) {
+      if (!args.sources.some((s) => s.verified && s.url === sourceUrl))
+        continue;
       const prior = await ctx.db
         .query("contacts")
         .withIndex("by_email", (q) => q.eq("email", email))
@@ -402,35 +485,101 @@ export const saveResearch = internalMutation({
           leadId: lead._id,
           name: "",
           verified: true,
-          sourceUrl: args.sources[0]?.url ?? "",
+          sourceUrl,
         });
     }
     if (!lead.email && args.contacts[0]) {
       const contact = await ctx.db
         .query("contacts")
-        .withIndex("by_email", (q) => q.eq("email", args.contacts[0]))
+        .withIndex("by_email", (q) => q.eq("email", args.contacts[0].email))
         .unique();
       if (contact?.leadId === lead._id)
-        await ctx.db.patch(lead._id, { email: args.contacts[0] });
+        await ctx.db.patch(lead._id, { email: args.contacts[0].email });
     }
     const s = await settings(ctx);
+    const enterprise = coldProspect(lead)
+      ? knownEnterprise(lead.name, lead.website)
+      : null;
+    let targetFit = enterprise
+      ? {
+          status: "excluded" as const,
+          reason: enterprise,
+          evidenceUrl: lead.website,
+          sizeQuote: "",
+          opportunityQuote: "",
+        }
+      : args.targetFit;
+    const weakOpportunity =
+      coldProspect(lead) &&
+      targetFit?.status === "matched" &&
+      (args.opportunityScore ?? 0) < 20;
+    if (weakOpportunity && targetFit)
+      targetFit = {
+        ...targetFit,
+        status: "review",
+        reason:
+          "Small-business scale is verified, but no sufficiently specific service opportunity is evidenced yet. Review before outreach.",
+      };
+    const fits =
+      !coldProspect(lead) ||
+      (targetFit?.status === "matched" && (args.opportunityScore ?? 0) >= 20);
+    const score = Math.max(
+      0,
+      Math.min(fits ? 100 : weakOpportunity ? 60 : 45, args.score),
+    );
     await ctx.db.patch(lead._id, {
       researchHash: args.hash,
       researchAt: Date.now(),
       sources: args.sources,
       observations: args.observations,
-      score: Math.max(0, Math.min(100, args.score)),
+      score,
+      ...(args.opportunityScore !== undefined
+        ? { opportunityScore: args.opportunityScore }
+        : {}),
+      ...(targetFit
+        ? {
+            targetFit,
+            excluded:
+              coldProspect(lead) && targetFit.status !== "matched"
+                ? true
+                : undefined,
+          }
+        : {}),
       scoreReasons: args.reasons,
       suggestedService: args.service,
       nextAction: args.nextAction,
-      stage:
-        ["new", "researching"].includes(lead.stage) &&
-        args.score >= s.qualificationThreshold
+      stage: ["new", "researching", "qualified"].includes(lead.stage)
+        ? fits && score >= s.qualificationThreshold
           ? "qualified"
-          : lead.stage,
+          : "researching"
+        : lead.stage,
       updatedAt: Date.now(),
     });
-    if (args.score >= s.qualificationThreshold)
+    if (!fits) {
+      await cancelFollowups(ctx, lead._id);
+      for (const draft of await ctx.db
+        .query("drafts")
+        .withIndex("by_leadId", (q) => q.eq("leadId", lead._id))
+        .take(100)) {
+        if (
+          ["outreach", "followup"].includes(draft.kind) &&
+          ["draft", "approved", "rejected"].includes(draft.status)
+        ) {
+          await ctx.db.patch(draft._id, {
+            status: "cancelled",
+            updatedAt: Date.now(),
+          });
+          await audit(
+            ctx,
+            "draft.withdrawn",
+            "Current target/opportunity evidence does not support outreach; content retained in history",
+            lead._id,
+            "system",
+          );
+        }
+      }
+    }
+    if (fits && score >= s.qualificationThreshold)
       await notify(
         ctx,
         "Qualified lead",
@@ -445,6 +594,16 @@ export const saveDraft = internalMutation({
   args: { draft: v.object(draftFields) },
   returns: v.id("drafts"),
   handler: async (ctx, { draft }) => {
+    const lead = await ctx.db.get(draft.leadId);
+    if (!lead) throw new ConvexError("Lead not found");
+    if (
+      coldProspect(lead) &&
+      (lead.excluded ||
+        lead.targetFit?.status !== "matched" ||
+        (lead.opportunityScore ?? 0) < 20 ||
+        knownEnterprise(lead.name, lead.website))
+    )
+      throw new ConvexError("Outreach requires verified small-business fit");
     const id = await ctx.db.insert("drafts", draft);
     await notify(
       ctx,
@@ -466,6 +625,7 @@ export const saveDiscovered = internalMutation({
         location: v.string(),
         industry: v.string(),
         sourceUrl: v.string(),
+        targetFit: fitAssessment,
       }),
     ),
   },
@@ -473,6 +633,11 @@ export const saveDiscovered = internalMutation({
   handler: async (ctx, { rows }) => {
     let count = 0;
     for (const row of rows.slice(0, 10)) {
+      if (
+        knownEnterprise(row.name, row.website) ||
+        row.targetFit.status === "excluded"
+      )
+        continue;
       try {
         const result = await upsertLead(
           ctx,
@@ -488,6 +653,18 @@ export const saveDiscovered = internalMutation({
           row.sourceUrl,
         );
         if (result.created) count++;
+        if (result.created)
+          await ctx.db.patch(result.id, {
+            targetFit: row.targetFit,
+            excluded:
+              row.targetFit.status === "matched" || row.targetFit.sizeQuote
+                ? undefined
+                : true,
+            nextAction:
+              row.targetFit.status === "matched" || row.targetFit.sizeQuote
+                ? "Research service fit for this verified small business"
+                : row.targetFit.reason,
+          });
       } catch {
         /* Invalid business URLs are discarded; no contact eligibility is inferred. */
       }

@@ -1,6 +1,7 @@
 import { services } from "../lib/services";
 import { projects } from "../lib/projects";
 import type { Doc } from "./_generated/dataModel";
+import { defaultTargetProfile } from "../lib/crm/targeting";
 export const defaultSettings: Omit<Doc<"settings">, "_id" | "_creationTime"> = {
   key: "owner",
   paused: true,
@@ -15,6 +16,7 @@ export const defaultSettings: Omit<Doc<"settings">, "_id" | "_creationTime"> = {
   discoveryHour: 9,
   markets: ["North Macedonia", "Switzerland"],
   industries: ["Hospitality", "Travel", "Professional services"],
+  targetProfile: defaultTargetProfile,
   services: services
     .map((x) => `${x.title}: ${x.deliverables.join(", ")}`)
     .join("\n"),

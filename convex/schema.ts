@@ -22,9 +22,11 @@ export default defineSchema({
     .index("by_businessKey", ["businessKey"])
     .index("by_email", ["email"])
     .index("by_stage", ["stage"])
+    .index("by_excluded", ["excluded"])
+    .index("by_stage_and_excluded", ["stage", "excluded"])
     .searchIndex("search_name", {
       searchField: "name",
-      filterFields: ["stage"],
+      filterFields: ["stage", "excluded"],
     }),
   contacts: defineTable({
     email: v.string(),

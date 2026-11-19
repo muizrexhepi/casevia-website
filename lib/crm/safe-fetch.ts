@@ -28,7 +28,97 @@ export type FetchedSource = {
   title: string;
   verified: boolean;
   emails: string[];
+  links: string[];
+  truncated: boolean;
 };
+export const sourceByteLimit = 2_000_000;
+export function extractSource(
+  url: string,
+  html: string,
+  truncated = false,
+): FetchedSource {
+  const decode = (value: string) =>
+    value
+      .replace(/&nbsp;|&#160;/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/&quot;|&#34;/gi, '"')
+      .replace(/&#39;|&apos;/gi, "'")
+      .replace(/&#x([0-9a-f]+);/gi, (_, code) =>
+        parseInt(code, 16) <= 0x10ffff
+          ? String.fromCodePoint(parseInt(code, 16))
+          : " ",
+      )
+      .replace(/&rsquo;|&lsquo;/gi, "’")
+      .replace(/&ldquo;|&rdquo;/gi, '"')
+      .replace(/&ndash;/gi, "–")
+      .replace(/&mdash;/gi, "—")
+      .replace(/&#(\d+);/g, (_, code) =>
+        Number(code) <= 0x10ffff ? String.fromCodePoint(Number(code)) : " ",
+      );
+  // Discard executable/hidden content, including an unfinished script at the
+  // bounded end of a large page. Truncation never proves a feature is absent.
+  const visible = html
+    .replace(/<(script|style|noscript)\b[^>]*>[\s\S]*?(?:<\/\1\s*>|$)/gi, " ")
+    .replace(/<!--[\s\S]*?(?:-->|$)/g, " ");
+  const text = decode(visible.replace(/<[^>]*>/g, " "))
+    .replace(/\s+/g, " ")
+    .trim();
+  const mailto = [
+    ...visible.matchAll(/href\s*=\s*["']mailto:([^"'?]+)[^"']*["']/gi),
+  ].map((m) => decode(m[1]));
+  const emails = [
+    ...new Set(
+      (text + " " + mailto.join(" "))
+        .match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g)
+        ?.map((e) => e.toLowerCase()) ?? [],
+    ),
+  ]
+    .filter((e) => !/@(example\.(com|org)|sentry\.io)$/i.test(e))
+    .slice(0, 8);
+  const links: string[] = [];
+  for (const match of visible.matchAll(
+    /<a\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi,
+  )) {
+    if (
+      !/contact|about|kontakt|ueber|über|rreth|контакт|за.нас/i.test(
+        match[1] + " " + match[2],
+      )
+    )
+      continue;
+    try {
+      const link = new URL(decode(match[1]), url),
+        base = new URL(url);
+      link.hash = "";
+      if (
+        link.protocol === "https:" &&
+        link.hostname.replace(/^www\./, "") ===
+          base.hostname.replace(/^www\./, "") &&
+        !link.username &&
+        !link.password &&
+        link.href !== base.href &&
+        !links.includes(link.href)
+      )
+        links.push(link.href);
+    } catch {
+      /* Ignore malformed and non-web links. */
+    }
+    if (links.length >= 4) break;
+  }
+  return {
+    url,
+    text: text.slice(0, 18000),
+    title: decode(
+      html
+        .match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]
+        ?.replace(/<[^>]*>/g, "")
+        .trim() ?? new URL(url).hostname,
+    ).slice(0, 200),
+    verified: true,
+    emails,
+    links,
+    truncated,
+  };
+}
 export async function safeSource(raw: string): Promise<FetchedSource> {
   let url = new URL(raw);
   for (let redirect = 0; redirect < 4; redirect++) {
@@ -51,6 +141,7 @@ export async function safeSource(raw: string): Promise<FetchedSource> {
       location: string;
       contentType: string;
       html: string;
+      truncated: boolean;
     }>((resolve, reject) => {
       const request = httpsRequest(
         {
@@ -72,33 +163,41 @@ export async function safeSource(raw: string): Promise<FetchedSource> {
         (response) => {
           const status = response.statusCode ?? 500;
           if (status >= 300 && status < 400) {
-            response.resume();
+            response.destroy();
             resolve({
               status,
               location: response.headers.location ?? "",
               contentType: "",
               html: "",
+              truncated: false,
             });
             return;
           }
           const chunks: Buffer[] = [];
-          let size = 0;
-          response.on("data", (chunk: Buffer) => {
-            size += chunk.length;
-            if (size > 200000) {
-              request.destroy(new Error("Original source is too large"));
-              return;
-            }
-            chunks.push(chunk);
-          });
-          response.on("end", () =>
+          let size = 0,
+            finished = false;
+          const finish = (truncated: boolean) => {
+            if (finished) return;
+            finished = true;
             resolve({
               status,
               location: "",
               contentType: response.headers["content-type"] ?? "",
               html: Buffer.concat(chunks).toString("utf8"),
-            }),
-          );
+              truncated,
+            });
+          };
+          response.on("data", (chunk: Buffer) => {
+            if (finished) return;
+            const remaining = sourceByteLimit - size;
+            chunks.push(chunk.subarray(0, remaining));
+            size += Math.min(remaining, chunk.length);
+            if (chunk.length > remaining) {
+              finish(true);
+              request.destroy();
+            }
+          });
+          response.on("end", () => finish(false));
           response.on("error", reject);
         },
       );
@@ -116,36 +215,7 @@ export async function safeSource(raw: string): Promise<FetchedSource> {
       throw new Error(`Original source returned ${result.status}`);
     if (!/text\/(html|plain)/i.test(result.contentType))
       throw new Error("Source is not a text webpage");
-    const html = result.html,
-      title =
-        html
-          .match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]
-          ?.replace(/<[^>]*>/g, "")
-          .trim() ?? url.hostname,
-      text = html
-        .replace(/<(script|style|noscript)[\s\S]*?<\/\1>/gi, " ")
-        .replace(/<[^>]*>/g, " ")
-        .replace(/&nbsp;|&#160;/g, " ")
-        .replace(/&amp;/g, "&")
-        .replace(/\s+/g, " ")
-        .trim()
-        .slice(0, 18000);
-    const emails = [
-      ...new Set(
-        (
-          html.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) ?? []
-        ).map((e) => e.toLowerCase()),
-      ),
-    ]
-      .filter((e) => !/@(example\.(com|org)|sentry\.io)$/i.test(e))
-      .slice(0, 8);
-    return {
-      url: url.href,
-      text,
-      title: title.slice(0, 200),
-      verified: true,
-      emails,
-    };
+    return extractSource(url.href, result.html, result.truncated);
   }
   throw new Error("Too many source redirects");
 }

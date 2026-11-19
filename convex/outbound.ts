@@ -14,6 +14,7 @@ import { requireOwner } from "./users";
 import { settings, audit, notify, cancelFollowups } from "./helpers";
 import { draftDoc, leadDoc, settingsFields } from "./validators";
 import { sendBlock, sendingWindow } from "../lib/crm/policy";
+import { coldProspect, knownEnterprise } from "../lib/crm/targeting";
 const pool = new Workpool(components.emailPool, {
   maxParallelism: 1,
   retryActionsByDefault: false,
@@ -132,6 +133,16 @@ async function check(ctx: MutationCtx, d: Doc<"drafts">) {
   const lead = await ctx.db.get(d.leadId);
   if (!lead) throw new ConvexError("Lead not found");
   const s = await settings(ctx);
+  if (
+    coldProspect(lead) &&
+    (lead.excluded ||
+      lead.targetFit?.status !== "matched" ||
+      (lead.opportunityScore ?? 0) < 20 ||
+      knownEnterprise(lead.name, lead.website))
+  )
+    throw new ConvexError(
+      "This prospect is outside the active small-business target profile",
+    );
   const suppressed =
     lead.suppressed ||
     !!(

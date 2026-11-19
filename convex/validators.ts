@@ -31,11 +31,24 @@ export const source = v.object({
   verified: v.boolean(),
   excerpt: v.string(),
   checkedAt: v.number(),
+  partial: v.optional(v.boolean()),
 });
 export const observation = v.object({
   text: v.string(),
   kind: v.union(v.literal("verified"), v.literal("hypothesis")),
   sourceUrl: v.string(),
+});
+export const fitAssessment = v.object({
+  status: v.union(
+    v.literal("matched"),
+    v.literal("review"),
+    v.literal("excluded"),
+  ),
+  reason: v.string(),
+  evidenceUrl: v.string(),
+  sizeQuote: v.string(),
+  opportunityQuote: v.string(),
+  opportunityUrl: v.optional(v.string()),
 });
 export const leadFields = {
   name: v.string(),
@@ -61,6 +74,9 @@ export const leadFields = {
   observations: v.array(observation),
   score: v.number(),
   scoreReasons: v.array(v.string()),
+  opportunityScore: v.optional(v.number()),
+  excluded: v.optional(v.boolean()),
+  targetFit: v.optional(fitAssessment),
   suggestedService: v.string(),
   researchAt: v.optional(v.number()),
   researchHash: v.optional(v.string()),
@@ -146,6 +162,8 @@ export const jobFields = {
   usageId: v.optional(v.id("usage")),
   createdAt: v.number(),
   finishedAt: v.optional(v.number()),
+  resolvedAt: v.optional(v.number()),
+  retriedByJobId: v.optional(v.id("jobs")),
 };
 export const settingsFields = {
   key: v.literal("owner"),
@@ -161,6 +179,7 @@ export const settingsFields = {
   discoveryHour: v.number(),
   markets: v.array(v.string()),
   industries: v.array(v.string()),
+  targetProfile: v.optional(v.string()),
   services: v.string(),
   projects: v.string(),
   pricing: v.string(),
