@@ -30,7 +30,7 @@ Keys must be entered in the provider/deployment settings or a private terminal. 
 
 ## OpenAI discovery and research
 
-Uses **Responses API**, supported `gpt-6.2-sol` by default, structured outputs, built-in `web_search`, and a maximum of three tool calls. No second search provider is required.
+Uses **Responses API**, supported `gpt-6-luna` by default, with `gpt-6.2-sol` available for harder tasks, structured outputs, built-in `web_search`, and a maximum of three tool calls. No second search provider is required.
 
 Configure on Convex:
 
@@ -158,3 +158,11 @@ OpenAI billing showed **$99.85 credit remaining**, expiring 2026-12-18, with no 
 Vercel usage was below its displayed included allowances. The Convex team is on its existing Starter plan: across all projects, database storage was approximately **151.2 MB above the included 512 MB**. CRM-filtered usage was 244 calls and 686.68 KB database I/O at that snapshot; analytics can lag. Do not represent the whole account as free. No paid upgrade or new prospecting subscription was purchased. Resend remaining account quota was not verified because its billing dashboard was signed out. Preserve existing team/project plans and unrelated data.
 
 Production custom-domain sign-in and anonymous access rejection are verified. The phone UI was checked at 390 px without page-level overflow. The owner approved source promotion through [PR #1](https://github.com/muizrexhepi/casevia-website/pull/1) on 2026-11-19, retaining `feat/private-sales-crm`. Future deployments from `main` retain the CRM after this approved merge.
+
+## Economical automation update — 2026-11-19
+
+GPT-6 Luna is the default for routine discovery, research and drafts; GPT-6.2 Sol remains an explicit owner choice. New Astra settings and jobs are rejected server-side, while historical ledger entries remain readable. Each queued job uses the model recorded with its spending reservation, even if the owner changes model settings before it runs. Rates: Luna $0.10 input / $0.50 output per million tokens, Sol $2 / $10, plus $0.01 per billable web search request. Both models support Responses structured outputs and built-in web search. Prices verified against the official model documentation on 2026-11-19.
+
+Live controlled Luna discovery completed with two search requests and settled at $0.0218833; a draft completed at $0.0004402. Type check, lint, production build and 36 tests passed, including concurrent Luna reservations, model changes between queue and execution, disabled Astra scheduling, and approval-only automation.
+
+The owner requested automatic discovery, research and qualified drafts for North Macedonia and Switzerland. Keep $5/day, $30/month and 5 AI jobs/day; discovery at 09:00 Europe/Skopje with a five-minute server sweep. Global outbound pause remains on and automatically queueing approved messages remains off. Activation is verified through persisted production settings and the run history; no new prospecting provider is authorized.

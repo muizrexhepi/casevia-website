@@ -33,7 +33,7 @@ export const defaultSettings: Omit<Doc<"settings">, "_id" | "_creationTime"> = {
   sendStart: 9,
   sendEnd: 17,
   timezone: "Europe/Skopje",
-  model: "gpt-6.2-sol",
+  model: "gpt-6-luna",
   dailyLimit: 5,
   monthlyLimit: 30,
   creditNote:

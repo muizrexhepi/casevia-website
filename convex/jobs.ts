@@ -11,7 +11,12 @@ import type { MutationCtx } from "./_generated/server";
 import type { Id } from "./_generated/dataModel";
 import { requireOwner } from "./users";
 import { settings, audit, notify } from "./helpers";
-import { canReserve, reservationUsd } from "../lib/crm/policy";
+import {
+  canReserve,
+  reservationUsd,
+  modelRates,
+  type CrmModel,
+} from "../lib/crm/policy";
 import {
   jobDoc,
   leadDoc,
@@ -41,6 +46,10 @@ export async function scheduleJob(
   },
 ) {
   const s = await settings(ctx);
+  if (s.model === "gpt-6.2-astra")
+    throw new ConvexError(
+      "Astra is disabled for this CRM. Choose Luna or Sol.",
+    );
   if (!process.env.OPENAI_API_KEY)
     throw new ConvexError(
       "Connect a server-side OpenAI key first. Lead management remains available.",
@@ -206,6 +215,12 @@ export const context = internalQuery({
     const job = await ctx.db.get(jobId);
     if (!job) throw new ConvexError("Job not found");
     const s = await settings(ctx);
+    const usage = job.usageId ? await ctx.db.get(job.usageId) : null;
+    const reservedModel = usage?.model ?? s.model;
+    if (!Object.hasOwn(modelRates, reservedModel))
+      throw new ConvexError(
+        "Unknown reserved model; reconcile this job before retrying",
+      );
     const {
       _id: ignored,
       _creationTime: ignored2,
@@ -216,7 +231,7 @@ export const context = internalQuery({
     return {
       job,
       lead: job.leadId ? await ctx.db.get(job.leadId) : null,
-      settings: clean,
+      settings: { ...clean, model: reservedModel as CrmModel },
       messages: job.leadId
         ? (
             await ctx.db

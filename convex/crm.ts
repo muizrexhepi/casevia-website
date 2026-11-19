@@ -397,6 +397,10 @@ export const saveSettings = mutation({
   returns: v.null(),
   handler: async (ctx, { settings: s }) => {
     await requireOwner(ctx);
+    if (s.model === "gpt-6.2-astra")
+      throw new ConvexError(
+        "Astra is disabled for this CRM. Choose Luna or Sol.",
+      );
     if (
       s.dailyLimit < 0 ||
       s.monthlyLimit < 0 ||
