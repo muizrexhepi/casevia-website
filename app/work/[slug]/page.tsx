@@ -13,6 +13,7 @@ import { Heading, Text } from "@/components/ui/typography";
 import { WorkProjectCard } from "@/components/work/work-project-card";
 import { getNextProject, getProject, projects, type Project } from "@/lib/projects";
 import { pageMetadata } from "@/lib/site";
+import { projectOutcomes } from "@/lib/project-outcomes";
 import { cn } from "@/lib/utils";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
@@ -53,7 +54,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <ProjectStory project={project} />
       <FooterCta title={project.inquiry?.[0]} description={project.inquiry?.[1]} />
       {nextProject && (
-        <Section className="bg-card">
+        <Section className="border-t border-border">
           <Container>
             <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
               <Heading as="h2" variant="subsection">Next project</Heading>
@@ -112,34 +113,49 @@ function ProjectHero({ project }: { project: Project }) {
 }
 
 function ProjectDetails({ project }: { project: Project }) {
-  const facts = [
-    ["My role", project.role],
-    ["Scope", project.deliverables.join(" · ")],
-    ["Technology", project.stack.join(" · ")],
-  ].filter(([, value]) => value);
-
+  const outcome = projectOutcomes[project.slug];
   return (
-    <Section spacing="sm" className="border-b border-border bg-card">
+    <Section spacing="sm" className="border-b border-border">
       <Container>
-        <div className="grid gap-5 md:grid-cols-3">
-          {facts.map(([label, value]) => (
-            <div key={label} className="rounded-xl border border-border bg-background p-5">
-              <p className="text-xs font-semibold tracking-[.1em] text-primary uppercase">{label}</p>
-              <p className="mt-2 break-words text-sm leading-6">{value}</p>
-            </div>
-          ))}
-        </div>
-        {!project.overviewInStory && (
-          <div className="mt-10 grid gap-8 md:grid-cols-2 md:gap-12">
-            <div>
-              <Heading as="h2" variant="subsection">The challenge</Heading>
-              <Text className="mt-3">{project.challenge}</Text>
-            </div>
-            <div>
-              <Heading as="h2" variant="subsection">What I built</Heading>
-              <Text className="mt-3">{project.solution}</Text>
-            </div>
+        <div className="grid gap-5 border-b border-border pb-8 md:grid-cols-[.7fr_1.3fr] md:gap-12">
+          <div>
+            <p className="text-sm text-primary">The mission</p>
+            <p className="mt-3 text-sm text-muted-foreground">{project.clientType}</p>
           </div>
+          <Text variant="lead" className="max-w-3xl text-foreground">{outcome?.mission ?? project.headline}</Text>
+        </div>
+        <div className="mt-9 grid gap-8 md:grid-cols-2 md:gap-12">
+          <div>
+            <Heading as="h2" variant="subsection">The problem</Heading>
+            <Text className="mt-4">{project.challenge}</Text>
+          </div>
+          <div>
+            <Heading as="h2" variant="subsection">The solution</Heading>
+            <Text className="mt-4">{project.solution}</Text>
+          </div>
+        </div>
+        <div className="mt-9 grid gap-6 border-t border-border pt-8 md:grid-cols-[.7fr_1.3fr] md:gap-12">
+          <Heading as="h2" variant="subsection">Scope of work</Heading>
+          <ul className="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
+            {project.deliverables.map((item) => <li key={item} className="border-b border-border/60 pb-3">{item}</li>)}
+          </ul>
+        </div>
+        {outcome && (
+          <div className="mt-10 border-l-2 border-primary pl-5 sm:pl-7">
+            <Heading as="h2" variant="subsection">The result</Heading>
+            <Text variant="lead" className="mt-4 max-w-4xl text-foreground/90">{outcome.result}</Text>
+          </div>
+        )}
+        {outcome?.facts && (
+          <dl className="mt-10 grid gap-7 border-t border-border pt-8 sm:grid-cols-2 lg:grid-cols-3">
+            {outcome.facts.map((fact) => (
+              <div key={fact.label}>
+                <dt className="text-sm font-medium">{fact.label}</dt>
+                <dd className="mt-3 font-heading text-3xl font-medium tracking-tight text-primary">{fact.value}</dd>
+                <dd className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">{fact.detail}</dd>
+              </div>
+            ))}
+          </dl>
         )}
       </Container>
     </Section>

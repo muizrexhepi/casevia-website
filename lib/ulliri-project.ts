@@ -93,9 +93,9 @@ export const ulliriProject: Project = {
       links: [{ label: "See the Rendo POS platform", href: "/work/rendo-pos" }],
     },
     {
-      eyebrow: "Technology",
-      title: "A web experience with an operational backend.",
-      body: "The website and ordering interfaces use Next.js, React, and TypeScript, with Tailwind CSS for the interface and next-intl for website localization. The Garden ordering interface has its own Albanian, Macedonian, and English translations. Convex stores the menu, orders, preparation tasks, and print jobs and supplies reactive updates. An Electron-based local bridge connects the staff workflow to configured printers.",
+      eyebrow: "Project scope",
+      title: "Customer experience and restaurant operations.",
+      body: "The project covers the public restaurant website, the dedicated Garden landing page, digital menus, mobile ordering, and the handoff into staff operations. The scope extends beyond taking an order: it includes cashier confirmation, preparation tickets, and the information guests see when their order is ready.",
     },
     {
       eyebrow: "Outcome",

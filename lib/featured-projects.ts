@@ -55,8 +55,8 @@ export const featuredProjects = [
         imageAlt: "The same kitchen order shown as queued and then preparing at a Rendo station",
       },
       {
-        title: "A web platform and a Windows hardware bridge.",
-        body: "I built the role-specific web interfaces in Next.js and TypeScript, with Convex handling shared application data and reactive updates. The Electron cashier shell connects the web workflow to configured local hardware. Supported new counter orders can queue during a connection interruption and submit after reconnection.",
+        title: "Counter software that fits the venue.",
+        body: "The cashier workspace connects ordering and payment to the venue’s configured terminals and printers. Staff use an interface designed for counter service, while supported new counter orders can queue during a connection interruption and submit after reconnection.",
         image: "/work/rendo-pos/cashier-workspace.webp",
         imageAlt: "Rendo’s Windows cashier workspace with a menu and an active order awaiting payment",
       },
@@ -166,7 +166,7 @@ export const featuredProjects = [
       },
       {
         title: "Connect the website to the owner’s day-to-day work.",
-        body: "Convex powers availability and reservation state, while the owner area supports reviewing requests, managing villa settings, and recording bookings made through other channels. Transactional emails carry updates between the guest and the property.",
+        body: "The owner area connects live availability with reservation requests and supports reviewing requests, managing villa settings, and recording bookings made through other channels. Transactional emails carry updates between the guest and the property.",
       },
     ],
     inquiry: ["Want to bring more guests directly to your website?", "Tell me about your property and how you’d like guests to inquire or book."],

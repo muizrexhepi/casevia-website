@@ -23,12 +23,8 @@ export function WorkPageClient({
           project.categories.includes(activeCategory),
         );
 
-  const flagships =
-    activeCategory === "All"
-      ? filteredProjects.filter((project) => project.flag === "Flagship project")
-      : [];
-  const flagshipSlugs = new Set(flagships.map((project) => project.slug));
-  const gridProjects = filteredProjects.filter((project) => !flagshipSlugs.has(project.slug));
+  const flagship = activeCategory === "All" ? filteredProjects[0] : undefined;
+  const gridProjects = filteredProjects.filter((project) => project.slug !== flagship?.slug);
 
   return (
     <div className="mt-8 sm:mt-10">
@@ -63,11 +59,11 @@ export function WorkPageClient({
                     "focus-visible:outline-primary",
 
                     isActive
-                      ? "border-[var(--pink)] bg-[var(--pink)] text-[var(--ink)]"
+                      ? "border-primary bg-primary text-primary-foreground"
                       : [
                           "border-border bg-card text-foreground",
-                          "hover:border-[var(--pink)]",
-                          "hover:text-[var(--pink)]",
+                          "hover:border-primary",
+                          "hover:text-primary",
                         ],
                   )}
                 >
@@ -79,15 +75,13 @@ export function WorkPageClient({
         </div>
       </div>
 
-      {flagships.length > 0 && (
-        <div className="mb-5 grid gap-5 sm:mb-6 sm:gap-6">
-          {flagships.map((project, index) => (
-            <WorkProjectCard key={project.slug} project={project} large edgeToEdge priority={index === 0} heading="h2" />
-          ))}
+      {flagship && (
+        <div className="mb-10 sm:mb-14">
+          <WorkProjectCard project={flagship} large edgeToEdge priority heading="h2" />
         </div>
       )}
 
-      <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
+      <div className="grid gap-x-6 gap-y-10 sm:gap-y-14 md:grid-cols-2">
         {gridProjects.map((project) => (
           <WorkProjectCard
             key={project.slug}

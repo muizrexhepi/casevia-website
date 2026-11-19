@@ -886,7 +886,7 @@ export function getFeaturedProjects() {
   return projects.filter((project) => project.featured);
 }
 /** Homepage highlights are editorially chosen and ordered, independent of Work page filters. */
-const HOMEPAGE_PROJECT_SLUGS = ["ulliri-garden", "rendo-pos", "ido-tours", "villa-noar"] as const;
+const HOMEPAGE_PROJECT_SLUGS = ["rendo-pos", "doros-premium", "ulliri-garden"] as const;
 
 export function getHomepageProjects(): Project[] {
   return HOMEPAGE_PROJECT_SLUGS
@@ -896,11 +896,11 @@ export function getHomepageProjects(): Project[] {
 
 /** All portfolio work, with the most convincing projects appearing first. */
 const WORK_PRIORITY_SLUGS = [
-  "ulliri-garden",
   "rendo-pos",
+  "doros-premium",
+  "ulliri-garden",
   "ido-tours",
   "villa-noar",
-  "doros-premium",
   "logly",
   "nextloop",
   "hakbus",
@@ -934,7 +934,7 @@ export function getRelatedProjects(slug: string, limit = 2) {
     .slice(0, limit);
 }
 export function getNextProject(slug: string) {
-  const featuredProjects = getFeaturedProjects();
+  const featuredProjects = getWorkProjects().filter((project) => project.featured);
   const currentIndex = featuredProjects.findIndex(
     (project) => project.slug === slug,
   );
