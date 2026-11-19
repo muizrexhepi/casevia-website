@@ -555,7 +555,30 @@ export const saveResearch = internalMutation({
         : lead.stage,
       updatedAt: Date.now(),
     });
-    if (!fits) await cancelFollowups(ctx, lead._id);
+    if (!fits) {
+      await cancelFollowups(ctx, lead._id);
+      for (const draft of await ctx.db
+        .query("drafts")
+        .withIndex("by_leadId", (q) => q.eq("leadId", lead._id))
+        .take(100)) {
+        if (
+          ["outreach", "followup"].includes(draft.kind) &&
+          ["draft", "approved", "rejected"].includes(draft.status)
+        ) {
+          await ctx.db.patch(draft._id, {
+            status: "cancelled",
+            updatedAt: Date.now(),
+          });
+          await audit(
+            ctx,
+            "draft.withdrawn",
+            "Current target/opportunity evidence does not support outreach; content retained in history",
+            lead._id,
+            "system",
+          );
+        }
+      }
+    }
     if (fits && score >= s.qualificationThreshold)
       await notify(
         ctx,

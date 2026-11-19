@@ -552,10 +552,19 @@ describe("approval-first automation", () => {
         opportunityQuote: "We offer tours and accommodation.",
       },
     };
+    const oldDraft = await owner.mutation(api.outbound.createDraft, {
+      leadId: id,
+      kind: "outreach",
+      subject: "Old broad targeting",
+      body: "Controlled legacy draft",
+    });
     await t.mutation(internal.jobs.saveResearch, {
       ...research,
       opportunityScore: 10,
     });
+    expect((await t.run((ctx) => ctx.db.get(oldDraft)))?.status).toBe(
+      "cancelled",
+    );
     expect(await t.run((ctx) => ctx.db.get(id))).toMatchObject({
       stage: "researching",
       excluded: true,
