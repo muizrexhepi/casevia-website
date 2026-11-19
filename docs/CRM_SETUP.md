@@ -111,7 +111,7 @@ Manifest: `/crm/manifest.webmanifest`; service worker: `/crm-sw.js`; PNG icons: 
 - Scheduled discovery runs once/day; new-lead research and qualified-lead drafting follow configured toggles and limits. Eligible follow-up preparation remains in owner approval mode.
 - Overview/pipeline use the latest 250 records and label that boundary. Leads use search/stage filters and cursor pagination. History panels and individual lead histories are bounded; this is a private single-owner CRM, not multi-tenant SaaS.
 
-## Vercel and production preparation
+## Vercel and production deployment
 
 Use a separate preview deployment attached to this branch and the CRM development backend. Keep production keys and deployment IDs separate. The checkout is linked to the existing **casevia-io** project in **knuckleclots-projects**, which owns the public portfolio domains. Preview variables are scoped to `feat/private-sales-crm`.
 
@@ -156,3 +156,5 @@ Official references: [Convex Auth v2](https://docs.convex.dev/auth/convex-auth),
 OpenAI billing showed **$99.85 credit remaining**, expiring 2026-12-18, with no payment method configured. This is a point-in-time observation. The CRM uses direct Responses API billing, including web search; its ledger is an estimate based on returned usage.
 
 Vercel usage was below its displayed included allowances. The Convex team is on its existing Starter plan: across all projects, database storage was approximately **151.2 MB above the included 512 MB**. CRM-filtered usage was 244 calls and 686.68 KB database I/O at that snapshot; analytics can lag. Do not represent the whole account as free. No paid upgrade or new prospecting subscription was purchased. Resend remaining account quota was not verified because its billing dashboard was signed out. Preserve existing team/project plans and unrelated data.
+
+Production custom-domain sign-in and anonymous access rejection are verified. The phone UI was checked at 390 px without page-level overflow. Source is on `feat/private-sales-crm`; default-branch promotion awaits explicit approval after automatic review rejected a direct main push. Merge the CRM source before future main deployments to preserve its routes and integration.

@@ -1,5 +1,22 @@
 # CRM implementation progress
 
+## Current release status — 2026-11-19
+
+**Live:** https://crm.muizrexhepi.com. Convex production is `nautical-tapir-784`; Vercel production is `knuckleclots-projects/casevia-io`. Custom-domain HTTPS and real owner sign-in are verified. Anonymous production backend access returns `Sign in required`.
+
+Production has no test leads. All five workspace views were checked at 390 px without page-level horizontal overflow. The manifest, icons and safe service worker support phone installation; physical phone notification permission/delivery remains a device action.
+
+33 focused tests, type check, lint and the production build pass, including after incorporating the latest existing portfolio commits from upstream main. The release preserves those changes. Signed Resend sent/delivered events, controlled owner delivery, real OpenAI discovery/research/drafts, preview contact capture/deduplication/notification, and matched Zoho reply import are verified. Zoho completed healthy sweeps in both environments after server-only token reuse was added.
+
+Automatic discovery/research/drafting start off, outbound starts paused, and prospecting remains disconnected. To activate, review Settings targets/knowledge/budgets, enable the desired switches under Settings → Automation, and Save settings. Default limits: $5/day, $30/month, 5 accepted/pending AI jobs/day. Exact saved revisions still require approval.
+
+OpenAI showed $99.85 grant remaining, expiring 2026-12-18, with no payment method configured. API key expires 2026-12-19. The existing Convex team already exceeds included storage across projects; do not represent the whole account as free. No paid upgrade or prospecting subscription was purchased.
+
+Source remains on `feat/private-sales-crm`. Automatic approval review rejected directly pushing this release to main because that repository mutation was not explicitly authorized. A reviewable PR is the source-promotion path. Do not bypass that gate. The authorized production deployment works independently; merge the CRM source before future main-branch website releases so they retain the CRM.
+
+The chronological checkpoints below record implementation decisions and earlier states.
+
+
 Branch: `feat/private-sales-crm`. Source: existing Next.js 16 / React 19 / npm portfolio.
 
 ## Repository assessment
