@@ -23,15 +23,8 @@ export function WorkPageClient({
           project.categories.includes(activeCategory),
         );
 
-  // Highlight Rendo on the full Work page, but keep it in every applicable
-  // category filter rather than separating it into a non-filterable section.
-  const flagship =
-    activeCategory === "All"
-      ? filteredProjects.find((project) => project.slug === "rendo-pos")
-      : undefined;
-  const gridProjects = flagship
-    ? filteredProjects.filter((project) => project.slug !== flagship.slug)
-    : filteredProjects;
+  const flagship = activeCategory === "All" ? filteredProjects[0] : undefined;
+  const gridProjects = filteredProjects.filter((project) => project.slug !== flagship?.slug);
 
   return (
     <div className="mt-8 sm:mt-10">
@@ -66,11 +59,11 @@ export function WorkPageClient({
                     "focus-visible:outline-primary",
 
                     isActive
-                      ? "border-[var(--pink)] bg-[var(--pink)] text-[var(--ink)]"
+                      ? "border-primary bg-primary text-primary-foreground"
                       : [
                           "border-border bg-card text-foreground",
-                          "hover:border-[var(--pink)]",
-                          "hover:text-[var(--pink)]",
+                          "hover:border-primary",
+                          "hover:text-primary",
                         ],
                   )}
                 >
@@ -83,18 +76,12 @@ export function WorkPageClient({
       </div>
 
       {flagship && (
-        <div className="mb-5 sm:mb-6">
-          <WorkProjectCard
-            project={flagship}
-            large
-            edgeToEdge
-            priority
-            heading="h2"
-          />
+        <div className="mb-10 sm:mb-14">
+          <WorkProjectCard project={flagship} large edgeToEdge priority heading="h2" />
         </div>
       )}
 
-      <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
+      <div className="grid gap-x-6 gap-y-10 sm:gap-y-14 md:grid-cols-2">
         {gridProjects.map((project) => (
           <WorkProjectCard
             key={project.slug}

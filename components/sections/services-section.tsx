@@ -4,17 +4,18 @@ import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { SectionIntro } from "@/components/layout/section-intro";
 import { Heading } from "@/components/ui/typography";
 import { services } from "@/lib/services";
 
 export function ServicesSection() {
   return (
-    <Section id="services" className="bg-card">
+    <Section id="services">
       <Container>
-        <Heading as="h2" variant="section">
-          What I can build for you.
-        </Heading>
-        <div className="mt-9 grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+        <SectionIntro
+          title="What I can build for you."
+        />
+        <div className="mt-10 grid gap-4 sm:mt-12 md:grid-cols-2 lg:grid-cols-6">
           {services.map((service) => (
             <Link
               key={service.id}

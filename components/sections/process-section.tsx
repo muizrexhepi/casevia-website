@@ -4,6 +4,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { SectionIntro } from "@/components/layout/section-intro";
 import { Heading } from "@/components/ui/typography";
 
 const phases = [
@@ -23,21 +24,19 @@ const phases = [
 
 export function ProcessSection() {
   return (
-    <Section className=" bg-[var(--yellow)] text-[var(--ink)]">
+    <Section className="border-y border-[var(--ink)] bg-[var(--yellow)] text-[var(--ink)]">
       <Container>
-        <div className="flex flex-wrap items-end justify-between gap-5">
-          <Heading as="h2" variant="section" className="text-[var(--ink)]">
-            How we’ll work together.
-          </Heading>
-          <Link
-            href="/process"
-            className="inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline"
-          >
-            See the process{" "}
-            <HugeiconsIcon icon={ArrowUpRight01Icon} size={18} />
-          </Link>
-        </div>
-        <ol className="mt-9 grid gap-px overflow-hidden rounded-xl border border-[var(--ink)] bg-[var(--ink)] md:grid-cols-3">
+        <SectionIntro
+          title="How we’ll work together."
+          description="Clear scope, working previews, and a considered handover. You’ll know what’s being built and what comes next."
+          ink
+          action={
+            <Link href="/process" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline">
+              See the process <HugeiconsIcon icon={ArrowUpRight01Icon} size={18} />
+            </Link>
+          }
+        />
+        <ol className="mt-10 grid gap-px overflow-hidden rounded-xl border border-[var(--ink)] bg-[var(--ink)] sm:mt-12 md:grid-cols-3">
           {phases.map(([title, description], index) => (
             <li key={title} className="bg-[var(--yellow)] p-5 sm:p-7">
               <span className="grid size-9 place-items-center rounded-full border border-[var(--ink)] text-sm font-semibold">
@@ -50,7 +49,7 @@ export function ProcessSection() {
               >
                 {title}
               </Heading>
-              <p className="mt-3 max-w-sm text-sm leading-6">{description}</p>
+              <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--ink)]/90">{description}</p>
             </li>
           ))}
         </ol>
